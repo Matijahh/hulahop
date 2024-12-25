@@ -93,9 +93,11 @@ const ShopBlogPage = () => {
                       {t(get(blogData, "heading", ""))}
                     </h5>
                     <div className="blog-head-footer">
-                      <p className="blog-author-text">{`${t("by:")} ${
-                        blogData?.created_by2?.first_name
-                      } ${blogData?.created_by2?.last_name}`}</p>
+                      {blogData?.store?.name && (
+                        <p className="blog-author-text">{`${t("by:")} ${
+                          blogData?.store?.name
+                        }`}</p>
+                      )}
                       <p className="blog-post-date">
                         {moment(Number(get(blogData, "created_at", ""))).format(
                           "MMMM, DD,YYYY"
@@ -164,9 +166,11 @@ const ShopBlogPage = () => {
                                 ></div>
                                 <div className="releted-blog-desc">
                                   <h4>{t(get(item, "heading"))}</h4>
-                                  <p className="blog-auther-name">
-                                    {`${item?.created_by2?.first_name} ${item?.created_by2?.last_name}`}
-                                  </p>
+                                  {item.store?.name && (
+                                    <p className="blog-auther-name">
+                                      {`${item?.store?.name}`}
+                                    </p>
+                                  )}
                                   <p className="blog-post-date">
                                     {moment(
                                       Number(get(item, "created_at", ""))

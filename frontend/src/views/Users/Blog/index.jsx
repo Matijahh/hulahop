@@ -160,7 +160,9 @@ const Blog = () => {
                             </p>
                           </div>
                           <div className="blog-card-footer">
-                            <p className="blog-auther-name">{`${item.created_by2?.first_name} ${item.created_by2?.last_name}`}</p>
+                            {item.store?.name && (
+                              <p className="blog-auther-name">{`${item.store?.name}`}</p>
+                            )}
                             <p className="blog-post-date">
                               {moment(
                                 Number(get(item, "created_at", ""))
