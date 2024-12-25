@@ -1,0 +1,48 @@
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>New Order Notification - {{sku}}</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+      .container {
+        width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+      }
+      h1 {
+        color: #4CAF50;
+        text-align: center;
+      }
+      .message {
+        margin: 20px 0;
+        text-align: center;
+        font-size: 16px;
+      }
+      .footer {
+        margin-top: 30px;
+        text-align: center;
+        font-size: 12px;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>New Order Notification - {{sku}}</h1>
+      <p class="message">A new order has been placed on your shop!</p>
+      <p class="message">
+        Please check your dashboard for more details at your earliest convenience.
+      </p>
+      <div class="footer">
+        <p>Best Regards,<br />The Hulahop Team</p>
+      </div>
+    </div>
+  </body>
+</html>

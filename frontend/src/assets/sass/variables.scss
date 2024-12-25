@@ -1,0 +1,50 @@
+$primary-color: "#f1676d";
+$secondary-color: "#150e4b";
+$body-bg: "#eef1f6";
+$secondary-bg: "#f1676d";
+$white-bg: "#f1676d";
+$primary-text: "#150e4b";
+$secondary-text: "#616173";
+$white-text: "#fff";
+$black-text: "#000";
+
+@mixin primary-heading {
+  color: $primary-text;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+}
+
+@mixin primary-heading-big {
+  color: $primary-color;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 44px;
+}
+
+@mixin primary-heading-small {
+  color: $primary-color;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 28px;
+}
+
+@mixin secondary-heading {
+  color: $white-text;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 34px;
+  margin-bottom: 30px;
+  line-height: 42px;
+}
+
+@mixin primary-paragraph {
+  color: $secondary-text;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 20px;
+}
