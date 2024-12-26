@@ -155,7 +155,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
     validationSchema: validation,
     onSubmit: async (values) => {
       const reqBody = {
-        associate_product_id: get(params, "id")?.split("-")?.[1],
+        associate_product_id: get(params, "id")?.split("-")?.pop(),
         product_variant_id: values.product_variant_id || null,
         product_sub_variant_id: values.product_sub_variant_id || null,
         quantity: values.quantity,
@@ -191,7 +191,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
   const getAssociateProduct = async () => {
     setLoading(true);
 
-    let id = get(params, "id")?.split("-")?.[1];
+    let id = get(params, "id")?.split("-")?.pop();
 
     const response = await commonGetQuery(`/associate_products/${id}`);
 
