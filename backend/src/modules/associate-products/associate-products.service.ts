@@ -137,6 +137,13 @@ export class AssociateProductsService extends AbstractService {
     relations: string[] = null,
   ): Promise<AssociateProducts | boolean> {
     data.created_at = Date.now().toString();
+    // product name should not contain characters that can cause issues in URLs
+    const invalidCharacters = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.'];
+    for (const char of invalidCharacters) {
+      if (data.name.includes(char)) {
+      throw new BadRequestException(`Product name should not contain "${char}" character`);
+      }
+    }
     const saveImage = await this.convertBase64ToImgWithSave(data.base64);
     const createdProduct = await this.abstractCreate(
       { ...data, image_id: saveImage.id },
@@ -161,6 +168,13 @@ export class AssociateProductsService extends AbstractService {
     const associateProductData = await this.findOne({ where: { id } });
     if (!associateProductData) {
       throw new NotFoundException('This record does not exist!');
+    }
+    // product name should not contain characters that can cause issues in URLs
+    const invalidCharacters = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.'];
+    for (const char of invalidCharacters) {
+      if (data.name.includes(char)) {
+      throw new BadRequestException(`Product name should not contain "${char}" character`);
+      }
     }
     data.updated_at = Date.now().toString();
     const { selected_colors, base64, ...rest } = data;
