@@ -621,7 +621,7 @@
   "Store name is required!": "Store name is required!",
   "Invalid store name! Store name should be alphanumeric.": "Invalid store name! Store name should be alphanumeric.",
   "A store with this name already exist!": "A store with this name already exist!",
-  "Store name can only contain letters and spaces!": "Store name can only contain letters and spaces!",
+  "Store name can only contain letters and spaces!": "Store name can only contain letters, numbers and spaces!",
   "Store logo is required!": "Store logo is required!",
   "Store description is required!": "Store description is required!",
   "Slider name is required!": "Banner name is required!",

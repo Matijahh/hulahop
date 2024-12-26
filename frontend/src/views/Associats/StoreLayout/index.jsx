@@ -40,7 +40,7 @@ const StoreLayout = () => {
       .test(
         "no-invalid-characters",
         t("Store name can only contain letters and spaces!"),
-        (value) => value && /^[a-zA-Z\s]+$/.test(value)
+        (value) => value && /^[a-zA-Z0-9\s]+$/.test(value)
       ),
     logo_image: Yup.string().required(t("Store logo is required!")),
     description: Yup.string().required(t("Store description is required!")),
@@ -92,6 +92,7 @@ const StoreLayout = () => {
 
       if (response) {
         const { message } = response.data;
+        getStoreData();
         SuccessTaster(t(message));
       }
     },

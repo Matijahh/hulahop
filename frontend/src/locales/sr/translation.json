@@ -621,7 +621,7 @@
   "Store name is required!": "Naziv prodavnice je obavezan!",
   "Invalid store name! Store name should be alphanumeric.": "Pogrešan naziv prodavnice! Naziv prodavnice treba biti alfanumerički.",
   "A store with this name already exist!": "Prodavnica sa ovim nazivom već postoji!",
-  "Store name can only contain letters and spaces!": "Naziv prodavnice mora da se sastoji samo od slova i razmaka!",
+  "Store name can only contain letters and spaces!": "Naziv prodavnice mora da se sastoji samo od slova, brojeva i razmaka!",
   "Store logo is required!": "Logo prodavnice je obavezan!",
   "Store description is required!": "Opis prodavnice je obavezan!",
   "Slider name is required!": "Naziv banera je obavezan!",
