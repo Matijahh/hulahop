@@ -35,6 +35,8 @@ import { FlexBox } from "../../../components/Sections";
 const Header = ({ storeData }) => {
   const [userData, setUserData] = useState(null);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const [blogList, setBlogList] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const location = useLocation();
   const { id } = useParams();
@@ -74,9 +76,28 @@ const Header = ({ storeData }) => {
     setMenuIsOpen(state);
   };
 
+  const getStoreBlogs = async () => {
+    setLoading(true);
+
+    const response = await commonGetQuery(
+      `/associate_blogs/store/${storeData?.id ?? 0}`
+    );
+
+    if (response) {
+      const { data } = response.data;
+      setBlogList(data);
+    }
+
+    setLoading(false);
+  };
+
   useEffect(() => {
     getUserData();
   }, []);
+
+  useEffect(() => {
+    getStoreBlogs();
+  }, [storeData]);
 
   return (
     <HeaderMainContainer>
@@ -218,7 +239,7 @@ const Header = ({ storeData }) => {
                 {t("Shop")}
               </Link>
             )}
-            {storeData && (
+            {storeData && !loading && blogList && blogList.length > 0 && (
               <Link
                 className={PageName.includes("/blogs") && "active"}
                 to={ROUTE_ASSOCIATE_BRAND_STORE_BLOGS.replace(

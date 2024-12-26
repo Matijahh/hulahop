@@ -64,68 +64,70 @@ const CommonCategorySidebar = ({ renderHeader, isAssociate, storeData }) => {
 
   return (
     <div className="categories-section">
-      <div className="container">
-        <div className="row">
-          {renderHeader ? (
-            <>{renderHeader()}</>
-          ) : (
-            <div className="col-12">
-              <div className="section-title-desc">
-                <h2>{t("Product Categories")}</h2>
-              </div>
-            </div>
-          )}
-          <div className="col-12">
-            {loading && (
-              <div className="d-flex justify-content-center align-items-center">
-                <Loader></Loader>
+      {_size(categoriesList) > 0 && (
+        <div className="container">
+          <div className="row">
+            {renderHeader ? (
+              <>{renderHeader()}</>
+            ) : (
+              <div className="col-12">
+                <div className="section-title-desc">
+                  <h2>{t("Product Categories")}</h2>
+                </div>
               </div>
             )}
-            {!loading && _size(categoriesList) > 0 ? (
-              <>
-                <div className="categories-slider">
-                  <SliderComponent
-                    dots={false}
-                    arrows={true}
-                    slidesToShow={
-                      _size(categoriesList) > 4 ? 4 : _size(categoriesList)
-                    }
-                  >
-                    {_map(categoriesList, (item, key) => (
-                      <div className="categories-slide" key={key}>
-                        <div
-                          className="categories-box"
-                          style={{
-                            backgroundImage: `url(${getImageUrlById(
-                              _get(item, "image_id", null)
-                            )})`,
-                          }}
-                        >
-                          <div className="category-overlay">
-                            <p className="category-name">
-                              {t(_get(item, "name", null))}
-                            </p>
-                            <ButtonComponent
-                              text={t("View All")}
-                              variant=" "
-                              className="category-view-btn"
-                              onClick={() => toggleCategory(item.id)}
-                            />
+            <div className="col-12">
+              {loading && (
+                <div className="d-flex justify-content-center align-items-center">
+                  <Loader></Loader>
+                </div>
+              )}
+              {!loading && _size(categoriesList) > 0 ? (
+                <>
+                  <div className="categories-slider">
+                    <SliderComponent
+                      dots={false}
+                      arrows={true}
+                      slidesToShow={
+                        _size(categoriesList) > 4 ? 4 : _size(categoriesList)
+                      }
+                    >
+                      {_map(categoriesList, (item, key) => (
+                        <div className="categories-slide" key={key}>
+                          <div
+                            className="categories-box"
+                            style={{
+                              backgroundImage: `url(${getImageUrlById(
+                                _get(item, "image_id", null)
+                              )})`,
+                            }}
+                          >
+                            <div className="category-overlay">
+                              <p className="category-name">
+                                {t(_get(item, "name", null))}
+                              </p>
+                              <ButtonComponent
+                                text={t("View All")}
+                                variant=" "
+                                className="category-view-btn"
+                                onClick={() => toggleCategory(item.id)}
+                              />
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
-                  </SliderComponent>
-                </div>
-              </>
-            ) : (
-              <center className="py-5">
-                <b>{t("No Product Found!")}</b>
-              </center>
-            )}
+                      ))}
+                    </SliderComponent>
+                  </div>
+                </>
+              ) : (
+                <center className="py-5">
+                  <b>{t("No Product Found!")}</b>
+                </center>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };
