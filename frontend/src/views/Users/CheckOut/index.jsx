@@ -344,10 +344,12 @@ const CheckOut = () => {
                                   <b>{t("Price")}:</b>{" "}
                                   {get(item, "associate_product.price")} RSD
                                 </p>
-                                <p>
-                                  <b>{t("Size")}:</b>{" "}
-                                  {get(item, "product_sub_variant.value")}
-                                </p>
+                                {get(item, "product_sub_variant.value") && (
+                                  <p>
+                                    <b>{t("Size")}:</b>{" "}
+                                    {get(item, "product_sub_variant.value")}
+                                  </p>
+                                )}
                               </div>
                             </div>
                             <div className="item-total-box">

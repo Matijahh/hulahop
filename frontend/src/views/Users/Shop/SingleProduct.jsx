@@ -92,7 +92,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
   const setLocalCart = async (productId, variantId, subVariantId, quantity) => {
     let localCart = JSON.parse(localStorage.getItem("cart_products"));
     if (!localCart) localCart = [];
-    if (productId && variantId && subVariantId) {
+    if (productId && variantId) {
       Promise.all([
         commonAddUpdateQuery(`/associate_products/${productId}`, {}, "GET"),
         commonAddUpdateQuery(`/product_variants/${variantId}`, {}, "GET"),
@@ -156,8 +156,8 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
     onSubmit: async (values) => {
       const reqBody = {
         associate_product_id: get(params, "id")?.split("-")?.[1],
-        product_variant_id: values.product_variant_id,
-        product_sub_variant_id: values.product_sub_variant_id,
+        product_variant_id: values.product_variant_id || null,
+        product_sub_variant_id: values.product_sub_variant_id || null,
         quantity: values.quantity,
         action_type: "add_to_cart",
       };
@@ -211,6 +211,13 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
           "product_variant_id",
           get(data, "product.product_variants.0.id", "")
         );
+
+        if (get(data, "product.product_variants.0.sub_variants.0.id", "")) {
+          formik.setFieldValue(
+            "product_sub_variant_id",
+            get(data, "product.product_variants.0.sub_variants.0.id", "")
+          );
+        }
 
         let associatePData = [...data?.associate_product_colors].map(
           (item) => item?.color_id

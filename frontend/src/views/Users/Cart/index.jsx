@@ -249,10 +249,12 @@ const Cart = () => {
                               <h4 className="product-name">
                                 {_get(item, "associate_product.name", "-")}
                               </h4>
-                              <p>
-                                <b>{t("Size")}:</b>{" "}
-                                {_get(item, "product_sub_variant.value")}
-                              </p>
+                              {_get(item, "product_sub_variant.value") && (
+                                <p>
+                                  <b>{t("Size")}:</b>{" "}
+                                  {_get(item, "product_sub_variant.value")}
+                                </p>
+                              )}
                             </div>
                             <div className="product-price-box">
                               <p className="product-price">
