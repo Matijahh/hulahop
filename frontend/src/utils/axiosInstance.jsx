@@ -99,7 +99,12 @@ axiosInstance.interceptors.response.use(
 
     const statusData = error.response ? error.response.status : 500;
     if (statusData === 401) {
-      setNewAccessToken();
+      localStorage.removeItem("accessToken");
+      localStorage.removeItem("refreshToken");
+      if (!error.config._retry) {
+        error.config._retry = true;
+        redirectToLogin();
+      }
     }
 
     return Promise.reject({
@@ -108,6 +113,11 @@ axiosInstance.interceptors.response.use(
     });
   }
 );
+
+const redirectToLogin = () => {
+  ErrorTaster(i18next.t("You are not authorized or your session has expired. Please sign in again."));
+  window.location.href = "/sign-in";
+};
 
 export const commonGetQuery = async (url) => {
   try {
