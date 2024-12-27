@@ -371,6 +371,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                           );
                         })}
                     </SliderComponent>
+                    <br />
                   </div>
                 </div>
               </div>
