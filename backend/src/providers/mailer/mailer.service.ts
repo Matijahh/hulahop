@@ -68,13 +68,12 @@ export class MailerService {
   }
 
   generateHtml(template: TemplateType): string {
-    const html = fs.readFileSync(
-      `src/providers/mailer/templates/${template.fileName}.hbs`,
-      {
-        encoding: 'utf-8',
-      },
-    );
 
+    const envToRead = process.env.NODE_ENV === 'production' ? '.' : 'src';
+    const html = fs.readFileSync(`${envToRead}/providers/mailer/templates/${template.fileName}.hbs`, {
+        encoding: 'utf-8',
+    });
+    
     const compliedTemplate = Handlebars.compile(html);
     return compliedTemplate(template.context);
   }
