@@ -92,7 +92,7 @@ const CommonCategorySidebar = ({ renderHeader, isAssociate, storeData }) => {
               _map(
                 categoriesList,
                 (item, key) =>
-                  key < 5 && (
+                  key <= 5 && (
                     <div
                       className="categories-box"
                       key={key}

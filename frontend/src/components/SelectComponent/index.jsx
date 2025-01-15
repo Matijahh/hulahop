@@ -26,6 +26,16 @@ const SelectContainer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 20px !important;
+
+    fieldset {
+      border: none !important;
+      border-radius: 20px !important;
+    }
+
+    svg {
+      display: none;
+    }
   }
 
   .input-label {
@@ -39,6 +49,9 @@ const SelectContainer = styled.div`
   }
 
   .selectbox-input {
+    background: white;
+    border-radius: 20px;
+
     @media screen and (max-width: 768px) {
       min-width: 100% !important;
       width: 100% !important;

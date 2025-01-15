@@ -9,6 +9,7 @@ import { Pagination } from "@mui/material";
 
 import Product from "../../../components/Product/Product";
 import SelectComponent from "../../../components/SelectComponent";
+import CategoryImg from "@mui/icons-material/CategoryOutlined";
 
 const Main = (props) => {
   const { setMainLoading, mainLoading } = props;
@@ -145,26 +146,50 @@ const Main = (props) => {
   }, []);
 
   return (
-    <div className="products-list-container">
-      <div className="row g-2">
-        <div className="col-md-2 mb-3">
-          {selectItems && sortBy && (
-            <SelectComponent
-              fullWidth
-              size="small"
-              name="title"
-              id="demo-multiple-name-label"
-              labelId="demo-multiple-name-label"
-              optionList={selectItems}
-              label={t("Sort By")}
-              value={sortBy}
-              onChange={handleSort}
-              isShowValue={true}
-            />
-          )}
+    <div className="main-products-container">
+      <div className="row">
+        <div className="col-12 sort-container">
+          <span className="label">{t("Sort By")}</span>
+          <SelectComponent
+            fullWidth
+            size="small"
+            name="title"
+            className="sort-select"
+            id="demo-multiple-name-label"
+            optionList={selectItems}
+            value={sortBy}
+            onChange={handleSort}
+            isShowValue={true}
+          />
         </div>
       </div>
-      <div className="row g-3">
+      <div
+        className={`products-list-container ${
+          size(associateProductsList) === 0 ? "no-artical-container" : ""
+        }`}
+      >
+        {size(associateProductsList) > 0 ? (
+          associateProductsList.map((item, i) => (
+            <Product
+              key={i}
+              mainLoading={mainLoading || loading}
+              productData={item}
+              isAssociateProduct={props.isAssociateProduct}
+              isInWishList={checkIsInWishList(item.id)}
+              getWishListData={getWishListData}
+            />
+          ))
+        ) : (
+          <div className="d-flex align-items-center justify-content-center w-100 h-100 no-artical">
+            <div className="category-image-container">
+              <div className="line"></div>
+              <CategoryImg />
+            </div>
+            <h5>{t("No Product Found!")}</h5>
+          </div>
+        )}
+
+        {/* <div className="row g-3">
         {size(associateProductsList) > 0 ? (
           associateProductsList.map((item, i) => (
             <div className="col-sm-6 col-xl-4 col-xxl-3" key={i}>
@@ -192,6 +217,7 @@ const Main = (props) => {
             />
           </div>
         )}
+      </div> */}
       </div>
     </div>
   );
