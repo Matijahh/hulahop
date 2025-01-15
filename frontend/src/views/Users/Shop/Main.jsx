@@ -188,37 +188,17 @@ const Main = (props) => {
             <h5>{t("No Product Found!")}</h5>
           </div>
         )}
-
-        {/* <div className="row g-3">
-        {size(associateProductsList) > 0 ? (
-          associateProductsList.map((item, i) => (
-            <div className="col-sm-6 col-xl-4 col-xxl-3" key={i}>
-              <Product
-                mainLoading={mainLoading || loading}
-                productData={item}
-                isAssociateProduct={props.isAssociateProduct}
-                isInWishList={checkIsInWishList(item.id)}
-                getWishListData={getWishListData}
-              />
-            </div>
-          ))
-        ) : (
-          <h5 className="d-flex align-items-center justify-content-center w-100 h-100">
-            {t("No Product Found!")}
-          </h5>
-        )}
-        {!loading && (
-          <div className="pagination-container">
-            <Pagination
-              page={page}
-              onChange={handlePageChange}
-              count={totalPages}
-              shape="rounded"
-            />
-          </div>
-        )}
-      </div> */}
       </div>
+      {!loading && (
+        <div className="pagination-container">
+          <Pagination
+            page={page}
+            onChange={handlePageChange}
+            count={totalPages}
+            shape="rounded"
+          />
+        </div>
+      )}
     </div>
   );
 };
