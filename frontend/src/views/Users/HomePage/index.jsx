@@ -13,18 +13,26 @@ import {
 import { getImageUrlById, slugifyString } from "../../../utils/commonFunctions";
 import createStore from "../../../assets/images/createStore.png";
 
-import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
-import PhoneCallbackOutlinedIcon from "@mui/icons-material/PhoneCallbackOutlined";
-import RocketLaunchOutlinedIcon from "@mui/icons-material/RocketLaunchOutlined";
+import PhoneCallbackOutlinedIcon from "@mui/icons-material/PermPhoneMsgOutlined";
+import RocketLaunchOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import ButtonComponent from "../../../components/ButtonComponent";
 import SliderSection from "./SliderSection";
 import SliderComponent from "../../../components/SliderComponent/SliderComponent";
 import Product from "../../../components/Product/Product";
 import CommonCategorySidebar from "../../../components/CommonCategorySidebar";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { Helmet } from "react-helmet";
 import { Loader } from "../../../components/Loader";
+import laptopImage from "../../../assets/images/laptop-image.png";
+import step1 from "../../../assets/images/step1.png";
+import step2 from "../../../assets/images/step2.png";
+import step3 from "../../../assets/images/step3.png";
+import step4 from "../../../assets/images/step4.png";
+import step5 from "../../../assets/images/step5.png";
+import step6 from "../../../assets/images/step6.png";
 
 const HomePage = () => {
   const [value, setValue] = useState("1");
@@ -148,27 +156,31 @@ const HomePage = () => {
                 <h4>{t("Create your own store completely free")}</h4>
                 <div className="banner-description">
                   <p>
-                    {t(
+                    {`${t(
                       "Drive sales by offering your designs on our products online."
-                    )}
-                  </p>
-                  <p>
-                    {t(
+                    )} ${t(
                       "Make money easily, from home, without inventory and initial investment. You just need to sit down at your computer, come up with your design, upload it to our items through the app and start selling."
-                    )}
+                    )}`}
                   </p>
                 </div>
                 <ButtonComponent
                   text={t("Register and Create a Store")}
-                  startIcon={<PersonAddAltOutlinedIcon />}
                   variant="contained"
                   className="register-button"
                   onClick={() => navigate(ROUTE_SIGN_UP)}
                 />
+                <ButtonComponent
+                  text={t("Search Products")}
+                  startIcon={<SearchOutlined />}
+                  variant="outlined"
+                  className="search-button"
+                  onClick={() => {}}
+                />
               </div>
             </div>
-            <div className="col-lg-7 order-1 order-lg-2">
-              <div className="banner-video-section">
+            <div className="col-lg-7 order-1 order-lg-2 banner-image-container">
+              <img src={laptopImage} alt="Laptop" />
+              {/* <div className="banner-video-section">
                 <iframe
                   width="560"
                   height="315"
@@ -178,28 +190,129 @@ const HomePage = () => {
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowfullscreen
                 ></iframe>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </div>
-      <div className="home-slider-section">
+      <div className="how-it-works-section">
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="hero-section">
                 <h3 className="banner-head">{t("How Does It Work?")}</h3>
-                {/* <p className="banner-paragraph">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo,
-                  veniam eos id nam incidunt et esse consequatur consectetur
-                  accusantium impedit sit ex at temporibus, non facere
-                  reiciendis nulla. Enim, qui.
-                </p> */}
               </div>
             </div>
-            <div className="col-12">
-              <div className="slider-container">
+            {/* <div className="slider-container">
                 <SliderSection />
+              </div> */}
+            <div className="row">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">1</p>
+                  <h4>{t("The first step is registration")}</h4>
+                  <p>
+                    {t(
+                      "Register and open your store according to the instructions: 'How to register as a seller'"
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container">
+                <img src={step1} />
+              </div>
+            </div>
+            <div className="row mt-5">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-mobile">
+                <img src={step2} />
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">2</p>
+                  <h4>{t("The second step is to set up the store")}</h4>
+                  <p>
+                    {t(
+                      "Customize your store to your needs and taste, according to the instructions: 'How to set up a store'"
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-desktop">
+                <img src={step2} />
+              </div>
+            </div>
+            <div className="row mt-5">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">3</p>
+                  <h4>
+                    {t(
+                      "The third step is the selection of articles and their design"
+                    )}
+                  </h4>
+                  <p>
+                    {t(
+                      "Select and place the items from our offer in your store, according to the instructions: 'How to add items to the store'"
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container">
+                <img src={step3} />
+              </div>
+            </div>
+            <div className="row mt-5">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-mobile">
+                <img src={step4} />
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">4</p>
+                  <h4>{t("Do your best to offer your customers")}</h4>
+                  <p>
+                    {t(
+                      "More details in the instructions: 'How to buy', and in short like this: Your customers choose what to order in your online store,click to order the desired article, enter the data for sending."
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-desktop">
+                <img src={step4} />
+              </div>
+            </div>
+            <div className="row mt-5">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">5</p>
+                  <h4>{t("We are processing the order")}</h4>
+                  <p>
+                    {t(
+                      "The order arrives at our place for processing, after confirmation of the order by e-mail or phone, we print and pack the product, deliver it to the customer by a courier service with which we have a contract."
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container">
+                <img src={step5} />
+              </div>
+            </div>
+            <div className="row mt-5">
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-mobile">
+                <img src={step6} />
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
+                <div className="step-container">
+                  <p className="number-element">6</p>
+                  <h4>{t("Process Completed")}</h4>
+                  <p>
+                    {t(
+                      "Upon receipt, the customer pays for the order with postal costs, the service pays us the money, we transfer your part of the payment to you."
+                    )}
+                  </p>
+                </div>
+              </div>
+              <div className="col-lg-6 d-flex justify-content-center align-items-center step-image-container hide-desktop">
+                <img src={step6} />
               </div>
             </div>
           </div>
@@ -219,24 +332,22 @@ const HomePage = () => {
               </div>
               <div className="col-12">
                 {loading ? (
-                  <div className="d-flex justify-content-center aline-items-center">
+                  <div className="d-flex justify-content-center align-items-center">
                     <Loader />
                   </div>
                 ) : (
                   <div className="product-listing">
                     <div className="products-list-container">
-                      <div className="row g-3">
-                        {size(bestSellingProducts) > 0 &&
-                          bestSellingProducts.map((item, key) => (
-                            <div className="col-md-6 col-lg-3" key={key}>
-                              <Product
-                                productData={item}
-                                isInWishList={checkIsInWishList(item.id)}
-                                getWishListData={getWishListData}
-                              />
-                            </div>
-                          ))}
-                      </div>
+                      {size(bestSellingProducts) > 0 &&
+                        bestSellingProducts.map((item, key) => (
+                          <div className="product-container" key={key}>
+                            <Product
+                              productData={item}
+                              isInWishList={checkIsInWishList(item.id)}
+                              getWishListData={getWishListData}
+                            />
+                          </div>
+                        ))}
                     </div>
                     {/* <TabContext value={value}>
                       <div className="product-listing-tabs">
@@ -285,11 +396,56 @@ const HomePage = () => {
           <div className="row">
             <div className="col-12">
               <div className="hero-section">
-                <h3 className="banner-head">{t("Our Associates")}</h3>
+                <h3 className="banner-head">{t("Trusted Associates")}</h3>
               </div>
             </div>
-            <div className="col-12">
-              <div className="associates-slider">
+            <div className="associates-box-list-container">
+              {size(associatesList) > 0 &&
+                map(associatesList, (item, index) => {
+                  return (
+                    <div className="associates-box" key={index}>
+                      <img
+                        src={getImageUrlById(
+                          size(get(item, "store_layout_details", [])) > 0
+                            ? get(item, "store_layout_details.0.logo_image", "")
+                            : get(item, "image_id", "")
+                            ? get(item, "image_id", "")
+                            : undefined
+                        )}
+                        alt=""
+                      />
+                      <div className="associates-info">
+                        <div
+                          className="link-btn"
+                          onClick={() =>
+                            window.open(
+                              ROUTE_ASSOCIATE_BRAND_STORE.replace(
+                                ":id",
+                                slugifyString(
+                                  get(item, "store_layout_details.0.name", null)
+                                )
+                              ),
+                              "_blank"
+                            )
+                          }
+                        >
+                          <OpenInNewIcon />
+                        </div>
+                        <h3 className="title">
+                          {get(item, "store_layout_details.0.name", null)}
+                        </h3>
+                        <p>
+                          {get(
+                            item,
+                            "store_layout_details.0.description",
+                            null
+                          )}
+                        </p>
+                      </div>
+                    </div>
+                  );
+                })}
+              {/* <div className="associates-slider">
                 <SliderComponent dots={false} arrows={true} slidesToShow={5}>
                   {size(associatesList) > 0 &&
                     map(associatesList, (item, index) => {
@@ -334,41 +490,7 @@ const HomePage = () => {
                       );
                     })}
                 </SliderComponent>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div className="about-passion">
-        <div className="container">
-          <div className="section-wrapper">
-            <div className="row justify-content-between g-3">
-              <div className="col-lg-5">
-                <div className="section-img">
-                  <img src={createStore} alt="" />
-                </div>
-              </div>
-              <div className="col-lg-6">
-                <div className="section-content">
-                  <h3>{t("Our Passion is Your Inspiration")}</h3>
-                  <p>
-                    {t(
-                      "Being creative is not a hobby. it is a way of life for every artist. We are committed to our work, and we hope to inspire you to make a difference in the world."
-                    )}
-                  </p>
-                  <p>
-                    {t(
-                      "We believe that art has the power to change the world. Through our art, we can challenge the status quo, ins pire others, and create new perspectives. We are driven by our passion to create something meaningful and lasting."
-                    )}
-                  </p>
-                  <ButtonComponent
-                    text={t("Shop Now")}
-                    variant="outlined"
-                    className="shop-now-btn"
-                    onClick={() => navigate(ROUTE_MAIN_SHOP)}
-                  />
-                </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -376,18 +498,7 @@ const HomePage = () => {
       <div className="delivery-info-section">
         <div className="container">
           <div className="row g-3">
-            <div className="col-12">
-              <div className="hero-section">
-                <h3 className="banner-head">{t("We Deliver Happiness")}</h3>
-                {/* <p className="banner-paragraph">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Quo,
-                  veniam eos id nam incidunt et esse consequatur consectetur
-                  accusantium impedit sit ex at temporibus, non facere
-                  reiciendis nulla. Enim, qui.
-                </p> */}
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-4">
+            <div className="col-12 col-md-4">
               <div className="delivery-box-wrapper">
                 <div className="delivery-info-box">
                   <div className="icon-box">
@@ -404,7 +515,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-sm-6 col-md-4">
+            <div className="col-12 col-md-4">
               <div className="delivery-box-wrapper">
                 <div className="delivery-info-box">
                   <div className="icon-box">
@@ -421,7 +532,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="col-12 col-sm-6 col-md-4">
+            <div className="col-12 col-md-4">
               <div className="delivery-box-wrapper">
                 <div className="delivery-info-box">
                   <div className="icon-box">
@@ -441,17 +552,7 @@ const HomePage = () => {
           </div>
         </div>
       </div>
-      <CommonCategorySidebar
-        renderHeader={() => {
-          return (
-            <div className="col-12">
-              <div className="hero-section">
-                <h3 className="banner-head">{t("Product Categories")}</h3>
-              </div>
-            </div>
-          );
-        }}
-      />
+      <CommonCategorySidebar />
     </div>
   );
 };

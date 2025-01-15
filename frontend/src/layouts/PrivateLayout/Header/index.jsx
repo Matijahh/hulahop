@@ -13,26 +13,18 @@ import { debounce, get, map } from "lodash";
 import { commonGetQuery } from "../../../utils/axiosInstance";
 import { jwtDecode } from "jwt-decode";
 import { slugify, slugifyString } from "../../../utils/commonFunctions";
-import cx from "classnames";
 import i18n from "../../../i18n";
 import languages from "../../../utils/languages";
-import HeaderWrapperStyled from "./Styled";
 import logo from "../../../assets/images/logo.png";
 
-import Slider from "react-slick";
-import SearchIcon from "@mui/icons-material/Search";
-import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
-import PersonIcon from "@mui/icons-material/Person";
-import LocalMallIcon from "@mui/icons-material/ShoppingCart";
-import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
-import BottomHeader from "./BottomHeader";
-import SelectComponent from "../../../components/SelectComponent";
-
-import { InputAdornment, Menu, MenuItem, TextField } from "@mui/material";
 import { NavLink, useNavigate } from "react-router-dom";
+import LocalPhoneIcon from "@mui/icons-material/PhoneOutlined";
+import PersonIcon from "@mui/icons-material/PersonOutlineOutlined";
+import LocalMallIcon from "@mui/icons-material/ShoppingCartOutlined";
+import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
+import Navigation from "./Navigation";
 
+import HeaderWrapperStyled from "./Styled";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -206,10 +198,10 @@ const Header = () => {
   return (
     <>
       <HeaderWrapperStyled>
-        <div className={cx("menu-wrapper", menuIsOpen && "open")}></div>
-        <div className="header-top-area">
-          <div className="container-fluid container-lg">
+        <div className="header-container">
+          <div className="container-fluid">
             <div className="flex-box-header">
+              {/** Responsive Header */}
               <div className="open-menu-box">
                 <div
                   className="logo-box cursor-pointer"
@@ -219,6 +211,7 @@ const Header = () => {
                 >
                   <img src={logo} alt="" />
                 </div>
+
                 <div
                   className="open-menu"
                   onClick={() => {
@@ -228,26 +221,61 @@ const Header = () => {
                   <MenuOutlinedIcon />
                 </div>
               </div>
-              <div className="contact-box order-2 order-lg-1 d-none d-md-block">
-                <a href="tel:+381 63 54 03 73">
-                  <LocalPhoneIcon />
-                  +381 63 54 03 73
-                </a>
+              {/** End of Responsive Header */}
+
+              {/** Desktop Header */}
+              <div className="contact-box">
+                <div
+                  className="logo-box cursor-pointer"
+                  onClick={() => {
+                    navigate(ROUTE_MAIN);
+                  }}
+                >
+                  <img src={logo} alt="" />
+                </div>
+                <div className="contact-phone-wrapper">
+                  <a href="tel:+381 63 54 03 73">
+                    <LocalPhoneIcon />
+                    +381 63 54 03 73
+                  </a>
+                </div>
               </div>
-              <div className="header-slider-section order-1 order-lg-2">
-                <Slider {...settings}>
-                  <h3 className="header-slider-text">
-                    {t("Free Postage Over 6000 RSD")}
-                  </h3>
-                  <h3 className="header-slider-text">
-                    {t("Possible Return of Goods")}
-                  </h3>
-                  <h3 className="header-slider-text">
-                    {t("Safe and Fast Delivery")}
-                  </h3>
-                </Slider>
+
+              <div className="right-navigation-container">
+                <Navigation
+                  userData={userData}
+                  menuIsOpen={menuIsOpen}
+                  toggleMenu={toggleMenu}
+                  popoverRef={popoverRef}
+                />
+
+                <div className="profile-box-container">
+                  <div className="cart-box">
+                    <NavLink to={ROUTE_MAIN_CART}>
+                      <LocalMallIcon />
+                    </NavLink>
+                  </div>
+                  <div className="profile-box">
+                    <NavLink
+                      to={ACCESS_TOKEN ? ROUTE_MAIN_PROFILE : ROUTE_SIGN_UP}
+                    >
+                      <div className="d-flex justify-content-center align-items-center">
+                        <PersonIcon />
+                        <p>
+                          {userData ? (
+                            <span>{`${userData.first_name} ${userData.last_name}`}</span>
+                          ) : (
+                            t("Become Seller")
+                          )}
+                        </p>
+                      </div>
+                    </NavLink>
+                  </div>
+                </div>
               </div>
-              <div className="top-area-end order-3">
+
+              {/** TODO: Move Lang Picker to Profile Section */}
+              {/* <div className="top-area-end order-3">
                 <div className="flex-box-header">
                   <div className="language-transfer-tab">
                     {langValue && langOptions && (
@@ -263,27 +291,11 @@ const Header = () => {
                       />
                     )}
                   </div>
-                  {/* For now comment it */}
-                  {/* <div className="social-tab d-none d-sm-flex">
-                    <div className="social-icon">
-                      <Link href="#">
-                        <FacebookIcon />
-                      </Link>
-                    </div>
-                    <div className="social-icon">
-                      <Link href="#">
-                        <InstagramIcon />
-                      </Link>
-                    </div>
-                    <div className="social-icon">
-                      <Link href="#">
-                        <YouTubeIcon />
-                      </Link>
-                    </div>
-                  </div> */}
                 </div>
-              </div>
-              <div className="d-flex d-lg-none middle-area-end order-4">
+              </div> */}
+
+              {/** Responsive Items */}
+              {/* <div className="d-flex d-lg-none middle-area-end order-4">
                 <div>
                   <p>
                     {userData ? (
@@ -305,11 +317,12 @@ const Header = () => {
                     <LocalMallIcon />
                   </NavLink>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
-        <div className="header-middle-area">
+
+        {/* <div className="header-middle-area">
           <div className="container-fluid container-lg">
             <div className="flex-box-header">
               <div
@@ -418,12 +431,7 @@ const Header = () => {
               </div>
             </div>
           </div>
-        </div>
-        <BottomHeader
-          menuIsOpen={menuIsOpen}
-          toggleMenu={toggleMenu}
-          popoverRef={popoverRef}
-        />
+        </div> */}
       </HeaderWrapperStyled>
     </>
   );

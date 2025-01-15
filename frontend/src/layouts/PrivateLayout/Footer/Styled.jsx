@@ -1,13 +1,34 @@
 import styled from "styled-components";
 
 export const FooterWrapperStyled = styled.div`
-  background: #eef1f6;
+  background: #f2f0ef;
+  padding: 50px 0;
 
   footer {
     padding: 30px;
-    background: #fff;
-    box-shadow: 0px 0px 6px -3px #afaccb;
-    border-radius: 10px;
+    background: #f1676d;
+    border-radius: 30px;
+    z-index: 1;
+    position: relative;
+  }
+
+  .background-logo {
+    position: absolute;
+    top: 0;
+    right: 100px;
+    opacity: 0.2;
+    width: 300px;
+    z-index: -1;
+
+    @media screen and (max-width: 768px) {
+      right: 0;
+      bottom: 0;
+      top: auto;
+    }
+  }
+
+  .z-index-greater {
+    z-index: 2;
   }
 
   .footer-section-header {
@@ -24,50 +45,66 @@ export const FooterWrapperStyled = styled.div`
     }
 
     .footer-header-text {
-      color: #f1676d;
+      color: white;
       padding-bottom: 8px;
-      border-bottom: 1px solid #f1676d;
+      border-bottom: 1px solid white;
+      border-width: 3px;
       font-size: 18px;
-      font-weight: 600;
+      font-family: "Poppins", serif;
+      font-style: normal;
+      font-weight: bold;
       line-height: 22px;
     }
   }
 
   .site-description {
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 
     p {
-      color: #616173;
+      color: white;
+      font-family: "Poppins", serif;
+      font-style: normal;
+      font-weight: bold;
       font-size: 14px;
-      line-height: 20px;
-      font-weight: 500;
+      line-height: 25px;
+    }
+
+    .copyright {
+      font-weight: 300;
+      color: white;
+      font-size: 14px;
     }
   }
 
   .contact-us-section {
-    padding: 10px;
-
     .contact-item {
       display: flex;
       align-items: flex-start;
-      margin-bottom: 10px;
+      margin-bottom: 40px;
+      position: relative;
 
       .icon-box {
-        width: 35px;
-
         svg {
-          width: 25px;
-          height: 25px;
-          color: #f1676d;
+          width: 45px;
+          height: 45px;
+          position: absolute;
+          top: -5px;
+          left: -5px;
+          color: rgba(255, 255, 255, 0.3);
         }
       }
 
       .contact-detail {
         width: calc(100% - 35px);
         font-size: 14px;
-        font-weight: 500;
+        font-weight: 300;
         line-height: 25px;
         align-self: center;
+        padding: 0 10px;
+        color: white;
 
         &.location-detail {
           line-height: 22px;
@@ -84,35 +121,37 @@ export const FooterWrapperStyled = styled.div`
       margin-bottom: 8px;
 
       a {
-        color: #616173;
+        color: white;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: 300;
         line-height: 20px;
         text-decoration: none;
         cursor: pointer;
-
-        &:hover {
-          color: #f1676d;
-        }
       }
     }
   }
 
   .low-description-box {
     padding: 10px;
-    text-align: end;
+
+    .know-more-btn {
+      margin-top: 20px;
+      border-color: white !important;
+      padding: 5px 30px !important;
+      color: white !important;
+    }
 
     p,
     a {
       font-size: 14px;
       line-height: 20px;
-      font-weight: 500;
-      color: #616173;
+      font-weight: 400;
+      color: white;
       text-align: start;
 
       &.know-more-text {
         margin-top: 10px;
-        color: #f1676d;
+        color: white;
         font-weight: 600;
         text-align: end;
         display: inline-block;

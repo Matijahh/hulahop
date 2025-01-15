@@ -1,12 +1,14 @@
 import { useTranslation } from "react-i18next";
 import {
+  ROUTE_MAIN,
+  ROUTE_MAIN_ASSOCIETS,
   ROUTE_MAIN_ABOUT_PLATFORM,
   ROUTE_MAIN_CONTACT,
   ROUTE_MAIN_TERMS_OF_USE,
   ROUTE_PRIVACY_POLICY,
   ROUTE_RETURN_POLICY,
 } from "../../../routes/routes";
-import logo from "../../../assets/images/logo.png";
+import logo from "../../../assets/images/logo-black-white.png";
 
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import CallOutlinedIcon from "@mui/icons-material/CallOutlined";
@@ -14,6 +16,7 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 
 import { FooterWrapperStyled } from "./Styled";
 import { Link } from "react-router-dom";
+import ButtonComponent from "../../../components/ButtonComponent";
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -23,23 +26,8 @@ const Footer = () => {
       <FooterWrapperStyled>
         <div className="container-fluid container-lg">
           <footer>
-            <div className="row g-4">
-              <div className="col-12 col-md-6 col-lg-3">
-                <div className="footer-about-section">
-                  <div className="footer-section-header">
-                    <div className="site-logo">
-                      <img src={logo} alt="" />
-                    </div>
-                  </div>
-                  <div className="site-description">
-                    <p>
-                      {t(
-                        "Hulahop is not just any Print on Demand (POD) marketplace, it is a remarkable platform that caters to the needs of both vendors and individuals by offering a versatile and personalized POD service."
-                      )}
-                    </p>
-                  </div>
-                </div>
-              </div>
+            <img src={logo} alt="" className="background-logo" />
+            <div className="row g-4 z-index-greater">
               <div className="col-12 col-md-6 col-lg-3">
                 <div className="footer-section-header">
                   <p className="footer-header-text">{t("Contact Us")}</p>
@@ -77,9 +65,15 @@ const Footer = () => {
                 </div>
                 <div className="useful-links">
                   <div className="links-item">
+                    <Link to={ROUTE_MAIN}>{t("Home")}</Link>
+                  </div>
+                  <div className="links-item">
                     <Link to={ROUTE_MAIN_ABOUT_PLATFORM}>
-                      {t("About Platform")}
+                      {t("About The Platform")}
                     </Link>
+                  </div>
+                  <div className="links-item">
+                    <Link to={ROUTE_MAIN_ASSOCIETS}>{t("Associates")}</Link>
                   </div>
                   <div className="links-item">
                     <Link to={ROUTE_MAIN_CONTACT}>{t("Contact Us")}</Link>
@@ -89,7 +83,7 @@ const Footer = () => {
                   </div>
                   <div className="links-item">
                     <Link to={ROUTE_MAIN_TERMS_OF_USE}>
-                      {t("Terms of use")}
+                      {t("Terms of Use")}
                     </Link>
                   </div>
                   <div className="links-item">
@@ -109,24 +103,33 @@ const Footer = () => {
                       "Familiarize yourself with the Law on Consumer Protection of the Republic of Serbia."
                     )}
                   </p>
-                  <Link
-                    to="https://hulahop.shop/wp-content/uploads/2022/10/Zakon%20o%20za%C5%A1titi%20potro%C5%A1a%C4%8Da%20Republike%20Srbije.pdf"
-                    target="_blank"
-                    className="know-more-text"
-                  >
-                    {t("Know More")}...
-                  </Link>
+                  <ButtonComponent
+                    className="know-more-btn"
+                    text={t("Know More")}
+                    variant="outlined"
+                    onClick={() => {
+                      window.open(
+                        "https://hulahop.shop/wp-content/uploads/2022/10/Zakon%20o%20za%C5%A1titi%20potro%C5%A1a%C4%8Da%20Republike%20Srbije.pdf",
+                        "_blank"
+                      );
+                    }}
+                  />
+                </div>
+              </div>
+              <div className="col-12 col-md-6 col-lg-3">
+                <div className="site-description">
+                  <p>
+                    {t(
+                      "Hulahop is not just any Print on Demand (POD) marketplace, it is a remarkable platform that caters to the needs of both vendors and individuals by offering a versatile and personalized POD service."
+                    )}
+                  </p>
+                  <span className="copyright">
+                    © Hulahop - {t("All Right Reserved")} 2024.
+                  </span>
                 </div>
               </div>
             </div>
           </footer>
-        </div>
-        <div className="footer-copright-section mt-5">
-          <div className="footer-copright-wrapper">
-            <div className="footer-copright-box">
-              <p>© Hulahop - {t("All Right Reserved")} 2024.</p>
-            </div>
-          </div>
         </div>
       </FooterWrapperStyled>
     </>

@@ -43,7 +43,7 @@ const ButtonComponent = ({
       size="large"
       disabled={disabled}
       style={{
-        maxHeight: maxHeight ? maxHeight : "40px",
+        maxHeight: maxHeight ? maxHeight : undefined,
         width: width || (fullWidth ? "100%" : ""),
         ...styled,
         fontSize: `${fontSize || "14px"} `,

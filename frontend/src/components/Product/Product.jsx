@@ -173,6 +173,15 @@ const Product = ({
               )}
             </div>
           </div>
+          <p className="product-category  ">
+            <span onClick={() => window.location.replace(categoryUrl)}>
+              {t(get(productData, "product.category.name", ""))}
+            </span>
+            ,{" "}
+            <span onClick={() => window.location.replace(subCategoryUrl)}>
+              {t(get(productData, "product.sub_category.name", ""))}
+            </span>
+          </p>
           {!isAssociateProduct && (
             <>
               <div
@@ -208,19 +217,8 @@ const Product = ({
             <p className="product-price" onClick={() => navigate(productUrl)}>
               {get(productData, "price", "")} RSD
             </p>
-            <p className="product-category  ">
-              <span onClick={() => window.location.replace(categoryUrl)}>
-                {t(get(productData, "product.category.name", ""))}
-              </span>
-              ,{" "}
-              <span onClick={() => window.location.replace(subCategoryUrl)}>
-                {t(get(productData, "product.sub_category.name", ""))}
-              </span>
-            </p>
-          </div>
-          <div className="product-buy-button">
             <ButtonComponent
-              text={t("Buy Now")}
+              text={t("Go to Product")}
               variant="outlined"
               className="buy-btn"
               onClick={() =>

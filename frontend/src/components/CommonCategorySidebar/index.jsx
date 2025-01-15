@@ -42,6 +42,21 @@ const CommonCategorySidebar = ({ renderHeader, isAssociate, storeData }) => {
     navigation(url);
   };
 
+  const viewAllCategories = () => {
+    let url;
+
+    if (isAssociate) {
+      url = ROUTE_ASSOCIATE_BRAND_STORE_SHOP.replace(
+        ":id",
+        slugifyString(_get(params, "id"))
+      );
+    } else {
+      url = ROUTE_MAIN_SHOP;
+    }
+
+    navigation(url);
+  };
+
   const getProductsList = async () => {
     setLoading(true);
 
@@ -66,64 +81,46 @@ const CommonCategorySidebar = ({ renderHeader, isAssociate, storeData }) => {
     <div className="categories-section">
       {_size(categoriesList) > 0 && (
         <div className="container">
-          <div className="row">
-            {renderHeader ? (
-              <>{renderHeader()}</>
-            ) : (
-              <div className="col-12">
-                <div className="section-title-desc">
-                  <h2>{t("Product Categories")}</h2>
-                </div>
+          <div className="categories-list-container">
+            {loading && (
+              <div className="d-flex justify-content-center align-items-center">
+                <Loader></Loader>
               </div>
             )}
-            <div className="col-12">
-              {loading && (
-                <div className="d-flex justify-content-center align-items-center">
-                  <Loader></Loader>
-                </div>
-              )}
-              {!loading && _size(categoriesList) > 0 ? (
-                <>
-                  <div className="categories-slider">
-                    <SliderComponent
-                      dots={false}
-                      arrows={true}
-                      slidesToShow={
-                        _size(categoriesList) > 4 ? 4 : _size(categoriesList)
-                      }
+            {!loading &&
+              _size(categoriesList) > 0 &&
+              _map(
+                categoriesList,
+                (item, key) =>
+                  key < 5 && (
+                    <div
+                      className="categories-box"
+                      key={key}
+                      style={{
+                        backgroundImage: `url(${getImageUrlById(
+                          _get(item, "image_id", null)
+                        )})`,
+                      }}
                     >
-                      {_map(categoriesList, (item, key) => (
-                        <div className="categories-slide" key={key}>
-                          <div
-                            className="categories-box"
-                            style={{
-                              backgroundImage: `url(${getImageUrlById(
-                                _get(item, "image_id", null)
-                              )})`,
-                            }}
-                          >
-                            <div className="category-overlay">
-                              <p className="category-name">
-                                {t(_get(item, "name", null))}
-                              </p>
-                              <ButtonComponent
-                                text={t("View All")}
-                                variant=" "
-                                className="category-view-btn"
-                                onClick={() => toggleCategory(item.id)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </SliderComponent>
-                  </div>
-                </>
-              ) : (
-                <center className="py-5">
-                  <b>{t("No Product Found!")}</b>
-                </center>
+                      <ButtonComponent
+                        text={t(_get(item, "name", null))}
+                        variant="contained"
+                        className="category-view-btn"
+                        onClick={() => toggleCategory(item.id)}
+                      />
+                    </div>
+                  )
               )}
+            <div className="view-all-categories">
+              <h3>{`${t("Choose between")} ${_size(categoriesList)}+ ${t(
+                "product categories of premium quality"
+              )}`}</h3>
+              <ButtonComponent
+                text={"View All"}
+                variant="contained"
+                className="view-all-btn"
+                onClick={() => viewAllCategories()}
+              />
             </div>
           </div>
         </div>
