@@ -4,6 +4,7 @@ import { commonGetQuery } from "../../../utils/axiosInstance";
 import { get, map, size } from "lodash";
 import { getImageUrlById, slugifyString } from "../../../utils/commonFunctions";
 import { ROUTE_ASSOCIATE_BRAND_STORE } from "../../../routes/routes";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 import { Helmet } from "react-helmet";
 import { LoaderContainer } from "../../../components/Loader";
@@ -42,82 +43,55 @@ const Associates = () => {
 
       {loading && <LoaderContainer />}
 
-      <div className="associates-list-section">
+      <div className="associates-listing-section">
         <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="hero-section">
-                <h3 className="banner-head m-0">{t("Our Associates")}</h3>
+                <h3 className="banner-head">{t("Trusted Associates")}</h3>
               </div>
             </div>
           </div>
-
-          <div className="row g-5">
+          <div className="associates-box-list-container associates-page-box-list-container">
             {size(associatesList) > 0 &&
               map(associatesList, (item, index) => {
                 return (
-                  <>
-                    <div className="col-12 col-md-6 col-lg-4" key={index}>
+                  <div className="associates-box" key={index}>
+                    <img
+                      src={getImageUrlById(
+                        size(get(item, "store_layout_details", [])) > 0
+                          ? get(item, "store_layout_details.0.logo_image", "")
+                          : get(item, "image_id", "")
+                          ? get(item, "image_id", "")
+                          : undefined
+                      )}
+                      alt=""
+                    />
+                    <div className="associates-info">
                       <div
-                        className="assosiate-box"
-                        role="button"
-                        onClick={() => {
-                          const name = get(
-                            item,
-                            "store_layout_details.0.name",
-                            null
-                          );
-                          const id = get(
-                            item,
-                            "store_layout_details.0.user_id",
-                            null
-                          );
-
-                          window.location.replace(
+                        className="link-btn"
+                        onClick={() =>
+                          window.open(
                             ROUTE_ASSOCIATE_BRAND_STORE.replace(
                               ":id",
-                              slugifyString(name)
-                            )
-                          );
-                        }}
+                              slugifyString(
+                                get(item, "store_layout_details.0.name", null)
+                              )
+                            ),
+                            "_blank"
+                          )
+                        }
                       >
-                        <div className="assosiate-img-box">
-                          <img
-                            src={getImageUrlById(
-                              size(get(item, "store_layout_details", [])) > 0
-                                ? get(
-                                    item,
-                                    "store_layout_details.0.logo_image",
-                                    ""
-                                  )
-                                : get(item, "image_id", "")
-                                ? get(item, "image_id", "")
-                                : "ae7a4e77-e53c-488f-95c4-4af8390822db"
-                            )}
-                            alt=""
-                          />
-                        </div>
-                        <div className="assosiate-description">
-                          <h5>
-                            {size(get(item, "store_layout_details", [])) > 0
-                              ? get(item, "store_layout_details.0.name", "")
-                              : get(item, "first_name", "") +
-                                " " +
-                                get(item, "last_name", "")}
-                          </h5>
-                          <p>
-                            {size(get(item, "store_layout_details", [])) > 0
-                              ? get(
-                                  item,
-                                  "store_layout_details.0.description",
-                                  ""
-                                )
-                              : ""}
-                          </p>
-                        </div>
+                        <OpenInNewIcon />
                       </div>
+                      <h3 className="title">
+                        {get(item, "store_layout_details.0.name", null)}
+                      </h3>
+                      <p>
+                        {get(item, "store_layout_details.0.description", null)}
+                      </p>
                     </div>
-                  </>
+                  </div>
                 );
               })}
           </div>

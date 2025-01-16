@@ -22,7 +22,7 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import LocalShippingIcon from "@mui/icons-material/LocalShipping";
 import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import { BiLogoFacebook } from "react-icons/bi";
@@ -319,12 +319,30 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
       </Helmet>
       <div className="product-hero-section">
         <div className="container single-product-container">
-          <GobackButton className="back-btn" />
           <div className="row">
             <div className="col-lg-5">
+              <GobackButton className="back-btn" />
               <div className="product-img-section">
                 <div className="product-img-box">
                   <div className="image-box-wrapper">
+                    <div
+                      className="wishlist-icon"
+                      onClick={() => {
+                        loading || checkIsInWishList(get(productData, "id", ""))
+                          ? {}
+                          : addRemoveWishList(get(productData, "id", ""));
+                      }}
+                    >
+                      {loading ? (
+                        <div className="loader">
+                          <Loader />
+                        </div>
+                      ) : checkIsInWishList(get(productData, "id", "")) ? (
+                        <FavoriteIcon style={{ color: "red" }} />
+                      ) : (
+                        <FavoriteBorderIcon />
+                      )}{" "}
+                    </div>
                     <PreviewJsonImage
                       previewImageUrl={getImageUrlById(
                         get(prieviewProduct, "image_id")
@@ -384,6 +402,21 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                       <h3 className="product-name">
                         {get(productData, "name", "")}
                       </h3>
+                      <p className="product-category">
+                        <span
+                          onClick={() => window.location.replace(CetegoryUrl)}
+                        >
+                          {t(get(productData, "product.category.name", ""))}
+                        </span>
+                        ,{" "}
+                        <span
+                          onClick={() =>
+                            window.location.replace(SubCetegoryUrl)
+                          }
+                        >
+                          {t(get(productData, "product.sub_category.name", ""))}
+                        </span>
+                      </p>
                       <h5 className="product-price">
                         {get(productData, "price", "")} RSD
                       </h5>
@@ -391,14 +424,9 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                         {get(productData, "description", "")}
                       </p>
                     </div>
-                    <div className="product-hr-line"></div>
                     <div className="product-vendor-data">
                       {!isAssociateProduct && (
                         <div className="vendor-name">
-                          <p>
-                            {" "}
-                            <b>{t("Vendor")}:</b>
-                          </p>
                           <>
                             {size(
                               get(productData, "user.store_layout_details")
@@ -440,203 +468,140 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                           </>
                         </div>
                       )}
-                      <div className="category-name">
-                        <p>
-                          <b>{t("Category")}:</b>
-                        </p>
-                        <p className="product-category  ">
-                          <span
-                            onClick={() => window.location.replace(CetegoryUrl)}
-                          >
-                            {t(get(productData, "product.category.name", ""))}
-                          </span>
-                          ,{" "}
-                          <span
-                            onClick={() =>
-                              window.location.replace(SubCetegoryUrl)
-                            }
-                          >
-                            {t(
-                              get(productData, "product.sub_category.name", "")
-                            )}
-                          </span>
-                        </p>
-                      </div>
                     </div>
-
-                    <div className="product-hr-line"></div>
-                    <div className="color-detail-data">
-                      <div className="color-detail-flexbox">
-                        <p className="color-text">{t("Color")}:</p>
-                        <Row className="color-row">
-                          {get(productData, "product") &&
-                            associateProductColors &&
-                            associateProductColors.map((item, i) => (
-                              <Col
-                                md={2}
-                                lg={2}
-                                sm={4}
-                                key={`color-${i}`}
-                                className="color-col"
-                              >
-                                <ColorBox
-                                  onClick={() =>
-                                    handelChangeViewProduct(item.id)
-                                  }
-                                  color={item.color?.code}
-                                  className={
-                                    item.id === get(prieviewProduct, "id") &&
-                                    "active"
-                                  }
+                    <div className="choose-section">
+                      <p className="choose-text">{t("Choose")}:</p>
+                      <div className="color-detail-data">
+                        <div className="color-detail-flexbox">
+                          <p className="color-text">{t("Color")}:</p>
+                          <Row className="color-row">
+                            {get(productData, "product") &&
+                              associateProductColors &&
+                              associateProductColors.map((item, i) => (
+                                <Col
+                                  md={2}
+                                  lg={2}
+                                  sm={4}
+                                  key={`color-${i}`}
+                                  className="color-col"
                                 >
-                                  <div className="dot"></div>
-                                </ColorBox>
-                              </Col>
-                            ))}
-                        </Row>
+                                  <ColorBox
+                                    onClick={() =>
+                                      handelChangeViewProduct(item.id)
+                                    }
+                                    color={item.color?.code}
+                                    className={
+                                      item.id === get(prieviewProduct, "id") &&
+                                      "active"
+                                    }
+                                  >
+                                    <div className="dot"></div>
+                                  </ColorBox>
+                                </Col>
+                              ))}
+                          </Row>
+                        </div>
+                        {formik.errors.product_variant_id && (
+                          <p>{formik.errors.product_variant_id}</p>
+                        )}
                       </div>
-                      {formik.errors.product_variant_id && (
-                        <p>{formik.errors.product_variant_id}</p>
-                      )}
-                    </div>
-                    {get(prieviewProduct, "sub_variants") &&
-                      size(get(prieviewProduct, "sub_variants")) > 0 && (
-                        <>
-                          {size(get(prieviewProduct, "sub_variants")) === 1 &&
-                          !get(
-                            prieviewProduct,
-                            "sub_variants[0].value"
-                          ) ? null : (
-                            <div className="size-detail-box">
-                              <div className="size-detail-flexbox">
-                                <p className="size-text">{t("Size")}:</p>
-                                <div className="size-flexbox">
-                                  {get(prieviewProduct, "sub_variants").map(
-                                    (item, index) => (
-                                      <p
-                                        key={index}
-                                        className={cx(
-                                          "size-box",
-                                          formik &&
-                                            formik.values
-                                              .product_sub_variant_id &&
-                                            formik.values
-                                              .product_sub_variant_id ===
-                                              item.id &&
-                                            "selected"
-                                        )}
-                                        onClick={() =>
-                                          formik.setFieldValue(
-                                            "product_sub_variant_id",
-                                            item.id
-                                          )
-                                        }
-                                      >
-                                        {get(item, "value")}
-                                      </p>
-                                    )
-                                  )}
+                      {get(prieviewProduct, "sub_variants") &&
+                        size(get(prieviewProduct, "sub_variants")) > 0 && (
+                          <>
+                            {size(get(prieviewProduct, "sub_variants")) === 1 &&
+                            !get(
+                              prieviewProduct,
+                              "sub_variants[0].value"
+                            ) ? null : (
+                              <div className="size-detail-box">
+                                <div className="size-detail-flexbox">
+                                  <p className="size-text">{t("Size")}:</p>
+                                  <div className="size-flexbox">
+                                    {get(prieviewProduct, "sub_variants").map(
+                                      (item, index) => (
+                                        <p
+                                          key={index}
+                                          className={cx(
+                                            "size-box",
+                                            formik &&
+                                              formik.values
+                                                .product_sub_variant_id &&
+                                              formik.values
+                                                .product_sub_variant_id ===
+                                                item.id &&
+                                              "selected"
+                                          )}
+                                          onClick={() =>
+                                            formik.setFieldValue(
+                                              "product_sub_variant_id",
+                                              item.id
+                                            )
+                                          }
+                                        >
+                                          {get(item, "value")}
+                                        </p>
+                                      )
+                                    )}
+                                  </div>
                                 </div>
+                                {formik.errors.product_sub_variant_id && (
+                                  <p className="input-error">
+                                    {formik.errors.product_sub_variant_id}
+                                  </p>
+                                )}
                               </div>
-                              {formik.errors.product_sub_variant_id && (
-                                <p className="input-error">
-                                  {formik.errors.product_sub_variant_id}
-                                </p>
-                              )}
+                            )}
+                          </>
+                        )}
+                      <div className="add-cart-section">
+                        <div className="add-cart-flexbox">
+                          <p className="quantity-text">{t("Quantity")}:</p>
+                          <div className="quantity-box">
+                            <div
+                              className="cart-plus-minus cart-plus"
+                              onClick={() => {
+                                formik.setFieldValue(
+                                  "quantity",
+                                  formik.values.quantity > 1
+                                    ? formik.values.quantity - 1
+                                    : 1
+                                );
+                              }}
+                            >
+                              <RemoveIcon />
                             </div>
-                          )}
-                        </>
-                      )}
-                    <div className="product-hr-line"></div>
-                    <div className="add-cart-section">
-                      <div className="add-cart-flexbox">
-                        <div className="quantity-box">
-                          <div
-                            className="cart-plus-minus cart-plus"
-                            onClick={() => {
-                              formik.setFieldValue(
-                                "quantity",
-                                formik.values.quantity > 1
-                                  ? formik.values.quantity - 1
-                                  : 1
-                              );
-                            }}
-                          >
-                            <RemoveIcon />
+                            <div className="cart-plus-minus  quantity">
+                              {formik && formik.values.quantity}
+                            </div>
+                            <div
+                              className="cart-plus-minus cart-minus"
+                              onClick={() => {
+                                formik.setFieldValue(
+                                  "quantity",
+                                  formik.values.quantity
+                                    ? formik.values.quantity + 1
+                                    : 1
+                                );
+                              }}
+                            >
+                              <AddIcon />
+                            </div>
+                            {formik.errors.quantity && (
+                              <p className="input-error">
+                                {formik.errors.quantity}
+                              </p>
+                            )}
                           </div>
-                          <div className="cart-plus-minus  quantity">
-                            {formik && formik.values.quantity}
-                          </div>
-                          <div
-                            className="cart-plus-minus cart-minus"
-                            onClick={() => {
-                              formik.setFieldValue(
-                                "quantity",
-                                formik.values.quantity
-                                  ? formik.values.quantity + 1
-                                  : 1
-                              );
-                            }}
-                          >
-                            <AddIcon />
-                          </div>
-                          {formik.errors.quantity && (
-                            <p className="input-error">
-                              {formik.errors.quantity}
-                            </p>
-                          )}
-                        </div>
-                        <div className="add-cart-btn">
-                          <ButtonComponent
-                            text={t("Add to Cart")}
-                            startIcon={<ShoppingCartIcon />}
-                            variant="contained"
-                            className="add-btn"
-                            onClick={() => formik.submitForm()}
-                          />
                         </div>
                       </div>
-                    </div>
-                    <div className="wishlist-box">
-                      <p
-                        role="button"
-                        onClick={() => {
-                          loading ||
-                          checkIsInWishList(get(productData, "id", ""))
-                            ? {}
-                            : addRemoveWishList(get(productData, "id", ""));
-                        }}
-                      >
-                        <span className="wishlist-icon">
-                          {loading ? (
-                            <div className="loader">
-                              <Loader />
-                            </div>
-                          ) : checkIsInWishList(get(productData, "id", "")) ? (
-                            <FavoriteIcon style={{ color: "red" }} />
-                          ) : (
-                            <FavoriteBorderIcon />
-                          )}{" "}
-                        </span>
-                        <span className="wishlist-text">
-                          {t("Add to Wishlist")}
-                        </span>
-                      </p>
-                    </div>
-                    <div className="product-hr-line"></div>
-                    <div className="share-product-section">
-                      <div className="share-product-flexbox">
-                        <p className="share-text">{t("Share")}:</p>
-                        <div className="social-flexbox">
-                          <div className="social-box">
-                            <p className="social-icon">
-                              <FacebookShareButton url={window.location.href}>
-                                <BiLogoFacebook />
-                              </FacebookShareButton>
-                            </p>
-                            <p>Facebook</p>
-                          </div>
-                        </div>
+                      <div className="add-cart-btn">
+                        <ButtonComponent
+                          text={t("Add to Cart")}
+                          startIcon={<ShoppingCartIcon />}
+                          variant="contained"
+                          className="add-btn"
+                          onClick={() => formik.submitForm()}
+                        />
                       </div>
                     </div>
                   </div>
@@ -646,7 +611,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
           </div>
         </div>
       </div>
-      <div className="after-purchase-section">
+      {/* <div className="after-purchase-section">
         <div className="container">
           {size(aboutProductsData) > 0 && (
             <div className="about-product-section">
@@ -766,7 +731,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
             </div>
           );
         }}
-      />
+      /> */}
       {authenticationModal && (
         <AuthModal
           open={authenticationModal}

@@ -12,7 +12,7 @@ const TermsOfUse = () => {
       </Helmet>
 
       <div className="container">
-        <div className="title mb-4">{t("Terms of use")}</div>
+        <div className="title mb-4">{t("Terms of Use")}</div>
         <div className="bold-description mb-3">
           {t("Dear users,")} <br />{" "}
           {t(
