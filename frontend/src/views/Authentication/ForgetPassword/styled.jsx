@@ -1,17 +1,18 @@
 import styled from "styled-components";
 
 export const ForgetPasswordContainer = styled.div`
-  padding: 24px;
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03),
-    0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02);
-  border-radius: 8px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+  padding: 50px 30px;
+  border-radius: 30px;
   background-color: #fff;
   width: ${({ maxWidth }) => maxWidth || "550px"};
 
   @media screen and (max-width: 550px) {
     width: 100%;
-    height: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 0;
   }
 
   .cursor-pointer {
@@ -20,8 +21,12 @@ export const ForgetPasswordContainer = styled.div`
 
   .logo-container {
     .cover {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
       img {
-        width: 250px;
+        width: 150px;
       }
     }
   }
@@ -30,7 +35,10 @@ export const ForgetPasswordContainer = styled.div`
     margin-top: 20px;
 
     label {
-      margin-bottom: 10px;
+      font-size: 12px;
+      color: #b3b3b3;
+      margin-bottom: 0px;
+      margin-left: 15px;
     }
   }
 
@@ -38,9 +46,12 @@ export const ForgetPasswordContainer = styled.div`
     margin-top: 40px;
 
     .title {
-      font-size: 22px;
+      font-family: "Poppins", serif;
+      color: #f1676d;
+      text-align: center;
+      font-size: 32px;
       font-weight: bold;
-      margin-bottom: 7px;
+      margin-bottom: 30px;
     }
 
     .description {
@@ -60,7 +71,7 @@ export const ForgetPasswordContainer = styled.div`
 
   .info-text {
     span {
-      color: #7e7e7e;
+      color: #b3b3b3;
       margin-right: 10px;
     }
 
@@ -68,7 +79,7 @@ export const ForgetPasswordContainer = styled.div`
       color: rgb(241, 103, 109);
       font-weight: 600;
       font-size: 16px;
-      text-decoration: underline;
+      text-decoration: none;
     }
   }
 

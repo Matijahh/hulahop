@@ -8,7 +8,6 @@ import { commonAddUpdateQuery } from "../../../utils/axiosInstance";
 import * as Yup from "yup";
 import logo from "../../../assets/images/logo.png";
 
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import InputComponent from "../../../components/InputComponent";
 import ButtonComponent from "../../../components/ButtonComponent";
 
@@ -23,7 +22,7 @@ const ForgetPassword = () => {
   const navigate = useNavigate();
 
   const validation = Yup.object().shape({
-    email: Yup.string().email().required(t("Email is required")),
+    email: Yup.string().email().required(t("Email is required!")),
   });
 
   const formik = useFormik({
@@ -84,19 +83,13 @@ const ForgetPassword = () => {
             <Row>
               <Col>
                 <InputComponent
-                  label={t("Email")}
+                  label={`${t("Email")}*`}
                   fullWidth
                   InnerPlaceholder={t("Enter Email")}
                   name="email"
                   type="text"
                   disabled={loading}
                   formik={formik}
-                  renderIcon={
-                    <>
-                      <EmailOutlinedIcon />
-                    </>
-                  }
-                  hasIcon
                 />
               </Col>
 

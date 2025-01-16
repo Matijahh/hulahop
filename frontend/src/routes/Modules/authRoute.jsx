@@ -8,7 +8,7 @@ import {
 
 import SignIn from "../../views/Authentication/SignIn";
 import SignUp from "../../views/Authentication/SignUp";
-import PublicLayout from "../../layouts/PublicLayout";
+import AuthenticateLayout from "../../layouts/AuthenticateLayout";
 import AdminSignIn from "../../views/Admin/Authentication/signIn";
 import ForgetPassword from "../../views/Authentication/ForgetPassword";
 import ResetPassword from "../../views/Authentication/ResetPassword";
@@ -18,45 +18,45 @@ const routes = [
     name: "Sign In",
     path: ROUTE_SIGN_IN,
     component: (props) => (
-      <PublicLayout {...props}>
+      <AuthenticateLayout {...props}>
         <SignIn {...props} />
-      </PublicLayout>
+      </AuthenticateLayout>
     ),
   },
   {
     name: "Sign Up",
     path: ROUTE_SIGN_UP,
     component: (props) => (
-      <PublicLayout {...props}>
+      <AuthenticateLayout {...props}>
         <SignUp {...props} />
-      </PublicLayout>
+      </AuthenticateLayout>
     ),
   },
   {
     name: "Sign Up",
     path: ROUTE_ADMIN_SIGN_IN,
     component: (props) => (
-      <PublicLayout {...props}>
+      <AuthenticateLayout {...props}>
         <AdminSignIn {...props} />
-      </PublicLayout>
+      </AuthenticateLayout>
     ),
   },
   {
     name: "Forget Password",
     path: ROUTE_FORGET_PASSWORD,
     component: (props) => (
-      <PublicLayout {...props}>
+      <AuthenticateLayout {...props}>
         <ForgetPassword {...props} />
-      </PublicLayout>
+      </AuthenticateLayout>
     ),
   },
   {
     name: "Reset Password",
     path: ROUTE_PASSWORD_RESET,
     component: (props) => (
-      <PublicLayout {...props}>
+      <AuthenticateLayout {...props}>
         <ResetPassword {...props} />
-      </PublicLayout>
+      </AuthenticateLayout>
     ),
   },
 ];

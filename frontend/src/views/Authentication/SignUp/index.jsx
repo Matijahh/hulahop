@@ -17,14 +17,13 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import InputComponent from "../../../components/InputComponent";
 import ButtonComponent from "../../../components/ButtonComponent";
 
-import { FormControlLabel } from "@mui/material";
+import { Checkbox } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import { FlexBox } from "../../../components/Sections";
 import { SuccessTaster } from "../../../components/Toast";
 import { Helmet } from "react-helmet";
 import {
   handleRedirection,
-  setTokenAfterLogin,
   setTokenAfterRegistration,
 } from "../../../utils/commonFunctions";
 
@@ -83,9 +82,8 @@ const SignUp = ({ maxWidth }) => {
     },
   });
 
-  const handleCheckboxChange = (e) => {
-    const value = e.target && e.target.value;
-    formik.setFieldValue("type", value);
+  const handleCheckboxChange = () => {
+    formik.setFieldValue("type", !formik.values.type);
   };
 
   return (
@@ -105,9 +103,6 @@ const SignUp = ({ maxWidth }) => {
       </div>
       <div className="title-container">
         <div className="title">{t("Sign Up")}</div>
-        <div className="description">
-          {t("Please create your account to explore AI image repository.")}
-        </div>
       </div>
       <form onSubmit={formik.handleSubmit}>
         <Row>
@@ -115,75 +110,51 @@ const SignUp = ({ maxWidth }) => {
             <Row>
               <Col>
                 <InputComponent
-                  label={t("First Name")}
+                  label={`${t("First Name")}*`}
                   fullWidth
                   name="first_name"
                   formik={formik}
                   disabled={loading}
                   InnerPlaceholder={t("Enter First Name")}
-                  renderIcon={
-                    <>
-                      <PersonOutlineOutlinedIcon />
-                    </>
-                  }
-                  hasIcon
                 />
               </Col>
               <Col>
                 <InputComponent
-                  label={t("Last Name")}
+                  label={`${t("Last Name")}*`}
                   fullWidth
                   name="last_name"
                   disabled={loading}
                   formik={formik}
                   InnerPlaceholder={t("Enter Last Name")}
-                  renderIcon={
-                    <>
-                      <PersonOutlineOutlinedIcon />
-                    </>
-                  }
-                  hasIcon
                 />
               </Col>
             </Row>
           </Col>
           <Col className="col-12">
             <InputComponent
-              label={t("Email")}
+              label={`${t("Email")}*`}
               fullWidth
               name="email"
               formik={formik}
               disabled={loading}
               InnerPlaceholder={t("Enter Email")}
-              renderIcon={
-                <>
-                  <EmailOutlinedIcon />
-                </>
-              }
-              hasIcon
             />
           </Col>
           <Col className="col-12">
             <InputComponent
-              label={t("Phone Number")}
+              label={`${t("Phone Number")}*`}
               fullWidth
               name="mobile"
               formik={formik}
               disabled={loading}
               InnerPlaceholder={t("Enter Phone Number")}
-              renderIcon={
-                <>
-                  <PhoneOutlinedIcon />
-                </>
-              }
               type="text"
-              hasIcon
             />
           </Col>
 
           <Col className="col-12">
             <InputComponent
-              label={t("Password")}
+              label={`${t("Password")}*`}
               fullWidth
               InnerPlaceholder={t("Enter Password")}
               name="password"
@@ -204,7 +175,7 @@ const SignUp = ({ maxWidth }) => {
           </Col>
           <Col className="col-12">
             <InputComponent
-              label={t("Confirm Password")}
+              label={`${t("Confirm Password")}*`}
               name="confirmPassword"
               formik={formik}
               disabled={loading}
@@ -223,7 +194,7 @@ const SignUp = ({ maxWidth }) => {
               type={togglePassword ? "text" : "password"}
             />
           </Col>
-          <Col className="col-12">
+          {/* <Col className="col-12">
             <label>{t("Select Role")}</label>
             <FlexBox justifyContent="flex-start ">
               <FormControlLabel
@@ -245,25 +216,34 @@ const SignUp = ({ maxWidth }) => {
                 checked={formik.values.type === "ASSOCIATE"}
               />
             </FlexBox>
+          </Col> */}
+          <Col className="col-12 mt-3">
+            <FlexBox>
+              <FlexBox justifyContent="flex-start" className="remember-me">
+                <span className="text">{`${t("Register as Associate")}:`}</span>
+                <Checkbox
+                  checked={formik.values.type}
+                  onClick={handleCheckboxChange}
+                />
+              </FlexBox>
+            </FlexBox>
           </Col>
-          <Col className="col-12 buttons ">
+          <Col className="buttons ">
             <ButtonComponent
               variant="contained"
               size="large"
               text={t("Sign Up")}
-              width="100%"
+              className="sign-up"
               type="submit"
               disabled={loading}
             />
-          </Col>
-          {!maxWidth && (
-            <Col className="col-12">
+            {!maxWidth && (
               <div className="info-text">
                 <span>{t("Already have an account?")}</span>
                 <Link to={ROUTE_SIGN_IN}>{t("Sign In")}</Link>
               </div>
-            </Col>
-          )}
+            )}
+          </Col>
         </Row>
       </form>
     </SignInContainer>

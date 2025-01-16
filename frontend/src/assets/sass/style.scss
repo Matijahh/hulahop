@@ -56,6 +56,34 @@ p {
   @include primary-heading-small();
 }
 
+.text-input {
+  .MuiFormHelperText-root.Mui-error {
+    font-family: "Poppins", serif;
+    margin-left: 10px !important;
+  }
+
+  .MuiInputBase-root {
+    border-radius: 30px;
+    font-family: "Poppins", serif;
+
+    &:hover {
+      fieldset {
+        border-color: #f1676e21;
+      }
+    }
+
+    &:active {
+      fieldset {
+        border-color: #f1676e;
+      }
+    }
+
+    fieldset {
+      border: 3px solid #f1676e21;
+    }
+  }
+}
+
 .language-popover-body {
   width: 90px;
 

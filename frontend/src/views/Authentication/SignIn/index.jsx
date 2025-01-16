@@ -18,7 +18,6 @@ import { FlexBox } from "../../../components/Sections";
 import { SuccessTaster } from "../../../components/Toast";
 import { Helmet } from "react-helmet";
 
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
@@ -104,7 +103,7 @@ const SignIn = ({ maxWidth, RedirectUrl }) => {
 
       <div className="logo-container">
         <div
-          className="cover cursor-po2inter"
+          className="cover cursor-pointer"
           onClick={() => {
             navigate(ROUTE_MAIN);
           }}
@@ -115,28 +114,19 @@ const SignIn = ({ maxWidth, RedirectUrl }) => {
 
       <div className="title-container">
         <div className="title">{t("Sign In")}</div>
-        <div className="description">
-          {t("Please sign in to your account.")}
-        </div>
       </div>
 
       <form onSubmit={formik.handleSubmit}>
         <Row>
-          <Col className="col-12">
+          <Col className="col-12 mb-3">
             {formik.values.type === "USER" ? (
               <InputComponent
-                label={t("Email")}
+                label={`${t("Email")}*`}
                 fullWidth
                 InnerPlaceholder={t("Enter Email")}
                 name="id"
                 formik={formik}
                 disabled={loading}
-                renderIcon={
-                  <>
-                    <EmailOutlinedIcon />
-                  </>
-                }
-                hasIcon
               />
             ) : (
               <InputComponent
@@ -157,9 +147,9 @@ const SignIn = ({ maxWidth, RedirectUrl }) => {
             )}
           </Col>
 
-          <Col className="col-12">
+          <Col className="col-12 mb-3">
             <InputComponent
-              label={t("Password")}
+              label={`${t("Password")}*`}
               fullWidth
               InnerPlaceholder={t("Enter Password")}
               name="password"
@@ -181,12 +171,12 @@ const SignIn = ({ maxWidth, RedirectUrl }) => {
 
           <Col className="col-12 mt-3">
             <FlexBox>
-              <FlexBox justifyContent="flex-start remember-me">
+              <FlexBox justifyContent="flex-start" className="remember-me">
+                <span className="text">{`${t("Remember me?")}:`}</span>
                 <Checkbox
                   checked={formik.values.isCheckedRememberMe}
                   onClick={handleCheckRemember}
                 />
-                <span>{t("Remember me?")}</span>
               </FlexBox>
               <Link to="/forget-password" className="forgot-password-text">
                 {t("Forgot Password")}
@@ -194,25 +184,22 @@ const SignIn = ({ maxWidth, RedirectUrl }) => {
             </FlexBox>
           </Col>
 
-          <Col className="col-12 buttons ">
+          <Col className="buttons ">
             <ButtonComponent
               type="submit"
               variant="contained"
               size="large"
               text={t("Sign In")}
-              width="100%"
+              className="sign-in"
               disabled={loading}
             />
-          </Col>
-
-          {!maxWidth && (
-            <Col className="col-12">
+            {!maxWidth && (
               <div className="info-text">
                 <span>{t("Don't have an account?")}</span>
                 <Link to={ROUTE_SIGN_UP}>{t("Sign Up")}</Link>
               </div>
-            </Col>
-          )}
+            )}
+          </Col>
         </Row>
       </form>
     </SignInContainer>
