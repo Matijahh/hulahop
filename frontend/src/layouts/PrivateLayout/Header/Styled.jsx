@@ -353,7 +353,7 @@ const HeaderWrapperStyled = styled.div`
       display: flex;
       align-items: center;
       width: 100%;
-      max-width: 210px;
+      max-width: 220px;
       justify-content: end;
 
       @media screen and (max-width: 970px) {
