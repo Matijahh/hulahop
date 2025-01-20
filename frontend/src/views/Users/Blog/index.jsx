@@ -78,7 +78,7 @@ const Blog = () => {
 
       {loading && <LoaderContainer />}
 
-      <div className="shop-hero-section">
+      {/* <div className="shop-hero-section">
         <div className="shop-slider">
           <SliderComponent dots={false} arrows={true} slidesToShow={1}>
             {size(blogSlider) > 0 &&
@@ -104,7 +104,7 @@ const Blog = () => {
               })}
           </SliderComponent>
         </div>
-      </div>
+      </div> */}
 
       <div className="blog-listing-section">
         <div className="container">
@@ -114,67 +114,64 @@ const Blog = () => {
                 <h3 className="banner-head">{t("Latest Posts")}</h3>
               </div>
             </div>
-            {size(blogList) > 0 &&
-              map(blogList, (item, key) => {
-                return (
-                  <div className="col-md-6 col-lg-4" key={key}>
-                    <div className="blog-card-wrapper">
-                      <div
-                        className="blog-card"
-                        onClick={() => {
-                          if (item?.store) {
-                            navigate(
+            <div className="blog-page-box-list-container">
+              {size(blogList) > 0 &&
+                map(blogList, (item, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className="blog-card"
+                      onClick={() => {
+                        if (item?.store) {
+                          navigate(
+                            ROUTE_ASSOCIATE_BRAND_STORE_BLOGS_ID.replace(
+                              ":id",
+                              slugifyString(item?.store?.name)
+                            ).replace(":blogId", item?.id)
+                          );
+                          return;
+                        }
+
+                        get(params, "id", null)
+                          ? navigate(
                               ROUTE_ASSOCIATE_BRAND_STORE_BLOGS_ID.replace(
                                 ":id",
-                                slugifyString(item?.store?.name)
-                              ).replace(":blogId", item?.id)
+                                get(params, "created_by", null)
+                              ).replace(":blogId", item.id)
+                            )
+                          : navigate(
+                              ROUTE_MAIN_BLOG_SINGLE.replace(":id", item.id)
                             );
-                            return;
-                          }
-
-                          get(params, "id", null)
-                            ? navigate(
-                                ROUTE_ASSOCIATE_BRAND_STORE_BLOGS_ID.replace(
-                                  ":id",
-                                  get(params, "created_by", null)
-                                ).replace(":blogId", item.id)
-                              )
-                            : navigate(
-                                ROUTE_MAIN_BLOG_SINGLE.replace(":id", item.id)
-                              );
-                        }}
-                      >
-                        <div className="blog-feature-img">
-                          <img
-                            src={getImageUrlById(get(item, "image_id"))}
-                            alt=""
-                          />
-                        </div>
-                        <div className="blog-card-content">
-                          <div className="blog-card-description">
-                            <h2 className="blog-name">
-                              {get(item, "heading")}
-                            </h2>
-                            <p className="blog-detail">
-                              {parse(get(item, "content"))}
-                            </p>
-                          </div>
+                      }}
+                    >
+                      <div className="blog-feature-img">
+                        <img
+                          src={getImageUrlById(get(item, "image_id"))}
+                          alt=""
+                        />
+                      </div>
+                      <div className="blog-card-content">
+                        <div className="blog-card-description">
+                          <h2 className="blog-name">{get(item, "heading")}</h2>
                           <div className="blog-card-footer">
                             {item.store?.name && (
-                              <p className="blog-auther-name">{`${item.store?.name}`}</p>
+                              <p className="blog-auther-name">{`${item.store?.name} /`}</p>
                             )}
                             <p className="blog-post-date">
                               {moment(
                                 Number(get(item, "created_at", ""))
-                              ).format("MMMM, DD,YYYY")}{" "}
+                              ).format("DD.MM.YYYY.")}{" "}
                             </p>
                           </div>
+                          <p className="blog-detail">
+                            {parse(get(item, "content"))}
+                          </p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>

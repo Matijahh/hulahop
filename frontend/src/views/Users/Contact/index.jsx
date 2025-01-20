@@ -6,7 +6,7 @@ import { commonAddUpdateQuery } from "../../../utils/axiosInstance";
 import * as Yup from "yup";
 
 import ButtonComponent from "../../../components/ButtonComponent";
-import contactform from "../../../assets/images/contact-form.jpg";
+import contactform from "../../../assets/images/contact-form.png";
 import InputComponent from "../../../components/InputComponent";
 
 import { Helmet } from "react-helmet";
@@ -66,7 +66,7 @@ const Contact = () => {
       <div className="contact-form-section">
         <div className="container">
           <div className="row g-5 align-items-center">
-            <div className="col-12">
+            <div className="col-lg-7">
               <div className="hero-section">
                 <h3 className="banner-head">{t("Contact Us")}</h3>
                 <p className="banner-paragraph">
@@ -75,38 +75,31 @@ const Contact = () => {
                   )}
                 </p>
               </div>
-            </div>
-            <div className="col-lg-4">
-              <div className="form-img-box">
-                <img src={contactform} alt="" />
-              </div>
-            </div>
-            <div className="col-lg-8">
               <div className="contact-form-wrapper">
                 <form className="contact-form" onSubmit={formik.handleSubmit}>
                   <div className="container-fluid">
                     <div className="row g-4">
-                      <div className="col-lg-6">
+                      <div className="col-lg-12">
                         <InputComponent
                           InnerPlaceholder={t("Name")}
                           fullWidth
-                          label={`${t("Name")}`}
+                          label={`${t("Name")} *`}
                           name="name"
                           formik={formik}
                           disabled={loading}
                         />
                       </div>
-                      <div className="col-lg-6">
+                      <div className="col-lg-12">
                         <InputComponent
                           InnerPlaceholder={t("Email")}
                           fullWidth
-                          label={`${t("Email")}`}
+                          label={`${t("Email")} *`}
                           name="email"
                           formik={formik}
                           disabled={loading}
                         />
                       </div>
-                      <div className="col-lg-6">
+                      <div className="col-lg-12">
                         <InputComponent
                           InnerPlaceholder={t("Contact Number")}
                           fullWidth
@@ -116,7 +109,7 @@ const Contact = () => {
                           disabled={loading}
                         />
                       </div>
-                      <div className="col-lg-6">
+                      <div className="col-lg-12">
                         <InputComponent
                           InnerPlaceholder={t("Subject")}
                           fullWidth
@@ -140,7 +133,7 @@ const Contact = () => {
                         />
                       </div>
                       <div className="col-lg-12">
-                        <div className="contact-submit-btn d-flex justify-content-end">
+                        <div className="contact-submit-btn d-flex">
                           <ButtonComponent
                             text={t("Submit")}
                             variant="contained"
@@ -153,6 +146,11 @@ const Contact = () => {
                     </div>
                   </div>
                 </form>
+              </div>
+            </div>
+            <div className="col-lg-5">
+              <div className="form-img-box">
+                <img src={contactform} alt="" />
               </div>
             </div>
           </div>

@@ -179,11 +179,6 @@ const CheckOut = () => {
             <div className="col-12">
               <div className="hero-section">
                 <h3 className="banner-head">{t("Checkout")}</h3>
-                <p className="banner-paragraph">
-                  {t(
-                    "Complete your purchase and get your order on its way. We're committed to your security and satisfaction. The latest security technology protects your personal information, and we offer a hassle-free return policy."
-                  )}
-                </p>
               </div>
             </div>
           </div>
@@ -202,20 +197,20 @@ const CheckOut = () => {
                   <form className="billing-form">
                     <div className="container-fluid">
                       <div className="row g-3">
-                        <div className="col-lg-6">
+                        <div className="col-lg-12">
                           <InputComponent
                             InnerPlaceholder={t("First Name")}
                             fullWidth
-                            label={t("First Name")}
+                            label={`${t("First Name")} *`}
                             name="first_name"
                             formik={formik}
                           />
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-lg-12">
                           <InputComponent
                             InnerPlaceholder={t("Last Name")}
                             fullWidth
-                            label={t("Last Name")}
+                            label={`${t("Last Name")} *`}
                             name="last_name"
                             formik={formik}
                           />
@@ -224,7 +219,7 @@ const CheckOut = () => {
                           <InputComponent
                             InnerPlaceholder={t("Email")}
                             fullWidth
-                            label={t("Email")}
+                            label={`${t("Email")} *`}
                             name="email"
                             formik={formik}
                           />
@@ -233,7 +228,7 @@ const CheckOut = () => {
                           <InputComponent
                             InnerPlaceholder={t("Contact No")}
                             fullWidth
-                            label={t("Contact No")}
+                            label={`${t("Contact No")} *`}
                             name="mobile"
                             formik={formik}
                           />
@@ -242,7 +237,7 @@ const CheckOut = () => {
                           <InputComponent
                             InnerPlaceholder={t("Street and House Number")}
                             fullWidth
-                            label={t("Street and House Number")}
+                            label={`${t("Street and House Number")} *`}
                             name="house_flat_no"
                             formik={formik}
                           />
@@ -251,16 +246,16 @@ const CheckOut = () => {
                           <InputComponent
                             InnerPlaceholder={t("City")}
                             fullWidth
-                            label={t("City")}
+                            label={`${t("City")} *`}
                             name="city"
                             formik={formik}
                           />
                         </div>
-                        <div className="col-lg-12">
+                        <div className="col-lg-6">
                           <InputComponent
                             InnerPlaceholder={t("Country / Region")}
                             fullWidth
-                            label={t("Country / Region")}
+                            label={`${t("Country / Region")} *`}
                             name="country"
                             formik={formik}
                           />
@@ -269,7 +264,7 @@ const CheckOut = () => {
                           <InputComponent
                             InnerPlaceholder={t("Postal Code")}
                             fullWidth
-                            label={t("Postal Code")}
+                            label={`${t("Postal Code")} *`}
                             name="pincode"
                             formik={formik}
                           />
@@ -295,9 +290,6 @@ const CheckOut = () => {
 
             <div className="col-lg-6">
               <div className="order-section">
-                <div className="hero-section">
-                  <h3 className="banner-head">{t("Your Order")}</h3>
-                </div>
                 <div className="order-detail-box">
                   {cartList &&
                     size(get(cartList, "cart_products")) > 0 &&
@@ -340,19 +332,21 @@ const CheckOut = () => {
                                 <h6 className="product-name">
                                   {get(item, "associate_product.name")}
                                 </h6>
-                                <p>
-                                  <b>{t("Price")}:</b>{" "}
-                                  {get(item, "associate_product.price")} RSD
-                                </p>
-                                {get(item, "product_sub_variant.value") && (
-                                  <p>
-                                    <b>{t("Size")}:</b>{" "}
-                                    {get(item, "product_sub_variant.value")}
+                                <div className="product-desc-bottom">
+                                  {get(item, "product_sub_variant.value") && (
+                                    <span className="size">
+                                      {get(item, "product_sub_variant.value")}
+                                    </span>
+                                  )}
+                                  <p className="product-intotal">
+                                    {get(item, "associate_product.price")}
+                                    RSD
                                   </p>
-                                )}
+                                </div>
                               </div>
                             </div>
                             <div className="item-total-box">
+                              <span className="label">{t("Total")}: </span>
                               <h5 className="item-total">
                                 {Number(
                                   get(item, "quantity") *
@@ -366,33 +360,20 @@ const CheckOut = () => {
                       );
                     })}
                 </div>
-
-                <div className="order-total-box">
-                  <div className="checkout-total-table">
-                    <table className="table table-responsive  ">
-                      <tbody>
-                        <tr>
-                          <th>{t("Subtotal")}</th>
-                          <td>{cartTotal} RSD</td>
-                        </tr>
-                        <tr>
-                          <th>{t("Total")}</th>
-                          <td>{cartTotal} RSD</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="checkout-btn-box">
-                    <ButtonComponent
-                      text={t("Place Order")}
-                      variant="contained"
-                      className="checkout-btn"
-                      maxHeight="50px"
-                      onClick={() => {
-                        formik.handleSubmit();
-                      }}
-                    />
-                  </div>
+                <div className="cart-total">
+                  <div className="label">{t("Order Total")}: </div>
+                  <span className="item-total">{cartTotal} RSD</span>
+                </div>
+                <div className="checkout-btn-box">
+                  <ButtonComponent
+                    text={t("Place Order")}
+                    variant="contained"
+                    className="checkout-btn"
+                    maxHeight="50px"
+                    onClick={() => {
+                      formik.handleSubmit();
+                    }}
+                  />
                 </div>
               </div>
             </div>

@@ -92,12 +92,12 @@ const BlogPage = () => {
                     <div className="blog-head-footer">
                       {blogData?.store?.name && (
                         <p className="blog-author-text">
-                          {t("by:")} {`${blogData?.store?.name}`}
+                          {t("by:")} {`${blogData?.store?.name} /`}
                         </p>
                       )}
                       <p className="blog-post-date">
                         {moment(Number(get(blogData, "created_at", ""))).format(
-                          "MMMM, DD,YYYY"
+                          "MM.DD.YYYY."
                         )}
                       </p>
                     </div>
@@ -165,13 +165,17 @@ const BlogPage = () => {
                                   <h4>{t(get(item, "heading"))}</h4>
                                   {item.store?.name && (
                                     <p className="blog-auther-name">
-                                      {`${item?.store?.name}`}
+                                      {`${item?.store?.name} / `}
                                     </p>
                                   )}
                                   <p className="blog-post-date">
                                     {moment(
                                       Number(get(item, "created_at", ""))
-                                    ).format("MMMM, DD,YYYY")}
+                                    ).format("MM.DD.YYYY.")}
+                                  </p>
+                                  <p className="description">
+                                    {get(item, "content", "") &&
+                                      parse(get(item, "content"))}
                                   </p>
                                 </div>
                               </div>

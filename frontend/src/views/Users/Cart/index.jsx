@@ -14,7 +14,7 @@ import _map from "lodash/map";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import CloseIcon from "@mui/icons-material/Close";
+import CloseIcon from "@mui/icons-material/HighlightOff";
 import ButtonComponent from "../../../components/ButtonComponent";
 import PreviewJsonImage from "../../../components/PreviewJsonImage";
 
@@ -201,20 +201,20 @@ const Cart = () => {
                   <Loader />
                 </div>
               )}
-              <div className="hero-section m-0">
+              <div className="hero-section">
                 <h3 className="banner-head">{t("Your Shopping Cart")}</h3>
               </div>
             </div>
             {loading ? (
-              <div className="d-flex justify-content-center aline-items-center">
+              <div className="d-flex justify-content-center align-items-center">
                 <Loader />
               </div>
             ) : (
               <>
-                {_size(_get(cartProducts, "cart_products")) > 0 ? (
-                  _map(_get(cartProducts, "cart_products"), (item, key) => (
-                    <div className="col-12" key={key}>
-                      <div className="cart-listing-box">
+                <div className="col-sm-12 col-lg-6">
+                  {_size(_get(cartProducts, "cart_products")) > 0 ? (
+                    _map(_get(cartProducts, "cart_products"), (item, key) => (
+                      <div className="cart-listing-box" key={key}>
                         <div className="cart-listing-box-wrapper">
                           <div className="cart-listing-flexbox">
                             <div className="product-image-box">
@@ -249,17 +249,20 @@ const Cart = () => {
                               <h4 className="product-name">
                                 {_get(item, "associate_product.name", "-")}
                               </h4>
-                              {_get(item, "product_sub_variant.value") && (
-                                <p>
-                                  <b>{t("Size")}:</b>{" "}
-                                  {_get(item, "product_sub_variant.value")}
+                              <div className="product-desc-bottom">
+                                {_get(item, "product_sub_variant.value") && (
+                                  <span className="size">
+                                    {_get(item, "product_sub_variant.value")}
+                                  </span>
+                                )}
+                                <p className="product-intotal">
+                                  {parseFloat(
+                                    _get(item, "associate_product.price", 0) *
+                                      _get(item, "quantity", null) || 1
+                                  ).toFixed(2)}{" "}
+                                  RSD
                                 </p>
-                              )}
-                            </div>
-                            <div className="product-price-box">
-                              <p className="product-price">
-                                {_get(item, "associate_product.price", "-")} RSD
-                              </p>
+                              </div>
                             </div>
                             <div className="product-quantity-box">
                               <div className="quantity-box">
@@ -320,15 +323,6 @@ const Cart = () => {
                                 </div>
                               </div>
                             </div>
-                            <div className="product-intotal-box">
-                              <p className="product-intotal">
-                                {parseFloat(
-                                  _get(item, "associate_product.price", 0) *
-                                    _get(item, "quantity", null) || 1
-                                ).toFixed(2)}{" "}
-                                RSD
-                              </p>
-                            </div>
                             <div className="product-remove-box">
                               <div
                                 className="remove-icon"
@@ -344,85 +338,75 @@ const Cart = () => {
                           </div>
                         </div>
                       </div>
+                    ))
+                  ) : (
+                    <center>
+                      <b>{t("No Product Found!")}</b>
+                    </center>
+                  )}
+                </div>
+                <div className="col-sm-12 col-lg-6">
+                  {_size(_get(cartProducts, "cart_products")) > 0 && (
+                    <div className="cart-footer-section">
+                      <div className="container">
+                        <div className="row g-4">
+                          <div className="col-lg-12">
+                            <div className="total-section">
+                              <div className="total-heading">
+                                <h4>
+                                  {`${t("Cart Totals")}: `}
+                                  <span>{`${cartTotal} RSD`}</span>
+                                </h4>
+                              </div>
+
+                              <div className="shoping-btns">
+                                <div className="shoping-btns-flexbox">
+                                  <ButtonComponent
+                                    text={t("Continue Shopping")}
+                                    variant="outlined"
+                                    className="continue-btn"
+                                    maxHeight="50px"
+                                    onClick={() => navigator(ROUTE_MAIN_SHOP)}
+                                  />
+                                  {_size(_get(cartProducts, "cart_products")) >
+                                    0 && (
+                                    <ButtonComponent
+                                      onClick={
+                                        ACCESS_TOKEN
+                                          ? clearCart
+                                          : clearLocalCart
+                                      }
+                                      text={t("Clear Cart")}
+                                      variant="outlined"
+                                      startIcon={<CloseIcon />}
+                                      className="clear-btn"
+                                      maxHeight="50px"
+                                    />
+                                  )}
+                                </div>
+                              </div>
+
+                              <div className="checkout-btn-box">
+                                <ButtonComponent
+                                  text={t("Proceed to Checkout")}
+                                  variant="contained"
+                                  className="checkout-btn"
+                                  maxHeight="50px"
+                                  onClick={() => navigator(ROUTE_MAIN_CHECKOUT)}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <center>
-                    <b>{t("No Product Found!")}</b>
-                  </center>
-                )}
+                  )}
+                </div>
               </>
             )}
           </div>
         </div>
       </div>
-      <div className="shoping-btn-section">
-        <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="shoping-btns">
-                <div className="shoping-btns-flexbox">
-                  <ButtonComponent
-                    text={t("Continue Shopping")}
-                    variant="contained"
-                    className="continue-btn"
-                    maxHeight="50px"
-                    onClick={() => navigator(ROUTE_MAIN_SHOP)}
-                  />
-                  {_size(_get(cartProducts, "cart_products")) > 0 && (
-                    <ButtonComponent
-                      onClick={ACCESS_TOKEN ? clearCart : clearLocalCart}
-                      text={t("Clear Cart")}
-                      variant="contained"
-                      className="clear-btn"
-                      maxHeight="50px"
-                    />
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      {_size(_get(cartProducts, "cart_products")) > 0 && (
-        <div className="cart-footer-section">
-          <div className="container">
-            <div className="row g-4">
-              <div className="col-lg-6"></div>
-              <div className="col-lg-6">
-                <div className="total-section">
-                  <div className="total-heading">
-                    <h4>{t("Cart Totals")}</h4>
-                  </div>
-                  <div className="cart-toal-table">
-                    <table className="table table-responsive table-bordered ">
-                      <tbody>
-                        <tr>
-                          <th>{t("Subtotal")}</th>
-                          <td>{cartTotal} RSD</td>
-                        </tr>
-                        <tr>
-                          <th>{t("Total")}</th>
-                          <td>{cartTotal} RSD</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                  <div className="checkout-btn-box">
-                    <ButtonComponent
-                      text={t("Proceed to Checkout")}
-                      variant="contained"
-                      className="checkout-btn"
-                      maxHeight="50px"
-                      onClick={() => navigator(ROUTE_MAIN_CHECKOUT)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
