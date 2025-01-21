@@ -4,7 +4,6 @@ import Colors from "../../design/Colors";
 
 export const CommonWhiteBackground = styled.div`
   background-color: #fff;
-  box-shadow: 0px 0px 6px -3px #afaccb;
   border-radius: 15px;
   padding: ${({ padding }) => padding || "30px"};
 
@@ -14,6 +13,11 @@ export const CommonWhiteBackground = styled.div`
   }
 
   .title-wrapper {
+    .filters-wrapper {
+      .brand-btn {
+        padding: 10px 30px !important;
+      }
+    }
     @media screen and (max-width: 768px) {
       flex-direction: column;
       align-items: start;
@@ -26,6 +30,12 @@ export const CommonWhiteBackground = styled.div`
   }
 
   .assoc-title-wrapper {
+    .filters-wrapper {
+      .brand-btn {
+        padding: 10px 30px !important;
+      }
+    }
+
     @media screen and (max-width: 768px) {
       flex-direction: column;
       align-items: start;
@@ -38,12 +48,12 @@ export const CommonWhiteBackground = styled.div`
   }
 
   .main-title {
-    font: 700 24px "Nunito Sans";
+    font: bold 24px "Poppins", serif;
     color: ${Colors.blackColor};
   }
 
   .sub-title {
-    font: 600 18px "Nunito Sans";
+    font: bold 18px "Poppins", serif;
     color: ${Colors.blackColor};
     margin-bottom: 10px;
   }

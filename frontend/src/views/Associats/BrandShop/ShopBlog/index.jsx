@@ -62,12 +62,10 @@ const ShopBlog = ({ storeData }) => {
   }, []);
 
   return (
-    <HomeContainer>
+    <HomeContainer className="blog-listing-page">
       <Helmet>
         <title>{t("Blogs - HulaHop")}</title>
       </Helmet>
-
-      <SliderSection data={storeData} />
 
       <div className="blog-listing-section">
         <div className="container">
@@ -77,41 +75,35 @@ const ShopBlog = ({ storeData }) => {
                 <h3 className="banner-head mt-4">{t("Latest Posts")}</h3>
               </div>
             </div>
-            {size(blogList) > 0 &&
-              map(blogList, (item, key) => {
-                return (
-                  <div className="col-md-6 col-lg-4" key={key}>
-                    <div className="blog-card-wrapper">
-                      <div
-                        className="blog-card"
-                        onClick={() => {
-                          get(params, "id", null)
-                            ? navigate(
-                                ROUTE_ASSOCIATE_BRAND_STORE_BLOGS_ID.replace(
-                                  ":id",
-                                  slugifyString(get(params, "id", null))
-                                ).replace(":blogId", item.id)
-                              )
-                            : navigate(
-                                ROUTE_MAIN_BLOG_SINGLE.replace(":id", item.id)
-                              );
-                        }}
-                      >
-                        <div className="blog-feature-img">
-                          <img
-                            src={getImageUrlById(get(item, "image_id"))}
-                            alt=""
-                          />
-                        </div>
-                        <div className="blog-card-content">
-                          <div className="blog-card-description">
-                            <h2 className="blog-name">
-                              {get(item, "heading")}
-                            </h2>
-                            <p className="blog-detail">
-                              {parse(get(item, "content"))}
-                            </p>
-                          </div>
+            <div className="blog-page-box-list-container">
+              {size(blogList) > 0 &&
+                map(blogList, (item, key) => {
+                  return (
+                    <div
+                      key={key}
+                      className="blog-card"
+                      onClick={() => {
+                        get(params, "id", null)
+                          ? navigate(
+                              ROUTE_ASSOCIATE_BRAND_STORE_BLOGS_ID.replace(
+                                ":id",
+                                slugifyString(get(params, "id", null))
+                              ).replace(":blogId", item.id)
+                            )
+                          : navigate(
+                              ROUTE_MAIN_BLOG_SINGLE.replace(":id", item.id)
+                            );
+                      }}
+                    >
+                      <div className="blog-feature-img">
+                        <img
+                          src={getImageUrlById(get(item, "image_id"))}
+                          alt=""
+                        />
+                      </div>
+                      <div className="blog-card-content">
+                        <div className="blog-card-description">
+                          <h2 className="blog-name">{get(item, "heading")}</h2>
                           <div className="blog-card-footer">
                             {item.store?.name && (
                               <p className="blog-auther-name">{`${item?.store?.name}`}</p>
@@ -122,12 +114,15 @@ const ShopBlog = ({ storeData }) => {
                               ).format("MMMM, DD,YYYY")}{" "}
                             </p>
                           </div>
+                          <p className="blog-detail">
+                            {parse(get(item, "content"))}
+                          </p>
                         </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
         </div>
       </div>

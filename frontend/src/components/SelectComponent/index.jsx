@@ -29,7 +29,6 @@ const SelectContainer = styled.div`
     border-radius: 20px !important;
 
     fieldset {
-      border: none !important;
       border-radius: 20px !important;
     }
 
@@ -39,7 +38,11 @@ const SelectContainer = styled.div`
   }
 
   .input-label {
-    margin-bottom: 9px;
+    color: #b3b3b3;
+    font-size: 12px;
+    font-weight: 300;
+    margin-left: 15px;
+    margin-bottom: 0;
   }
 
   @media screen and (max-width: 768px) {

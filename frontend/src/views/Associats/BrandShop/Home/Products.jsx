@@ -62,42 +62,44 @@ const Products = ({ storeData }) => {
   }, []);
 
   return (
-    <ProductsContainer className=" product-list-section">
+    <ProductsContainer>
       {_size(productsList) > 0 && (
-        <>
-          <div className="section-title-desc">
-            <h2>{t("Our Best Selling Products")}</h2>
-          </div>
+        <div className="product-list-section">
           <div className="container">
-            <div className="products-list-container">
-              {loading && (
-                <div className="d-flex justify-content-center align-items-center">
-                  <Loader></Loader>
+            <div className="row">
+              <div className="col-12">
+                <div className="hero-section">
+                  <h3 className="banner-head m-0">
+                    {t("Our Best Selling Products")}
+                  </h3>
                 </div>
-              )}
-
-              <div className="row gy-5">
-                {_size(productsList) > 0 ? (
-                  productsList.map((item, i) => (
-                    <div className="col-sm-6 col-xl-4 col-xxl-3" key={i}>
-                      <Product
-                        mainLoading={loading}
-                        productData={item}
-                        isAssociateProduct={true}
-                        isInWishList={checkIsInWishList(item.id)}
-                        getWishListData={getWishListData}
-                      />
-                    </div>
-                  ))
+              </div>
+              <div className="col-12">
+                {loading ? (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <Loader />
+                  </div>
                 ) : (
-                  <h5 className="d-flex align-items-center justify-content-center w-100 h-100">
-                    {t("No Product Found!")}
-                  </h5>
+                  <div className="product-listing">
+                    <div className="products-list-container">
+                      {_size(productsList) > 0 &&
+                        productsList.map((item, key) => (
+                          <div className="product-container" key={key}>
+                            <Product
+                              isAssociateProduct={true}
+                              productData={item}
+                              isInWishList={checkIsInWishList(item.id)}
+                              getWishListData={getWishListData}
+                            />
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
     </ProductsContainer>
   );

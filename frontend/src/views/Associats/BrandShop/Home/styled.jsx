@@ -1,15 +1,17 @@
 import styled from "styled-components";
 
 export const HomeContainer = styled.div`
-  .home-slide-wrapper {
+  .shop-page-hero-container {
     width: 100%;
-    height: calc(100vh - 270px);
+    height: 570px;
+    border-radius: 0 0 400px 0;
     position: relative;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: cover;
+      border-radius: 0 0 400px 0;
     }
 
     .overlay {
@@ -18,42 +20,77 @@ export const HomeContainer = styled.div`
       height: 100%;
       top: 0;
       left: 0;
-      background-color: rgba(0, 0, 0, 0.4);
+      background-color: rgba(0, 0, 0, 0.5);
+      border-radius: 0 0 400px 0;
     }
   }
 
-  .social-links {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px 0;
-    width: 100%;
-    background: #f8f8f8;
-    border-bottom: 1px solid #e5eaee;
+  .content{
+      position: absolute;
+      top: 370px;
+      left: 100px;
+      transform: translate(0,-50%);
+      max-width: 660px;
 
-    .social-links-item {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 60px;
-      height: 60px;
-      border: 1.5px solid rgb(241, 103, 109);
-      border-radius: 4px;
-      margin: 0 20px;
-      cursor: pointer;
-
-      svg {
-        width: 40px;
-        height: 40px;
-        color: rgb(241, 103, 109);
+      @media screen and (max-width: 1140px){
+        top: 400px;
       }
 
-      &:hover {
-        background-color: rgb(241, 103, 109);
-        svg {
-          color: #fff;
+      @media screen and (max-width: 970px){
+        max-width: 80%;
+        left: 50px;
+      }
+
+      @media screen and (max-width: 768px){
+        left: 20px;
+      }
+
+      .shop-title{
+        color: white;
+        font-weight: bold;
+        font-family: "Poppins", serif;
+        font-size: 60px;
+
+        @media screen and (max-width: 970px){
+          font-size: 45px;
+        }
+
+        @media screen and (max-width: 768px){
+          font-size: 35px;
         }
       }
+    }
+
+  .logo-box {
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    position: absolute;
+    top: 600px;
+    right: 40px;
+
+    @media screen and (max-width: 1140px){
+      top: 630px;
+      right: 20px;
+    }
+
+    @media screen and (max-width: 970px){
+      top: 600px;
+      right: 40px;
+    }
+
+    @media screen and (max-width: 768px){
+        right: 20px;
+    }
+
+    span {
+      color: #f1676d;
+      font-size: 16px;
+      font-weight: 300;x
+    }
+
+    img {
+      width: 150px;
     }
   }
 
@@ -115,4 +152,8 @@ export const ProductsContainer = styled.div`
   max-width: 1400px;
   width: 100%;
   margin: 0 auto;
+
+  .product-list-section {
+    padding-bottom: 0;
+  }
 `;

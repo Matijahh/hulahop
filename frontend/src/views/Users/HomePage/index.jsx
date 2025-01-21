@@ -522,40 +522,6 @@ const HomePage = () => {
                           </div>
                         ))}
                     </div>
-                    {/* <TabContext value={value}>
-                      <div className="product-listing-tabs">
-                        <TabList
-                          onChange={handleChange}
-                          aria-label="categories"
-                          centered
-                        >
-                          {_size(categories) > 0 &&
-                            _map(categories, (item, key) => (
-                              <Tab
-                                className="product-tab"
-                                label={t(item?.name)}
-                                value={item?.id}
-                                key={key}
-                                onClick={() => getBestSellingProduct(item?.id)}
-                              />
-                            ))}
-                        </TabList>
-                      </div>
-                      <div className="products-list-container">
-                        <div className="row g-3">
-                          {size(bestSellingProducts) > 0 &&
-                            bestSellingProducts.map((item, key) => (
-                              <div className="col-md-6 col-lg-3" key={key}>
-                                <Product
-                                  productData={item}
-                                  isInWishList={checkIsInWishList(item.id)}
-                                  getWishListData={getWishListData}
-                                />
-                              </div>
-                            ))}
-                        </div>
-                      </div>
-                    </TabContext> */}
                   </div>
                 )}
               </div>

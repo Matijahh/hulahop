@@ -76,9 +76,6 @@ const App = () => {
         main: "#fff",
       },
     },
-    typography: {
-      fontFamily: ["Nunito Sans"],
-    },
   });
 
   return (

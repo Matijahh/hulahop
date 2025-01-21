@@ -9,6 +9,11 @@ import "react-quill/dist/quill.snow.css";
 const ReactQuillContainer = styled.div`
   .input-label {
     margin-bottom: 9px;
+    color: #b3b3b3;
+    font-size: 12px;
+    font-weight: 300;
+    margin-left: 15px;
+    margin-bottom: 0;
   }
   .ql-editor {
     min-height: 150px;

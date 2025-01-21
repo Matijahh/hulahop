@@ -125,7 +125,7 @@ export const DashboardContainer = styled.div`
         }
 
         .description {
-          font: 400 15px "Nunito Sans";
+          font: 400 15px "Roboto";
           color: #7e7e7e;
         }
       }
@@ -147,12 +147,12 @@ export const DashboardContainer = styled.div`
     }
 
     .desc {
-      font: 400 15px "Nunito Sans";
+      font: 400 15px "Roboto";
       color: #7e7e7e;
       margin-top: 10px;
 
       span {
-        font: bold 15px "Nunito Sans";
+        font: bold 15px "Roboto";
         color: rgb(241, 103, 109) !important;
         margin-left: 5px;
         cursor: pointer;

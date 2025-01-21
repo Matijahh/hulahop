@@ -380,7 +380,7 @@ const AboutProductForm = () => {
                     )}
                   </div>
                   <div className="col-lg-12">
-                    <h5 className="mb-3">{t("Top Bar Images")}</h5>
+                    <h5 className="mb-3 sub title">{t("Top Bar Images")}</h5>
                     <div className="row g-4 ">
                       <FieldArray
                         name="top_bar_images_ids"
@@ -423,7 +423,7 @@ const AboutProductForm = () => {
                     </div>
                   </div>
                   <div className="col-lg-12">
-                    <h5 className="mb-3">{t("Bottom Bar Images")}</h5>
+                    <h5 className="mb-3 title">{t("Bottom Bar Images")}</h5>
                     <div className="row g-4 ">
                       <FieldArray
                         name="bottom_bar_images_ids"
@@ -466,7 +466,7 @@ const AboutProductForm = () => {
                     </div>
                   </div>
                   <div className="col-lg-12">
-                    <h5 className="mb-3">{t("Size Chart Images")}</h5>
+                    <h5 className="mb-3 title">{t("Size Chart Images")}</h5>
                     <div className="row g-4 ">
                       <FieldArray
                         name="size_chart_image_ids"

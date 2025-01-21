@@ -53,7 +53,7 @@ const Shop = (props) => {
           <title>{t("Shop Page - HulaHop")}</title>
         </Helmet>
 
-        {window.location.pathname === "/shop" ? (
+        {/* {window.location.pathname === "/shop" ? (
           <div className="shop-hero-section">
             <div className="shop-slider">
               <SliderComponent dots={false} arrows={true} slidesToShow={1}>
@@ -83,7 +83,7 @@ const Shop = (props) => {
           </div>
         ) : (
           <SliderSection data={props.data} />
-        )}
+        )} */}
 
         <div className="shop-product-section">
           <div className="container-fluid">

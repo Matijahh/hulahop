@@ -87,57 +87,6 @@ const HeaderWrapperStyled = styled.div`
       }
     }
 
-    /* .top-area-end {
-      display: inline-block;
-      width: fit-content;
-
-      .language-transfer-tab {
-        display: inline-block;
-
-        Button {
-          all: unset;
-          width: 90px;
-          display: inline-flex;
-          justify-content: center;
-          align-items: center;
-          background: transparent;
-          font-size: 16px;
-          padding: 5px;
-          color: #2c2c2c;
-          cursor: pointer;
-        }
-      }
-
-      .social-tab {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-
-        .social-icon {
-          a {
-            padding: 5px;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-
-            svg {
-              color: #2c2c2c;
-              width: 24px;
-              height: 24px;
-            }
-
-            &:hover {
-              svg {
-                color: #f1676d;
-              }
-            }
-          }
-        }
-      }
-    } */
-
     .open-menu-box {
       display: none;
       width: 100%;
@@ -399,45 +348,6 @@ const HeaderWrapperStyled = styled.div`
   @media screen and (max-width: 970px) {
     position: relative;
   }
-
-  /* .header-middle-area {
-    border-top: 1px solid #e5eaee;
-    background: #fff;
-    padding: 10px 20px;
-
-    .logo-box {
-      width: 200px;
-
-      @media screen and (max-width: 825px) {
-        display: none;
-      }
-
-      img {
-        width: 180px;
-        max-width: 100%;
-        height: auto;
-      }
-    }
-
-    .search-box {
-      width: 420px;
-      max-width: 100%;
-
-      .search-btn {
-        cursor: pointer;
-        background: #f1676d;
-        color: white;
-        padding: 2px;
-        border-radius: 4px;
-      }
-    }
-
-    @media (max-width: 825px) {
-      .search-box {
-        width: 100%;
-      }
-    }
-  } */
 `;
 
 export default HeaderWrapperStyled;

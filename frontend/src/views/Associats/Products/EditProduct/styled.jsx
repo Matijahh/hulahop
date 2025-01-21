@@ -24,7 +24,7 @@ export const ProductSettingSidebarContainer = styled.div`
   position: relative;
 
   .title {
-    font: 500 24px "Nunito Sans";
+    font: bold 24px "Poppins", serif;
     color: ${Colors.blackColor};
     padding: 15px;
   }
