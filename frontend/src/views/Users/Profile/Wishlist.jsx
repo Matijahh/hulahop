@@ -11,33 +11,23 @@ import { ROUTE_MAIN_SHOP_PRODUCT } from "../../../routes/routes";
 
 import { WishListHeader } from "./mock";
 import { FlexBox } from "../../../components/Sections";
-import { Helmet } from "react-helmet";
-import { LoaderContainer } from "../../../components/Loader";
 import { WishlistContainer } from "./styled";
-
-import ProfileComponent from ".";
 import Tables from "../../../components/SuperAdmin/Tables";
 
 const Wishlist = () => {
-  const [loading, setLoading] = useState(false);
   const [wishListData, setWishListData] = useState([]);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
 
   const getWishListData = async () => {
-    setLoading(true);
-
     const response = await commonGetQuery("/wishlist");
 
     if (response) {
       const { data } = response.data;
 
       setWishListData(data);
-      setLoading(false);
     }
-
-    setLoading(false);
   };
 
   const setTableRenderData = (data) => {
@@ -82,34 +72,24 @@ const Wishlist = () => {
   }, []);
 
   return (
-    <ProfileComponent>
-      <Helmet>
-        <title>{t("Wishlist - HulaHop")}</title>
-      </Helmet>
+    <div className="order-box">
+      <FlexBox className="mb-4">
+        <div className="hero-section">
+          <h3 className="banner-head">{t("Wishlist")}</h3>
+        </div>
+      </FlexBox>
 
-      {loading && <LoaderContainer />}
-
-      <div className="order-box">
-        <FlexBox className="mb-4">
-          <div className="hero-section">
-            <h3 className="banner-head">{t("Wishlist")}</h3>
-          </div>
-        </FlexBox>
-
-        <WishlistContainer>
-          <Tables
-            className="wishlist-table"
-            body={
-              size(wishListData) > 0 ? setTableRenderData(wishListData) : []
-            }
-            header={WishListHeader.map((item) => ({
-              ...item,
-              headerName: t(item.headerName),
-            }))}
-          />
-        </WishlistContainer>
-      </div>
-    </ProfileComponent>
+      <WishlistContainer>
+        <Tables
+          className="wishlist-table"
+          body={size(wishListData) > 0 ? setTableRenderData(wishListData) : []}
+          header={WishListHeader.map((item) => ({
+            ...item,
+            headerName: t(item.headerName),
+          }))}
+        />
+      </WishlistContainer>
+    </div>
   );
 };
 

@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 import { commonAddUpdateQuery } from "../../../utils/axiosInstance";
 import * as Yup from "yup";
 
-import ProfileComponent from ".";
 import ButtonComponent from "../../../components/ButtonComponent";
 import InputComponent from "../../../components/InputComponent";
 import RemoveRedEyeIcon from "@mui/icons-material/RemoveRedEye";
@@ -12,7 +11,6 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff";
 
 import { Col, Row } from "react-bootstrap";
 import { SuccessTaster } from "../../../components/Toast";
-import { Helmet } from "react-helmet";
 
 const ChangePassword = () => {
   const [toggleCurrentPassword, setToggleCurrentPassword] = useState(false);
@@ -67,100 +65,94 @@ const ChangePassword = () => {
   });
 
   return (
-    <ProfileComponent>
-      <Helmet>
-        <title>{t("Change Password - HulaHop")}</title>
-      </Helmet>
-
-      <div className="change-password-box">
-        <div className="hero-section">
-          <h3 className="banner-head">{t("Change Password")}</h3>
-        </div>
-        <form onSubmit={formik.handleSubmit}>
-          <Row className="g-3 justify-content-center">
-            <Col lg={8} sm={12}>
-              <InputComponent
-                label={t("Current Password")}
-                fullWidth
-                InnerPlaceholder={t("Enter Password")}
-                name="old_password"
-                formik={formik}
-                renderIcon={
-                  <div
-                    onClick={() =>
-                      setToggleCurrentPassword(!toggleCurrentPassword)
-                    }
-                  >
-                    {toggleCurrentPassword ? (
-                      <RemoveRedEyeIcon className="cursor-pointer" />
-                    ) : (
-                      <VisibilityOffIcon className="cursor-pointer" />
-                    )}
-                  </div>
-                }
-                hasIcon
-                type={toggleCurrentPassword ? "text" : "password"}
-              />
-            </Col>
-            <Col lg={8} sm={12}>
-              <InputComponent
-                label={t("New Password")}
-                fullWidth
-                InnerPlaceholder={t("Enter New Password")}
-                name="password"
-                formik={formik}
-                renderIcon={
-                  <div onClick={() => setToggleNewPassword(!toggleNewPassword)}>
-                    {toggleNewPassword ? (
-                      <RemoveRedEyeIcon className="cursor-pointer" />
-                    ) : (
-                      <VisibilityOffIcon className="cursor-pointer" />
-                    )}
-                  </div>
-                }
-                hasIcon
-                type={toggleNewPassword ? "text" : "password"}
-              />
-            </Col>
-            <Col lg={8} sm={12}>
-              <InputComponent
-                label={t("Confirm Password")}
-                fullWidth
-                InnerPlaceholder={t("Enter Confirm Password")}
-                name="retype_password"
-                formik={formik}
-                renderIcon={
-                  <div
-                    onClick={() =>
-                      setToggleConfirmPassword(!toggleConfirmPassword)
-                    }
-                  >
-                    {toggleConfirmPassword ? (
-                      <RemoveRedEyeIcon className="cursor-pointer" />
-                    ) : (
-                      <VisibilityOffIcon className="cursor-pointer" />
-                    )}
-                  </div>
-                }
-                hasIcon
-                type={toggleConfirmPassword ? "text" : "password"}
-              />
-            </Col>
-          </Row>
-          <Row className="g-3 mt-4 justify-content-center">
-            <Col lg={8} sm={12}>
-              <ButtonComponent
-                variant="contained"
-                width="100%"
-                text={t("Save")}
-                type="submit"
-                disabled={loading}
-              />
-            </Col>
-          </Row>
-        </form>
+    <div className="change-password-box">
+      <div className="hero-section">
+        <h3 className="banner-head">{t("Change Password")}</h3>
       </div>
-    </ProfileComponent>
+      <form onSubmit={formik.handleSubmit}>
+        <Row className="g-3">
+          <Col lg={12} sm={12}>
+            <InputComponent
+              label={t("Current Password")}
+              fullWidth
+              InnerPlaceholder={t("Enter Password")}
+              name="old_password"
+              formik={formik}
+              renderIcon={
+                <div
+                  onClick={() =>
+                    setToggleCurrentPassword(!toggleCurrentPassword)
+                  }
+                >
+                  {toggleCurrentPassword ? (
+                    <RemoveRedEyeIcon className="cursor-pointer" />
+                  ) : (
+                    <VisibilityOffIcon className="cursor-pointer" />
+                  )}
+                </div>
+              }
+              hasIcon
+              type={toggleCurrentPassword ? "text" : "password"}
+            />
+          </Col>
+          <Col lg={12} sm={12}>
+            <InputComponent
+              label={t("New Password")}
+              fullWidth
+              InnerPlaceholder={t("Enter New Password")}
+              name="password"
+              formik={formik}
+              renderIcon={
+                <div onClick={() => setToggleNewPassword(!toggleNewPassword)}>
+                  {toggleNewPassword ? (
+                    <RemoveRedEyeIcon className="cursor-pointer" />
+                  ) : (
+                    <VisibilityOffIcon className="cursor-pointer" />
+                  )}
+                </div>
+              }
+              hasIcon
+              type={toggleNewPassword ? "text" : "password"}
+            />
+          </Col>
+          <Col lg={12} sm={12}>
+            <InputComponent
+              label={t("Confirm Password")}
+              fullWidth
+              InnerPlaceholder={t("Enter Confirm Password")}
+              name="retype_password"
+              formik={formik}
+              renderIcon={
+                <div
+                  onClick={() =>
+                    setToggleConfirmPassword(!toggleConfirmPassword)
+                  }
+                >
+                  {toggleConfirmPassword ? (
+                    <RemoveRedEyeIcon className="cursor-pointer" />
+                  ) : (
+                    <VisibilityOffIcon className="cursor-pointer" />
+                  )}
+                </div>
+              }
+              hasIcon
+              type={toggleConfirmPassword ? "text" : "password"}
+            />
+          </Col>
+        </Row>
+        <Row className="g-3 mt-4 justify-content-end">
+          <Col lg={8} sm={12}>
+            <ButtonComponent
+              variant="contained"
+              width="100%"
+              text={t("Save")}
+              type="submit"
+              disabled={loading}
+            />
+          </Col>
+        </Row>
+      </form>
+    </div>
   );
 };
 

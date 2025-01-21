@@ -97,11 +97,7 @@ const Orders = () => {
   }, []);
 
   return (
-    <ProfileComponent>
-      <Helmet>
-        <title>{t("Orders - HulaHop")}</title>
-      </Helmet>
-
+    <>
       <div className="order-box">
         <FlexBox className="mb-4">
           <div className="hero-section">
@@ -247,7 +243,7 @@ const Orders = () => {
           </div>
         </div>
       </ModalComponent>
-    </ProfileComponent>
+    </>
   );
 };
 

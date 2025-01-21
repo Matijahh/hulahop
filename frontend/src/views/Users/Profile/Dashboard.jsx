@@ -10,11 +10,10 @@ import {
   ROUTE_ASSOCIATE_MAIN_DASHBOARD,
   ROUTE_SIGN_UP,
 } from "../../../routes/routes";
+import { handlePublicRedirection } from "../../../utils/commonFunctions";
 
-import ProfileComponent from ".";
+import TableChartOutlinedIcon from "@mui/icons-material/TableChartOutlined";
 import ButtonComponent from "../../../components/ButtonComponent";
-
-import { Helmet } from "react-helmet";
 import { LoaderContainer } from "../../../components/Loader";
 
 const Dashboard = () => {
@@ -23,6 +22,11 @@ const Dashboard = () => {
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    handlePublicRedirection();
+  };
 
   const getUserData = async () => {
     const decoded = jwtDecode(ACCESS_TOKEN);
@@ -59,59 +63,47 @@ const Dashboard = () => {
   };
 
   return (
-    <ProfileComponent>
-      <Helmet>
-        <title>{t("Dashboard - HulaHop")}</title>
-      </Helmet>
+    <div className="dashboard-box">
+      <div className="user-description">
+        <h6>
+          {t("Hello")} {get(userData, "first_name", "")}
+        </h6>
+        <p>
+          {t(
+            "In your user account control panel, you can view your recent orders , manage your shipping and billing address , and change your password and account information."
+          )}
+        </p>
+      </div>
 
-      <div className="dashboard-box">
-        <div className="user-description">
-          <h6>
-            {t("Hello")} {get(userData, "first_name", "")}
-          </h6>
-          <p>
-            {t(
-              "In your user account control panel, you can view your recent orders , manage your shipping and billing address , and change your password and account information."
-            )}
-          </p>
-        </div>
+      {loading && <LoaderContainer />}
 
-        {loading && <LoaderContainer />}
-
+      <div className="btns-container">
+        <ButtonComponent
+          text={t("Logout")}
+          variant="contained"
+          className="logout-btn"
+          onClick={handleLogout}
+        />
         {(get(userData, "type", "") === "ASSOCIATE" ||
           get(userData, "type", "") === "ADMIN") && (
           <ButtonComponent
             text={t("Go to Dashboard")}
             variant="contained"
             className="vendor-btn"
+            startIcon={<TableChartOutlinedIcon />}
             onClick={() => handleDashboard()}
           />
         )}
-
         {get(userData, "type", "") === "USER" && (
-          <div className="vendor-box">
-            <div className="vendor-flexbox">
-              <div className="vendor-desc">
-                <h6>{t("Become a Vendor")}</h6>
-                <p>
-                  {t(
-                    "Vendors can sell products and manage a store with a vendor dashboard."
-                  )}
-                </p>
-              </div>
-              <div className="vendor-btn-box">
-                <ButtonComponent
-                  text={t("Register as Vendor")}
-                  variant="contained"
-                  className="vendor-btn"
-                  onClick={() => handleDashboard()}
-                />
-              </div>
-            </div>
-          </div>
+          <ButtonComponent
+            text={t("Register as Vendor")}
+            variant="contained"
+            className="vendor-btn"
+            onClick={() => handleDashboard()}
+          />
         )}
       </div>
-    </ProfileComponent>
+    </div>
   );
 };
 

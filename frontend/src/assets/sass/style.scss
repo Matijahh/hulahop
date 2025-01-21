@@ -20,6 +20,24 @@ p {
   }
 }
 
+.MuiDataGrid-root {
+  border-color: #f2f0ef !important;
+  border-radius: 15px !important;
+
+  .MuiDataGrid-columnHeaderTitle,
+  .MuiDataGrid-cell,
+  .MuiDataGrid-cellContent,
+  .MuiTablePagination-displayedRows {
+    font-family: "Roboto", serif;
+    font-weight: 300;
+
+    img {
+      max-width: 60px !important;
+      border-radius: 10px;
+    }
+  }
+}
+
 .MuiListItemText-root {
   .MuiTypography-root {
     font-family: "Roboto", serif;
@@ -3150,58 +3168,164 @@ p {
 
 .profile-page {
   .hero-section {
-    margin: 0;
+    margin-top: 50px;
+    margin-bottom: 20px;
+    align-items: start;
   }
 
   .profile-component-section {
     padding: 0px 0 50px;
-  }
 
-  .profile-sidebar-box {
-    .profile-sidebar {
-      display: block;
-      padding: 5px 0;
-      background: #fff;
-      box-shadow: 0px 0px 6px -3px #afaccb;
-      border-radius: 10px;
-      max-width: 320px;
-      margin: 0 auto;
+    .dashboard-box {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 30px;
+      border-radius: 30px;
+      height: 100%;
 
-      .nav-profile {
-        ul {
-          display: block;
-          list-style: none;
-          width: 100%;
+      .user-description {
+        h6 {
+          font-size: 24px;
+          font-family: "Poppins", serif;
+          margin-bottom: 15px;
+          font-weight: bold;
+        }
 
-          li {
-            display: block;
-            width: 100%;
+        p {
+          font-size: 20px;
+          line-height: 30px;
+          font-weight: 300;
+        }
+      }
 
-            a {
-              display: flex;
-              align-items: center;
-              justify-content: center;
-              flex-direction: column;
-              color: #150e4b;
-              font-size: 18px;
-              line-height: 24px;
-              text-decoration: none;
-              width: 100%;
-              height: 50px;
-              border-bottom: 1px solid #d5d5d5;
+      .btns-container {
+        display: flex;
+        justify-content: space-between;
 
-              &:hover,
-              &.active-nav {
-                color: #f1676d;
-              }
-            }
+        @media screen and (max-width: 1200px) {
+          flex-direction: column;
+        }
 
-            &:last-child {
-              a {
-                border-bottom: none;
-              }
-            }
+        .logout-btn {
+          padding: 15px 60px !important;
+
+          @media screen and (max-width: 1200px) {
+            margin: 20px 0;
           }
+        }
+      }
+    }
+
+    .profile-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 30px;
+
+      .hero-section {
+        align-items: start;
+        margin: 0;
+
+        .banner-head {
+          color: black;
+          font-size: 24px;
+        }
+      }
+
+      label {
+        color: #b3b3b3;
+        font-size: 12px;
+        font-weight: 300;
+        margin-left: 15px;
+        margin-bottom: 0;
+      }
+
+      .profile-pic-image {
+        width: 100%;
+        height: 220px;
+        position: relative;
+
+        .hidden-input {
+          height: 130px;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+          z-index: 999;
+          opacity: 0;
+        }
+
+        img {
+          object-fit: cover;
+          width: 100%;
+          height: 100%;
+          border-radius: 20px;
+        }
+
+        .pick-image-icon {
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 100%;
+          height: 100%;
+          background: rgba(0, 0, 0, 0.4);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          visibility: hidden;
+          transition: all 0.2s ease-in-out;
+          border-radius: 20px;
+
+          svg {
+            color: #fff;
+          }
+        }
+
+        &:hover {
+          .pick-image-icon {
+            visibility: visible;
+          }
+        }
+      }
+    }
+
+    .order-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 30px;
+      height: 100%;
+
+      .wishlist-table {
+        height: 340px;
+      }
+
+      .hero-section {
+        align-items: start;
+        margin: 0;
+
+        .banner-head {
+          color: black;
+          font-size: 24px;
+          margin: 0;
+        }
+      }
+    }
+
+    .change-password-box {
+      background-color: white;
+      padding: 30px;
+      border-radius: 30px;
+
+      .hero-section {
+        align-items: start;
+        margin: 0;
+
+        .banner-head {
+          color: black;
+          font-size: 24px;
         }
       }
     }
@@ -3213,141 +3337,6 @@ p {
       background: #fff;
       box-shadow: 0px 0px 6px -3px #afaccb;
       border-radius: 10px;
-    }
-  }
-
-  .dashboard-box {
-    .user-description {
-      margin-bottom: 20px;
-
-      h6 {
-        color: #150e4b;
-        font-size: 18px;
-        line-height: 22px;
-        margin-bottom: 10px;
-        font-weight: 700;
-      }
-
-      p {
-        color: #616173;
-        font-size: 16px;
-        line-height: 18px;
-        font-weight: 500;
-      }
-    }
-
-    .vendor-box {
-      padding: 20px;
-      background: #f8f8f8;
-      border: 1px solid #d5d5d5;
-
-      .vendor-flexbox {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        justify-content: space-between;
-      }
-
-      .vendor-desc {
-        h6 {
-          color: #150e4b;
-          font-size: 16px;
-          line-height: 22px;
-          margin-bottom: 5px;
-          font-weight: 700;
-        }
-
-        p {
-          color: #616173;
-          font-size: 16px;
-          line-height: 18px;
-          font-weight: 500;
-        }
-      }
-    }
-  }
-
-  .order-box {
-    .hero-section {
-      margin: 0;
-
-      .banner-head {
-        font-size: 22px;
-        margin: 0;
-      }
-    }
-  }
-
-  .profile-box {
-    .hero-section {
-      align-items: start;
-      margin: 0;
-
-      .banner-head {
-        font-size: 22px;
-      }
-    }
-
-    label {
-      margin-bottom: 9px;
-    }
-
-    .profile-pic-image {
-      width: 100%;
-      height: 130px;
-      position: relative;
-
-      .hidden-input {
-        height: 130px;
-        width: 100%;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 999;
-        opacity: 0;
-      }
-
-      img {
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-      }
-
-      .pick-image-icon {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.4);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        visibility: hidden;
-        transition: all 0.2s ease-in-out;
-
-        svg {
-          color: #fff;
-        }
-      }
-
-      &:hover {
-        .pick-image-icon {
-          visibility: visible;
-        }
-      }
-    }
-  }
-
-  .change-password-box {
-    .hero-section {
-      margin: 0;
-
-      .banner-head {
-        font-size: 22px;
-      }
     }
   }
 }

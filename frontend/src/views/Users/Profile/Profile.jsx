@@ -142,99 +142,92 @@ const Profile = () => {
   }, []);
 
   return (
-    <ProfileComponent>
-      <Helmet>
-        <title>{t("Profile Settings - HulaHop")}</title>
-      </Helmet>
-
-      <div className="profile-box">
-        <div className="hero-section">
-          <h3 className="banner-head">{t("Edit Profile")}</h3>
-        </div>
-        <Row>
-          <Col md={2} lg={2} sm={2}>
-            <label>{t("Profile Picture")}</label>
-            {fileLoading ? (
-              <Loader />
-            ) : (
-              <div className="profile-pic-image">
-                {formik.values.image_id ? (
-                  <img
-                    src={`${REST_URL_SERVER}/images/compressed/${formik.values.image_id}`}
-                  />
-                ) : (
-                  <img src={NoImage} />
-                )}
-                <input
-                  type="file"
-                  className="hidden-input"
-                  onChange={handleFileChange}
-                />
-                <div className="pick-image-icon">
-                  <AddAPhotoIcon color="#fff" />
-                </div>
-              </div>
-            )}
-          </Col>
-          <Col md={10} lg={10} sm={10}>
-            <Row className="gy-3">
-              <Col md={6} lg={6} sm={12}>
-                <InputComponent
-                  label={t("First Name")}
-                  fullWidth
-                  InnerPlaceholder={t("Enter First Name")}
-                  name="firstName"
-                  formik={formik}
-                />
-              </Col>
-              <Col md={6} lg={6} sm={12}>
-                <InputComponent
-                  label={t("Last Name")}
-                  fullWidth
-                  InnerPlaceholder={t("Enter Last Name")}
-                  name="lastName"
-                  formik={formik}
-                />
-              </Col>
-              <Col md={6} lg={6} sm={12}>
-                <InputComponent
-                  label={t("Email")}
-                  fullWidth
-                  InnerPlaceholder={t("Enter Email")}
-                  name="email"
-                  disabled
-                />
-              </Col>
-              <Col md={6} lg={6} sm={12}>
-                <InputComponent
-                  label={t("Phone")}
-                  fullWidth
-                  InnerPlaceholder={t("Enter Phone Number")}
-                  name="phone"
-                  formik={formik}
-                />
-              </Col>
-            </Row>
-          </Col>
-          <Col md={7} lg={7} sm={7} className="mt-4"></Col>
-          <Col md={5} lg={5} sm={5} className="mt-4">
-            <Row className="g-3">
-              <Col md={6} lg={6} sm={6}></Col>
-              <Col md={6} lg={6} sm={6}>
-                <ButtonComponent
-                  onClick={formik.handleSubmit}
-                  variant="contained"
-                  width="100%"
-                  text={t("Save")}
-                  loading={loading}
-                  disabled={loading}
-                />
-              </Col>
-            </Row>
-          </Col>
-        </Row>
+    <div className="profile-box">
+      <div className="hero-section">
+        <h3 className="banner-head">{t("Edit Profile")}</h3>
       </div>
-    </ProfileComponent>
+      <Row>
+        <Col md={4} lg={4} sm={4}>
+          {fileLoading ? (
+            <Loader />
+          ) : (
+            <div className="profile-pic-image">
+              {formik.values.image_id ? (
+                <img
+                  src={`${REST_URL_SERVER}/images/compressed/${formik.values.image_id}`}
+                />
+              ) : (
+                <img src={NoImage} />
+              )}
+              <input
+                type="file"
+                className="hidden-input"
+                onChange={handleFileChange}
+              />
+              <div className="pick-image-icon">
+                <AddAPhotoIcon color="#fff" />
+              </div>
+            </div>
+          )}
+        </Col>
+        <Col md={8} lg={8} sm={8}>
+          <Row className="gy-3">
+            <Col md={12} lg={12} sm={12}>
+              <InputComponent
+                label={t("First Name")}
+                fullWidth
+                InnerPlaceholder={t("Enter First Name")}
+                name="firstName"
+                formik={formik}
+              />
+            </Col>
+            <Col md={12} lg={12} sm={12}>
+              <InputComponent
+                label={t("Last Name")}
+                fullWidth
+                InnerPlaceholder={t("Enter Last Name")}
+                name="lastName"
+                formik={formik}
+              />
+            </Col>
+            <Col md={12} lg={12} sm={12}>
+              <InputComponent
+                label={t("Email")}
+                fullWidth
+                InnerPlaceholder={t("Enter Email")}
+                name="email"
+                disabled
+              />
+            </Col>
+            <Col md={12} lg={12} sm={12}>
+              <InputComponent
+                label={t("Phone")}
+                fullWidth
+                InnerPlaceholder={t("Enter Phone Number")}
+                name="phone"
+                formik={formik}
+              />
+            </Col>
+          </Row>
+        </Col>
+        <Col md={5} lg={5} sm={5} className="mt-4"></Col>
+        <Col md={7} lg={7} sm={7} className="mt-4">
+          <Row className="g-3">
+            <Col md={4} lg={4} sm={4}></Col>
+            <Col md={8} lg={8} sm={8}>
+              <ButtonComponent
+                onClick={formik.handleSubmit}
+                variant="contained"
+                width="100%"
+                text={t("Save")}
+                loading={loading}
+                disabled={loading}
+              />
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </div>
   );
 };
 

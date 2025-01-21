@@ -35,7 +35,7 @@ import Cart from "../../views/Users/Cart";
 import CheckOut from "../../views/Users/CheckOut";
 import Dashboard from "../../views/Users/Profile/Dashboard";
 import Orders from "../../views/Users/Profile/Orders";
-import Profile from "../../views/Users/Profile/Profile";
+import Profile from "../../views/Users/Profile";
 import Wishlist from "../../views/Users/Profile/Wishlist";
 import ChangePassword from "../../views/Users/Profile/ChangePassword";
 
