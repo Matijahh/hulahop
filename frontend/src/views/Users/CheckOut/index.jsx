@@ -99,7 +99,7 @@ const CheckOut = () => {
       if (response) {
         const { message } = response.data;
         SuccessTaster(t(message));
-        ACCESS_TOKEN ? navigate(ROUTE_MAIN_ORDERS) : navigate(ROUTE_MAIN);
+        navigate(ROUTE_MAIN);
         if (!ACCESS_TOKEN) {
           localStorage.setItem("cart_products", null);
         }

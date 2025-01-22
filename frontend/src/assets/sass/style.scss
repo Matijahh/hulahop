@@ -93,6 +93,7 @@ p {
 
 .modal-content {
   border: none;
+  border-radius: 20px;
 }
 
 .MuiInputLabel-root {
@@ -3428,6 +3429,7 @@ form {
 .order-status-box {
   button {
     margin-bottom: 0 !important;
+    padding: 8px 30px !important;
   }
 }
 

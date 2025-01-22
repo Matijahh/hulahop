@@ -7,24 +7,24 @@ export const CreateProductContainer = styled.div`
 `;
 
 export const ProductCardBox = styled.div`
-  border-radius: 6px;
+  border-radius: 20px;
   z-index: 1;
   cursor: pointer;
   overflow: hidden;
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 3px 1px -2px,
-    rgba(0, 0, 0, 0.05) 0px 2px 2px 0px, rgba(0, 0, 0, 0.05) 0px 1px 5px 0px;
+  border: 3px solid #f2f0ef;
+  padding: 10px;
 
   .image-cover {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    border-radius: 6px 0 0px 6px;
     margin-bottom: 10px;
     position: relative;
     background: rgba(241, 103, 109, 0.1) !important;
+    border-radius: 10px;
 
     img {
-      border-radius: 6px 0 0px 0;
+      border-radius: 10px;
       width: 100%;
       height: 100%;
     }
@@ -34,12 +34,12 @@ export const ProductCardBox = styled.div`
     padding: 10px;
 
     .product-title {
-      font: 600 18px Nunito Sans;
+      font: bold 18px "Poppins", serif;
       margin-bottom: 5px;
     }
 
     .product-caregory {
-      font: 400 16px Nunito Sans;
+      font: 300 16px "Roboto", serif;
       color: #7e7e7e;
     }
   }

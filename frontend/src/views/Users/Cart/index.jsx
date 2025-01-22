@@ -17,6 +17,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import CloseIcon from "@mui/icons-material/HighlightOff";
 import ButtonComponent from "../../../components/ButtonComponent";
 import PreviewJsonImage from "../../../components/PreviewJsonImage";
+import EmptyCart from "../../../assets/images/empty-cart.png";
 
 import { Loader } from "../../../components/Loader";
 import { Helmet } from "react-helmet";
@@ -211,7 +212,13 @@ const Cart = () => {
               </div>
             ) : (
               <>
-                <div className="col-sm-12 col-lg-6">
+                <div
+                  className={`col-sm-12 ${
+                    _size(_get(cartProducts, "cart_products")) <= 0
+                      ? "col-lg-12"
+                      : "col-lg-6"
+                  }`}
+                >
                   {_size(_get(cartProducts, "cart_products")) > 0 ? (
                     _map(_get(cartProducts, "cart_products"), (item, key) => (
                       <div className="cart-listing-box" key={key}>
@@ -341,7 +348,11 @@ const Cart = () => {
                     ))
                   ) : (
                     <center>
-                      <b>{t("No Product Found!")}</b>
+                      <img
+                        src={EmptyCart}
+                        alt=""
+                        style={{ width: 300, opacity: 0.4 }}
+                      />
                     </center>
                   )}
                 </div>

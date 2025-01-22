@@ -51,6 +51,8 @@ export const DashboardContainer = styled.div`
 
       .value {
         font-size: 24px;
+        font-family: "Poppins", serif;
+        font-weight: bold;
         color: rgb(241, 103, 109);
       }
     }

@@ -184,9 +184,9 @@ const Products = () => {
       <Helmet>
         <title>{t("Products - Associate")}</title>
       </Helmet>
-      <FlexBox isWrap>
+      <FlexBox isWrap className="title-wrapper">
         <div className="main-title">{t("Your Products")}</div>
-        <FlexBox isWrap alignItems={"flex-start"}>
+        <FlexBox isWrap alignItems={"flex-start"} className="filters-wrapper">
           <SelectComponent
             id="1"
             labelId="demo-multiple-name-label"

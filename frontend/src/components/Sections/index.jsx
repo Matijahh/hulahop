@@ -15,7 +15,7 @@ export const CommonWhiteBackground = styled.div`
   .title-wrapper {
     .filters-wrapper {
       .brand-btn {
-        padding: 10px 30px !important;
+        padding: 8px 30px !important;
       }
     }
     @media screen and (max-width: 768px) {
@@ -32,7 +32,7 @@ export const CommonWhiteBackground = styled.div`
   .assoc-title-wrapper {
     .filters-wrapper {
       .brand-btn {
-        padding: 10px 30px !important;
+        padding: 8px 30px !important;
       }
     }
 

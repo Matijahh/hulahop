@@ -35,6 +35,10 @@ export const ProductSettingSidebarContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
+
+    button {
+      padding: 10px !important;
+    }
   }
 
   .info-form {
@@ -64,6 +68,10 @@ export const ProductSettingSidebarContainer = styled.div`
     padding: 15px;
     background-color: #fff;
     border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+    button {
+      padding: 10px !important;
+    }
   }
 
   .price-wrapper {

@@ -26,8 +26,9 @@ $black-text: "#000";
 
 @mixin primary-heading-small {
   color: $primary-color;
+  font-family: "Poppins", serif;
   font-style: normal;
-  font-weight: 600;
+  font-weight: bold;
   font-size: 22px;
   line-height: 28px;
 }

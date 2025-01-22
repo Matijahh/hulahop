@@ -471,12 +471,20 @@ const Orders = () => {
                                           ></span>
                                         </p>
                                       </div>
-                                      <div className="col-4">
-                                        <p>{t("Varriant Value")}</p>
-                                        <p>
-                                          {item.product_sub_variants[key].value}
-                                        </p>
-                                      </div>
+                                      {item &&
+                                        item.product_sub_variants[key] &&
+                                        item.product_sub_variants[key]
+                                          .value && (
+                                          <div className="col-4">
+                                            <p>{t("Varriant Value")}</p>
+                                            <p>
+                                              {
+                                                item.product_sub_variants[key]
+                                                  .value
+                                              }
+                                            </p>
+                                          </div>
+                                        )}
                                     </div>
                                   ))}
                                 </div>
