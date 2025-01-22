@@ -59,157 +59,67 @@ const AboutProducts = () => {
         <div className="banner-slider-section">
           <div className="container">
             <div className="row">
-              <div className="col-12">
+              <div className="col-sm-12 col-lg-7">
+                <div className="image-hero-section">
+                  <img
+                    className="main-image"
+                    src={getImageUrlById(
+                      get(
+                        aboutProductsData,
+                        "0.about_product_top_bar_image.0.top_bar_images_id"
+                      )
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="col-sm-12 col-lg-5">
                 <div className="hero-section">
                   <h3 className="banner-head">
                     {t(get(aboutProductsData, "0.sub_category.name"))}
                   </h3>
+                  <div className="paragraph-container">
+                    <p>
+                      {(get(aboutProductsData, "0.product_description_1_ab") ||
+                        get(aboutProductsData, "0.product_description_1")) &&
+                        (lang == "sr"
+                          ? get(
+                              aboutProductsData,
+                              "0.product_description_1_ab"
+                            ) &&
+                            parse(
+                              get(
+                                aboutProductsData,
+                                "0.product_description_1_ab"
+                              )
+                            )
+                          : get(aboutProductsData, "0.product_description_1") &&
+                            parse(
+                              get(aboutProductsData, "0.product_description_1")
+                            ))}
+                      {(get(aboutProductsData, "0.product_description_2_sb") ||
+                        get(aboutProductsData, "0.product_description_2")) &&
+                        (lang == "sr"
+                          ? get(
+                              aboutProductsData,
+                              "0.product_description_2_sb"
+                            ) &&
+                            parse(
+                              get(
+                                aboutProductsData,
+                                "0.product_description_2_sb"
+                              )
+                            )
+                          : get(aboutProductsData, "0.product_description_2") &&
+                            parse(
+                              get(aboutProductsData, "0.product_description_2")
+                            ))}
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-
-          <div className="products-banner-slider">
-            <SliderComponent
-              dots={false}
-              slidesToShow={
-                size(get(aboutProductsData, "0.about_product_top_bar_image")) >
-                4
-                  ? 4
-                  : size(
-                      get(aboutProductsData, "0.about_product_top_bar_image")
-                    )
-              }
-            >
-              {size(get(aboutProductsData, "0.about_product_top_bar_image")) >
-                0 &&
-                map(
-                  get(aboutProductsData, "0.about_product_top_bar_image"),
-                  (item) => {
-                    return (
-                      <div className="products-slide">
-                        <div className="products-slide-flexbox">
-                          <div
-                            className="product-image-box"
-                            style={{
-                              backgroundImage: `url(${getImageUrlById(
-                                item.top_bar_images_id
-                              )})`,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  }
-                )}
-            </SliderComponent>
-          </div>
         </div>
-
-        <div className="about-product-section">
-          <div className="container">
-            <div className="row g-4">
-              <div className="col-12">
-                <div className="hero-section">
-                  <h3 className="banner-head">{t("About Our Product")}</h3>
-                </div>
-              </div>
-              {(get(aboutProductsData, "0.product_description_1_ab") ||
-                get(aboutProductsData, "0.product_description_1")) && (
-                <div className="col-lg-6 align-self-center">
-                  <div className="about-product-desciption">
-                    <div className="description-box">
-                      {lang == "sr"
-                        ? get(
-                            aboutProductsData,
-                            "0.product_description_1_ab"
-                          ) &&
-                          parse(
-                            get(aboutProductsData, "0.product_description_1_ab")
-                          )
-                        : get(aboutProductsData, "0.product_description_1") &&
-                          parse(
-                            get(aboutProductsData, "0.product_description_1")
-                          )}
-                    </div>
-                  </div>
-                </div>
-              )}
-              {(get(aboutProductsData, "0.product_description_2_sb") ||
-                get(aboutProductsData, "0.product_description_2")) && (
-                <div className="col-lg-6 align-self-center">
-                  <div className="about-product-desciption">
-                    <div className="description-box white-box">
-                      {lang == "sr"
-                        ? get(
-                            aboutProductsData,
-                            "0.product_description_2_sb"
-                          ) &&
-                          parse(
-                            get(aboutProductsData, "0.product_description_2_sb")
-                          )
-                        : get(aboutProductsData, "0.product_description_2") &&
-                          parse(
-                            get(aboutProductsData, "0.product_description_2")
-                          )}
-                    </div>
-                  </div>
-                </div>
-              )}
-              {!get(aboutProductsData, "0.product_description_2_sb") &&
-                !get(aboutProductsData, "0.product_description_2") && (
-                  <div className="col-lg-12 no-products">
-                    {t("No Product Data")}
-                  </div>
-                )}
-            </div>
-          </div>
-        </div>
-
-        {size(get(aboutProductsData, "0.about_product_bottom_bar_images")) >
-          0 && (
-          <div className="products-banner-slider">
-            <SliderComponent
-              dots={false}
-              slidesToShow={
-                size(
-                  get(aboutProductsData, "0.about_product_bottom_bar_images")
-                ) > 4
-                  ? 4
-                  : size(
-                      get(
-                        aboutProductsData,
-                        "0.about_product_bottom_bar_images"
-                      )
-                    )
-              }
-            >
-              {size(
-                get(aboutProductsData, "0.about_product_bottom_bar_images")
-              ) > 0 &&
-                map(
-                  get(aboutProductsData, "0.about_product_bottom_bar_images"),
-                  (item) => {
-                    return (
-                      <div className="products-slide">
-                        <div className="products-slide-flexbox">
-                          <div
-                            className="product-image-box"
-                            style={{
-                              backgroundImage: `url(${getImageUrlById(
-                                item.bottom_bar_images_id
-                              )})`,
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    );
-                  }
-                )}
-            </SliderComponent>
-          </div>
-        )}
-
         {size(get(aboutProductsData, "0.about_product_size_chart_image")) >
           0 && (
           <div className="product-sizing-section">
@@ -218,11 +128,6 @@ const AboutProducts = () => {
                 <div className="col-12">
                   <div className="hero-section">
                     <h3 className="banner-head">{t("Product Size Chart")}</h3>
-                    <p className="banner-paragraph">
-                      {t(
-                        "Hulahop offers a wide range of products, and each category may have different sizes available. To assist you in selecting the perfect fit, we recommend consulting the size charts below, specifically designed for Hulahop products. Explore all the options and find the ideal size for you!"
-                      )}
-                    </p>
                   </div>
                 </div>
                 <div className="col-12">
@@ -278,6 +183,86 @@ const AboutProducts = () => {
                 </div>
               </div>
             </div>
+          </div>
+        )}
+        {size(get(aboutProductsData, "0.about_product_top_bar_image")) > 0 && (
+          <div className="products-banner-slider">
+            <SliderComponent
+              dots={false}
+              slidesToShow={
+                size(get(aboutProductsData, "0.about_product_top_bar_image")) >
+                4
+                  ? 4
+                  : size(
+                      get(aboutProductsData, "0.about_product_top_bar_image")
+                    )
+              }
+            >
+              {size(get(aboutProductsData, "0.about_product_top_bar_image")) >
+                0 &&
+                map(
+                  get(aboutProductsData, "0.about_product_top_bar_image"),
+                  (item) => {
+                    return (
+                      <div className="products-slide">
+                        <div className="products-slide-flexbox">
+                          <div
+                            className="product-image-box"
+                            style={{
+                              backgroundImage: `url(${getImageUrlById(
+                                item.top_bar_images_id
+                              )})`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+            </SliderComponent>
+          </div>
+        )}
+        {size(get(aboutProductsData, "0.about_product_bottom_bar_images")) >
+          0 && (
+          <div className="products-banner-slider">
+            <SliderComponent
+              dots={false}
+              slidesToShow={
+                size(
+                  get(aboutProductsData, "0.about_product_bottom_bar_images")
+                ) > 4
+                  ? 4
+                  : size(
+                      get(
+                        aboutProductsData,
+                        "0.about_product_bottom_bar_images"
+                      )
+                    )
+              }
+            >
+              {size(
+                get(aboutProductsData, "0.about_product_bottom_bar_images")
+              ) > 0 &&
+                map(
+                  get(aboutProductsData, "0.about_product_bottom_bar_images"),
+                  (item) => {
+                    return (
+                      <div className="products-slide">
+                        <div className="products-slide-flexbox">
+                          <div
+                            className="product-image-box"
+                            style={{
+                              backgroundImage: `url(${getImageUrlById(
+                                item.bottom_bar_images_id
+                              )})`,
+                            }}
+                          ></div>
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+            </SliderComponent>
           </div>
         )}
       </div>
