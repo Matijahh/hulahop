@@ -56,10 +56,10 @@ const CategorySidebarContainer = styled.div`
     width: 100%;
 
     &.active {
-      color: rgba(241, 103, 109, 1);
+      color: #004e64;
 
       .category-item-numb {
-        background-color: rgba(241, 103, 109, 1);
+        background-color: #004e64;
         color: #fff;
       }
     }
@@ -96,7 +96,7 @@ const CategorySidebarContainer = styled.div`
     cursor: pointer;
 
     &.active {
-      color: rgba(241, 103, 109, 1);
+      color: #004e64;
     }
 
     @media screen and (max-width: 768px) {

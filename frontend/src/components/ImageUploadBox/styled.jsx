@@ -5,7 +5,7 @@ export const ImageUploadBoxContainer = styled.div`
     width: 100%;
     height: auto;
     min-height: 150px;
-    border: 2px dotted #f1676d;
+    border: 2px dotted #004e64;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,10 +28,10 @@ export const ImageUploadBoxContainer = styled.div`
         margin-top: 5px;
         font-size: 12px;
         font-weight: bold;
-        color: rgb(241, 103, 109);
+        color: #004e64;
       }
       svg {
-        color: rgb(241, 103, 109);
+        color: #004e64;
       }
     }
 
@@ -52,7 +52,7 @@ export const ImageUploadBoxContainer = styled.div`
         top: 20px;
         right: 20px;
         z-index: 333;
-        background-color: #f1676d;
+        background-color: #004e64;
         width: 25px;
         height: 25px;
         svg {
@@ -62,7 +62,7 @@ export const ImageUploadBoxContainer = styled.div`
         &:hover {
           background-color: #fff;
           svg {
-            color: #f1676d;
+            color: #004e64;
           }
         }
       }

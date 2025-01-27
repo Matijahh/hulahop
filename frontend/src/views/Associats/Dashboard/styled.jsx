@@ -53,7 +53,7 @@ export const DashboardContainer = styled.div`
         font-size: 24px;
         font-family: "Poppins", serif;
         font-weight: bold;
-        color: rgb(241, 103, 109);
+        color: #004e64;
       }
     }
   }
@@ -68,7 +68,7 @@ export const DashboardContainer = styled.div`
         text-align: center;
         list-style: none;
         font-weight: bold;
-        color: #f1676d;
+        color: #004e64;
       }
     }
 
@@ -76,11 +76,11 @@ export const DashboardContainer = styled.div`
       padding: 20px;
       background: rgba(255, 255, 255, 0.85);
       border-radius: 5px;
-      border: 1px solid #f1676d;
+      border: 1px solid #004e64;
 
       .bolded {
         font-weight: bold;
-        color: #f1676d;
+        color: #004e64;
       }
     }
   }
@@ -155,7 +155,7 @@ export const DashboardContainer = styled.div`
 
       span {
         font: bold 15px "Roboto";
-        color: rgb(241, 103, 109) !important;
+        color: #004e64 !important;
         margin-left: 5px;
         cursor: pointer;
       }

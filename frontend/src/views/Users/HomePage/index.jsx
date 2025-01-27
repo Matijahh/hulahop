@@ -17,7 +17,6 @@ import {
   slugify,
   slugifyString,
 } from "../../../utils/commonFunctions";
-import createStore from "../../../assets/images/createStore.png";
 
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";

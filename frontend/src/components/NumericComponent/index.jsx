@@ -20,7 +20,7 @@ const InputComponentContainer = styled.div`
   }
 
   .error-msg {
-    color: rgb(241, 103, 109);
+    color: #004e64;
     font-size: 12px;
     font-weight: 500;
     margin-top: 9px;

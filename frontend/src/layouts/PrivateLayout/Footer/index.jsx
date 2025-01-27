@@ -38,18 +38,16 @@ const Footer = () => {
                       <LocationOnOutlinedIcon />
                     </span>
                     <span className="contact-detail location-detail">
-                      VGA Design Center,7. jula 3, 11307, Boleč, Belgrade
+                      Jogo Design Studio
                       <br />
-                      PIB: 112759904
-                      <br />
-                      MB: 66336417
+                      Adresa: Višnjička 45a, 11000 Beograd, Srbija
                     </span>
                   </div>
                   <div className="contact-item">
                     <span className="icon-box">
                       <CallOutlinedIcon />
                     </span>
-                    <span className="contact-detail">+381 63 54 03 73</span>
+                    <span className="contact-detail">+381 63 49 46 45</span>
                   </div>
                   <div className="contact-item">
                     <span className="icon-box">

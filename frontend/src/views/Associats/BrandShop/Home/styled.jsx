@@ -84,7 +84,7 @@ export const HomeContainer = styled.div`
     }
 
     span {
-      color: #f1676d;
+      color: #004E64;
       font-size: 16px;
       font-weight: 300;x
     }

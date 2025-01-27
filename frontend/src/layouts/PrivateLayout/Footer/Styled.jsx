@@ -6,7 +6,7 @@ export const FooterWrapperStyled = styled.div`
 
   footer {
     padding: 30px;
-    background: #f1676d;
+    background: #004e64;
     border-radius: 30px;
     z-index: 1;
     position: relative;
@@ -172,7 +172,7 @@ export const FooterWrapperStyled = styled.div`
         padding: 20px 20px;
         text-align: center;
         border-radius: 5px 5px 0 0;
-        background: #f1676d;
+        background: #004e64;
 
         p {
           font-size: 16px;

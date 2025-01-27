@@ -19,7 +19,7 @@ const SignInModalContainer = styled.div`
     }
 
     div {
-      color: rgb(241, 103, 109);
+      color: #004e64;
       font-weight: 600;
       font-size: 16px;
       text-decoration: underline;

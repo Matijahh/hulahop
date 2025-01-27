@@ -77,10 +77,10 @@ const HeaderWrapperStyled = styled.div`
         a {
           text-decoration: none;
           font-size: 16px;
-          color: #f1676d;
+          color: #004e64;
 
           svg {
-            fill: #f1676d;
+            fill: #004e64;
             margin-right: 5px;
           }
         }
@@ -106,7 +106,7 @@ const HeaderWrapperStyled = styled.div`
         height: 30px;
 
         svg {
-          fill: #f1676d;
+          fill: #004e64;
         }
       }
     }
@@ -201,25 +201,25 @@ const HeaderWrapperStyled = styled.div`
                   border: none;
                   text-decoration: none;
                   text-transform: capitalize;
-                  color: #f1676d;
+                  color: #004e64;
                   font-size: 16px;
                   font-weight: 400;
                   border-bottom: 2px solid transparent;
 
                   & + .MuiButton-endIcon {
                     svg {
-                      color: #f1676d;
+                      color: #004e64;
                       fill: currentColor;
                     }
                   }
 
                   &.active-nav {
-                    color: #f1676d;
+                    color: #004e64;
                     font-weight: bold;
 
                     & + .MuiButton-endIcon {
                       svg {
-                        color: #f1676d;
+                        color: #004e64;
                         fill: currentColor;
                       }
                     }
@@ -243,7 +243,7 @@ const HeaderWrapperStyled = styled.div`
                 height: 30px;
 
                 svg {
-                  fill: #f1676d;
+                  fill: #004e64;
                 }
               }
             }
@@ -310,7 +310,7 @@ const HeaderWrapperStyled = styled.div`
       }
 
       .profile-box {
-        background: #f1676d;
+        background: #004e64;
         padding: 5px 10px;
         border-radius: 30px;
         color: white;
@@ -336,7 +336,7 @@ const HeaderWrapperStyled = styled.div`
         cursor: pointer;
 
         svg {
-          color: #f1676d;
+          color: #004e64;
           margin-right: 10px;
           width: 25px;
           height: 25px;

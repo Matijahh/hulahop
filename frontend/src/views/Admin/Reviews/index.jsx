@@ -1,6 +1,6 @@
 import { renderHeader } from "./mock";
 import { useTranslation } from "react-i18next";
-import muska3 from "../../../assets/images/muska-3.jpg";
+import muska4 from "../../../assets/images/muska-4.jpg";
 import map from "lodash/map";
 
 import { CommonWhiteBackground, FlexBox } from "../../../components/Sections";
@@ -15,7 +15,7 @@ const Reviews = () => {
     no: `${index + 1}`,
     user_name: "Demo User",
     product_name: "Red T-shirt",
-    product_image: muska3,
+    product_image: muska4,
     user_review: "Lorem ipsum dolor sit amet consectetur adipisicing elit. ",
     id: 101 * index,
     date: "02/10/2023",

@@ -61,7 +61,7 @@ export const SignInContainer = styled.div`
     }
 
     a {
-      color: rgb(241, 103, 109);
+      color: #004e64;
       font-weight: 600;
       font-size: 16px;
       text-decoration: underline;
@@ -69,7 +69,7 @@ export const SignInContainer = styled.div`
   }
 
   .forgot-password-text {
-    color: rgb(241, 103, 109);
+    color: #004e64;
     font-weight: 600;
     font-size: 16px;
     text-decoration: none;

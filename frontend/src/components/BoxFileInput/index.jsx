@@ -8,7 +8,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { CircularProgress } from "@mui/material";
 
 const BoxFileInputContainer = styled.div`
-  border: 2px dashed rgb(241, 103, 109);
+  border: 2px dashed #004e64;
   height: 100px;
   display: flex;
   justify-content: center;
@@ -40,14 +40,14 @@ const BoxFileInputContainer = styled.div`
   }
 
   svg {
-    color: rgb(241, 103, 109);
+    color: #004e64;
   }
 
   .text {
     margin-top: 5px;
     font-size: 12px;
     font-weight: bold;
-    color: rgb(241, 103, 109);
+    color: #004e64;
   }
 
   .content {

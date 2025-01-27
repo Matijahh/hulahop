@@ -168,7 +168,7 @@ export const ImageContainer = styled.div`
 
       &:hover {
         cursor: pointer;
-        background-color: rgb(241, 103, 109);
+        background-color: #004e64;
         border-radius: 6px;
 
         svg {

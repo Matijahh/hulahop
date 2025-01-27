@@ -58,7 +58,7 @@ export default function LineChartView({ chartData, label, labelSuffix }) {
         <YAxis />
         <Tooltip content={renderTooltip} />
         <Legend content={renderLegend} />
-        <Line type="monotone" dataKey="Sales" stroke="#f1676d" />
+        <Line type="monotone" dataKey="Sales" stroke="#004E64" />
       </LineChart>
     </ResponsiveContainer>
   );

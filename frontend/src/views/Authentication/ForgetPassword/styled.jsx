@@ -47,7 +47,7 @@ export const ForgetPasswordContainer = styled.div`
 
     .title {
       font-family: "Poppins", serif;
-      color: #f1676d;
+      color: #004e64;
       text-align: center;
       font-size: 32px;
       font-weight: bold;
@@ -76,7 +76,7 @@ export const ForgetPasswordContainer = styled.div`
     }
 
     a {
-      color: rgb(241, 103, 109);
+      color: #004e64;
       font-weight: 600;
       font-size: 16px;
       text-decoration: none;
@@ -84,7 +84,7 @@ export const ForgetPasswordContainer = styled.div`
   }
 
   .forgot-password-text {
-    color: rgb(241, 103, 109);
+    color: #004e64;
     font-weight: 600;
     font-size: 16px;
     text-decoration: none;

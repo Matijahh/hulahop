@@ -70,7 +70,7 @@ const App = () => {
   let theme = createTheme({
     palette: {
       primary: {
-        main: "rgb(241, 103, 109)",
+        main: "#004e64",
       },
       secondary: {
         main: "#fff",

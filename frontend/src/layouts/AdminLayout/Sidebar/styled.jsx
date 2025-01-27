@@ -112,14 +112,14 @@ export const SidebarContainer = styled.div`
     }
 
     &.active {
-      color: rgba(241, 103, 109, 1);
+      color: #004e64;
 
       svg {
-        fill: rgba(241, 103, 109, 1);
+        fill: #004e64;
       }
 
       background: rgba(241, 103, 109, 0.05);
-      border-left: 2px solid rgba(241, 103, 109, 1);
+      border-left: 2px solid #004e64;
     }
 
     svg {
