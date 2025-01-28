@@ -53,38 +53,6 @@ const Shop = (props) => {
           <title>{t("Shop Page - HulaHop")}</title>
         </Helmet>
 
-        {/* {window.location.pathname === "/shop" ? (
-          <div className="shop-hero-section">
-            <div className="shop-slider">
-              <SliderComponent dots={false} arrows={true} slidesToShow={1}>
-                {size(shopSliderList) > 0 &&
-                  map(shopSliderList, (item) => {
-                    return (
-                      <div className="product-slide">
-                        <div
-                          className="product-slide-box"
-                          style={{
-                            backgroundImage: `url(${getImageUrlById(
-                              get(item, "image_id", "")
-                            )})`,
-                          }}
-                        >
-                          <div className="container">
-                            <div className="description-box">
-                              <h5>{t(get(item, "description", ""))} </h5>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
-              </SliderComponent>
-            </div>
-          </div>
-        ) : (
-          <SliderSection data={props.data} />
-        )} */}
-
         <div className="shop-product-section">
           <div className="container-fluid">
             <div className="row">

@@ -14,7 +14,7 @@ import {
 } from "../../../utils/axiosInstance";
 import { ProductCardBox, ProductsListContainer } from "./styled";
 
-import { Tooltip } from "@mui/material";
+import { Pagination, Tooltip } from "@mui/material";
 import { Col, Row } from "react-bootstrap";
 import { CommonWhiteBackground, FlexBox } from "../../../components/Sections";
 import { Loader } from "../../../components/Loader";
@@ -41,6 +41,9 @@ const Products = () => {
   const [subCategories, setSubCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState();
   const [selectedSubCategory, setSelectedSubCategory] = useState();
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
+  const limit = 10;
 
   const { t } = useTranslation();
   const navigation = useNavigate();
@@ -49,16 +52,25 @@ const Products = () => {
     setIsOpenImageLibrary(!isOpenImageLibrary);
   };
 
+  const handlePageChange = (e, value) => {
+    setPage(value);
+  };
+
   const handleDeleteToggle = () => {
     setIsDeleteOpen(!isDeleteOpen);
   };
 
-  const getAllProduct = async (searchString, categoryId, subCategoryId) => {
+  const getAllProduct = async (
+    searchString,
+    categoryId,
+    subCategoryId,
+    page
+  ) => {
     setLoading(true);
 
     const decoded = jwtDecode(ACCESS_TOKEN);
 
-    let URL = `/associate_products/?user_id=${decoded.id}`;
+    let URL = `/associate_products/?user_id=${decoded.id}?limit=${limit}$page=${page}`;
 
     if (searchString) {
       URL += `&search_string=${searchString}`;
@@ -74,12 +86,16 @@ const Products = () => {
 
     const response = await commonGetQuery(URL);
 
-    setLoading(false);
-
     if (response) {
       const { data } = response.data;
       setProductsList(data);
+      if (data.totalPages) {
+        setTotalPages(data.totalPages);
+      }
+      setLoading(false);
     }
+
+    setLoading(false);
   };
 
   const handleEditProduct = (id, associate_p_id) => {
@@ -101,7 +117,7 @@ const Products = () => {
     );
 
     if (response) {
-      getAllProduct();
+      getAllProduct(null, null, null, null);
     }
 
     setLoading(false);
@@ -137,8 +153,8 @@ const Products = () => {
     );
 
     selectedItem
-      ? getAllProduct(searchVal, selectedItem?.id)
-      : getAllProduct(searchVal);
+      ? getAllProduct(searchVal, selectedItem?.id, null, null)
+      : getAllProduct(searchVal, null, null, null);
 
     setSubCategories(
       selectedItem?.sub_category?.map((item) => {
@@ -158,14 +174,19 @@ const Products = () => {
       e.target && e.target.value && e.target.value.split(",")[0];
 
     selectedId
-      ? getAllProduct(searchVal, selectedCategory.split(",")[0], selectedId)
-      : getAllProduct(searchVal, selectedCategory.split(",")[0]);
+      ? getAllProduct(
+          searchVal,
+          selectedCategory.split(",")[0],
+          selectedId,
+          null
+        )
+      : getAllProduct(searchVal, selectedCategory.split(",")[0], null, null);
     setSelectedSubCategory(e.target && e.target.value);
   };
 
   const onSearchValue = (e) => {
     const value = e.target && e.target.value;
-    getAllProduct(value);
+    getAllProduct(value, null, null, null);
     setSearchVal(value);
   };
 
@@ -175,9 +196,12 @@ const Products = () => {
   };
 
   useEffect(() => {
-    getAllProduct();
     getAllCategory();
   }, []);
+
+  useEffect(() => {
+    getAllProduct(null, null, null, page);
+  }, [page]);
 
   return (
     <CommonWhiteBackground>
@@ -270,65 +294,79 @@ const Products = () => {
         {loading ? (
           <Loader />
         ) : (
-          <Row>
-            {productsList.length === 0 ? (
-              <center>
-                <b>{t("No Product Found!")}</b>
-              </center>
-            ) : (
-              <>
-                {productsList.map((item, i) => (
-                  <Col md={4} lg={3} sm={6} key={i}>
-                    <ProductCardBox>
-                      <div className="image-cover">
-                        <PreviewJsonImage
-                          previewImageUrl={`${REST_URL_SERVER}/images/${item?.product?.image_id}`}
-                          json={
-                            item?.image_json?.imageObj
-                              ? JSON.parse(item?.image_json?.imageObj)
-                              : null
-                          }
-                          productData={item}
-                        />
-                        <div className="overlay">
-                          <div className="overlay-icon">
-                            <Tooltip title={t("Edit")} placement="bottom">
-                              <EditOutlinedIcon
-                                onClick={() =>
-                                  handleEditProduct(item.id, item?.product_id)
-                                }
-                              />
-                            </Tooltip>
+          <>
+            <Row>
+              {productsList.length === 0 ? (
+                <center>
+                  <b>{t("No Product Found!")}</b>
+                </center>
+              ) : (
+                <>
+                  {productsList.map((item, i) => (
+                    <Col md={4} lg={3} sm={6} key={i}>
+                      <ProductCardBox>
+                        <div className="image-cover">
+                          <PreviewJsonImage
+                            previewImageUrl={`${REST_URL_SERVER}/images/${item?.product?.image_id}`}
+                            json={
+                              item?.image_json?.imageObj
+                                ? JSON.parse(item?.image_json?.imageObj)
+                                : null
+                            }
+                            productData={item}
+                          />
+                          <div className="overlay">
+                            <div className="overlay-icon">
+                              <Tooltip title={t("Edit")} placement="bottom">
+                                <EditOutlinedIcon
+                                  onClick={() =>
+                                    handleEditProduct(item.id, item?.product_id)
+                                  }
+                                />
+                              </Tooltip>
+                            </div>
+                            <div className="overlay-icon">
+                              <Tooltip title={t("Delete")} placement="bottom">
+                                <DeleteOutlineOutlinedIcon
+                                  onClick={() =>
+                                    handleOpenDeleteModal(
+                                      item.id,
+                                      item.product?.name
+                                    )
+                                  }
+                                />
+                              </Tooltip>
+                            </div>
                           </div>
-                          <div className="overlay-icon">
-                            <Tooltip title={t("Delete")} placement="bottom">
-                              <DeleteOutlineOutlinedIcon
-                                onClick={() =>
-                                  handleOpenDeleteModal(
-                                    item.id,
-                                    item.product?.name
-                                  )
-                                }
-                              />
-                            </Tooltip>
+                        </div>
+                        <div className="product-data">
+                          <div className="product-title">
+                            {item?.product?.name}
                           </div>
+                          <div className="product-caregory">
+                            {item?.sub_category?.name || item?.category?.name}
+                          </div>
+                          <div className="product-price">{item?.price} RSD</div>
                         </div>
-                      </div>
-                      <div className="product-data">
-                        <div className="product-title">
-                          {item?.product?.name}
-                        </div>
-                        <div className="product-caregory">
-                          {item?.sub_category?.name || item?.category?.name}
-                        </div>
-                        <div className="product-price">{item?.price} RSD</div>
-                      </div>
-                    </ProductCardBox>
-                  </Col>
-                ))}
-              </>
-            )}
-          </Row>
+                      </ProductCardBox>
+                    </Col>
+                  ))}
+                </>
+              )}
+            </Row>
+            <Row>
+              {!loading && (
+                <div className="pagination-container">
+                  <Pagination
+                    page={page}
+                    onChange={handlePageChange}
+                    count={totalPages}
+                    shape="rounded"
+                  />
+                </div>
+              )}
+            </Row>
+          </>
         )}
       </ProductsListContainer>
       <ImageLibrary handleClose={handleToggle} open={isOpenImageLibrary} />
