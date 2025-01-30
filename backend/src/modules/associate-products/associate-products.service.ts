@@ -291,7 +291,6 @@ export class AssociateProductsService extends AbstractService {
     relations: string[] = null,
   ): Promise<AssociateProducts | boolean> {
     const associateProductData = await this.findOne({ where: { id } });
-    data.currentUser;
     if (!associateProductData) {
       throw new NotFoundException('This record does not exist!');
     }
