@@ -70,7 +70,11 @@ const Products = () => {
 
     const decoded = jwtDecode(ACCESS_TOKEN);
 
-    let URL = `/associate_products/?user_id=${decoded.id}?limit=${limit}$page=${page}`;
+    let URL = `/associate_products?user_id=${decoded.id}`;
+
+    if (page) {
+      URL += `&limit=${limit}&page=${page}`;
+    }
 
     if (searchString) {
       URL += `&search_string=${searchString}`;
@@ -88,7 +92,7 @@ const Products = () => {
 
     if (response) {
       const { data } = response.data;
-      setProductsList(data);
+      setProductsList(data.data);
       if (data.totalPages) {
         setTotalPages(data.totalPages);
       }
