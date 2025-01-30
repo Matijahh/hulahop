@@ -24,7 +24,7 @@ export const ImageLibraryContainer = styled.div`
   .image-cover {
     padding: 10px;
     width: 100%;
-    height: 250px;
+    height: max-content;
     background: rgba(0, 0, 0, 0.01);
     position: relative;
 

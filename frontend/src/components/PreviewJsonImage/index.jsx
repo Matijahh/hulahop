@@ -6,14 +6,16 @@ import useImage from "use-image";
 
 const Container = styled.div`
   canvas {
-    border-radius: 6px 0 0px 0;
+    border-radius: 10px;
     width: 100% !important;
     position: relative !important;
-    height: auto !important;
+    height: 100% !important;
+    //max-height: 300px !important;
   }
 
   .konvajs-content {
     width: 100% !important;
+    height: 100% !important;
 
     ${(props) => {
       if (props.autoHeight) {

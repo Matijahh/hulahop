@@ -16,7 +16,7 @@ export const ProductCardBox = styled.div`
 
   .image-cover {
     width: 100%;
-    height: 250px;
+    height: max-content;
     object-fit: cover;
     margin-bottom: 10px;
     position: relative;

@@ -23,7 +23,7 @@ const Main = (props) => {
 
   const params = useParams();
   const { t } = useTranslation();
-  const limit = 20;
+  const limit = 16;
 
   const selectItems = [
     {
