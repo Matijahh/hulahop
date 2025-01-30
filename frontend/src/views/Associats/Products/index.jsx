@@ -61,10 +61,10 @@ const Products = () => {
   };
 
   const getAllProduct = async (
+    page,
     searchString,
     categoryId,
-    subCategoryId,
-    page
+    subCategoryId
   ) => {
     setLoading(true);
 
@@ -121,7 +121,7 @@ const Products = () => {
     );
 
     if (response) {
-      getAllProduct(null, null, null, null);
+      getAllProduct(page);
     }
 
     setLoading(false);
@@ -157,8 +157,8 @@ const Products = () => {
     );
 
     selectedItem
-      ? getAllProduct(searchVal, selectedItem?.id, null, null)
-      : getAllProduct(searchVal, null, null, null);
+      ? getAllProduct(page, searchVal, selectedItem?.id)
+      : getAllProduct(page, searchVal);
 
     setSubCategories(
       selectedItem?.sub_category?.map((item) => {
@@ -179,18 +179,18 @@ const Products = () => {
 
     selectedId
       ? getAllProduct(
+          page,
           searchVal,
           selectedCategory.split(",")[0],
-          selectedId,
-          null
+          selectedId
         )
-      : getAllProduct(searchVal, selectedCategory.split(",")[0], null, null);
+      : getAllProduct(page, searchVal, selectedCategory.split(",")[0]);
     setSelectedSubCategory(e.target && e.target.value);
   };
 
   const onSearchValue = (e) => {
     const value = e.target && e.target.value;
-    getAllProduct(value, null, null, null);
+    getAllProduct(page, value);
     setSearchVal(value);
   };
 
@@ -204,7 +204,7 @@ const Products = () => {
   }, []);
 
   useEffect(() => {
-    getAllProduct(null, null, null, page);
+    getAllProduct(page);
   }, [page]);
 
   return (
