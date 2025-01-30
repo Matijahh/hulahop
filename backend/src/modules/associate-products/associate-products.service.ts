@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { AbstractService } from '../../commons/abstract.service';
 import { associateProductsRepository } from './repository/associate-products.repository';
 import { AssociateProducts } from './entities/associate-products.entity';
@@ -11,6 +15,7 @@ import { ImagesService } from '../images/images.service';
 import * as fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import { masterFilterInputDto } from './dto/master-filter.dto';
+import { log } from 'console';
 
 @Injectable()
 export class AssociateProductsService extends AbstractService {
@@ -27,11 +32,15 @@ export class AssociateProductsService extends AbstractService {
   async findAll(filterDto: GetAssociateProductFilterInputDto) {
     const categoryIds = Array.isArray(filterDto.category_ids)
       ? filterDto.category_ids.map(Number)
-      : filterDto.category_ids ? [Number(filterDto.category_ids)] : null;
+      : filterDto.category_ids
+        ? [Number(filterDto.category_ids)]
+        : null;
 
     const subCategoryIds = Array.isArray(filterDto.sub_category_ids)
       ? filterDto.sub_category_ids.map(Number)
-      : filterDto.sub_category_ids ? [Number(filterDto.sub_category_ids)] : null;
+      : filterDto.sub_category_ids
+        ? [Number(filterDto.sub_category_ids)]
+        : null;
 
     let where = {};
     let order = {};
@@ -67,19 +76,19 @@ export class AssociateProductsService extends AbstractService {
       order = { ...order, price: 'DESC' };
     }
 
-    if(filterDto.date_added === 'true') {
+    if (filterDto.date_added === 'true') {
       order = { ...order, created_at: 'ASC' };
     } else if (filterDto.date_added === 'false') {
       order = { ...order, created_at: 'DESC' };
     }
 
-    if(Object.keys(order).length === 0) {
+    if (Object.keys(order).length === 0) {
       order = { id: 'DESC' };
     }
 
     if (filterDto.associate_highlighted === 'true') {
       where = { ...where, associate_highlighted: true };
-    }else if (filterDto.associate_highlighted === 'false') {
+    } else if (filterDto.associate_highlighted === 'false') {
       where = { ...where, associate_highlighted: false };
     }
 
@@ -130,7 +139,6 @@ export class AssociateProductsService extends AbstractService {
       });
     }
   }
-  
 
   async create(
     data: CreateAssociateProductsInput,
@@ -138,10 +146,24 @@ export class AssociateProductsService extends AbstractService {
   ): Promise<AssociateProducts | boolean> {
     data.created_at = Date.now().toString();
     // product name should not contain characters that can cause issues in URLs
-    const invalidCharacters = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.'];
+    const invalidCharacters = [
+      '/',
+      '\\',
+      '?',
+      '%',
+      '*',
+      ':',
+      '|',
+      '"',
+      '<',
+      '>',
+      '.',
+    ];
     for (const char of invalidCharacters) {
       if (data.name.includes(char)) {
-      throw new BadRequestException(`Product name should not contain "${char}" character`);
+        throw new BadRequestException(
+          `Product name should not contain "${char}" character`,
+        );
       }
     }
     const saveImage = await this.convertBase64ToImgWithSave(data.base64);
@@ -170,10 +192,24 @@ export class AssociateProductsService extends AbstractService {
       throw new NotFoundException('This record does not exist!');
     }
     // product name should not contain characters that can cause issues in URLs
-    const invalidCharacters = ['/', '\\', '?', '%', '*', ':', '|', '"', '<', '>', '.'];
+    const invalidCharacters = [
+      '/',
+      '\\',
+      '?',
+      '%',
+      '*',
+      ':',
+      '|',
+      '"',
+      '<',
+      '>',
+      '.',
+    ];
     for (const char of invalidCharacters) {
       if (data.name.includes(char)) {
-      throw new BadRequestException(`Product name should not contain "${char}" character`);
+        throw new BadRequestException(
+          `Product name should not contain "${char}" character`,
+        );
       }
     }
     data.updated_at = Date.now().toString();
@@ -251,15 +287,17 @@ export class AssociateProductsService extends AbstractService {
   async updateHighlightStatus(
     id: number,
     data: any,
+    user: any,
     relations: string[] = null,
   ): Promise<AssociateProducts | boolean> {
     const associateProductData = await this.findOne({ where: { id } });
+    data.currentUser;
     if (!associateProductData) {
       throw new NotFoundException('This record does not exist!');
     }
     if (data.associate_highlighted) {
       const highlightedProducts = await this.find({
-        where: { associate_highlighted: true },
+        where: { user_id: user.id, associate_highlighted: true },
       });
       if (highlightedProducts.length >= this.MAX_ASSOCIATE_HIGHLIGHTED) {
         throw new BadRequestException(
@@ -349,18 +387,26 @@ export class AssociateProductsService extends AbstractService {
     });
   }
 
-  public async getCategoryAndSubCategoryIds(userId: number){
+  public async getCategoryAndSubCategoryIds(userId: number) {
     const associateProducts = await this.find({
       where: { user_id: userId },
       relations: { product: true },
     });
-    
-    const categoryIds = [...new Set(associateProducts.map(
-      (associateProduct) => associateProduct.product.category_id,
-    ))];
-    const subCategoryIds = [...new Set(associateProducts.map(
-      (associateProduct) => associateProduct.product.subcategory_id,
-    ))];
+
+    const categoryIds = [
+      ...new Set(
+        associateProducts.map(
+          (associateProduct) => associateProduct.product.category_id,
+        ),
+      ),
+    ];
+    const subCategoryIds = [
+      ...new Set(
+        associateProducts.map(
+          (associateProduct) => associateProduct.product.subcategory_id,
+        ),
+      ),
+    ];
     return { categoryIds, subCategoryIds };
   }
 }

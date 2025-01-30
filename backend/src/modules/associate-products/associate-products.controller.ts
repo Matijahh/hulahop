@@ -181,10 +181,13 @@ export class AssociateProductsController {
     @Body()
     updateAssociateBestSellingInput: UpdateAssociateBestSellingInput,
   ) {
-    const result = await this.associateProductsService.updateBestSellingStatus(id, {
-      ...updateAssociateBestSellingInput,
+    const result = await this.associateProductsService.updateBestSellingStatus(
       id,
-    });
+      {
+        ...updateAssociateBestSellingInput,
+        id,
+      },
+    );
     return baseController.getResult(
       res,
       HttpStatus.OK,
@@ -198,13 +201,18 @@ export class AssociateProductsController {
   async updateAssociateHighlighted(
     @Param('id', ParseIntPipe) id: number,
     @Res() res: Response,
+    @CurrentUser() currentUser: CurrentUserDto,
     @Body()
     UpdateAssociateHighlightedInput: UpdateAssociateHighlightedInput,
   ) {
-    const result = await this.associateProductsService.updateHighlightStatus(id, {
-      ...UpdateAssociateHighlightedInput,
+    const result = await this.associateProductsService.updateHighlightStatus(
       id,
-    });
+      {
+        ...UpdateAssociateHighlightedInput,
+        id,
+      },
+      currentUser,
+    );
     return baseController.getResult(
       res,
       HttpStatus.OK,
