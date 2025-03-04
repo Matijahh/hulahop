@@ -58,6 +58,7 @@ const Associates = () => {
                 return (
                   <div className="associates-box" key={index}>
                     <img
+                      style={{objectFit: "contain"}}
                       src={getImageUrlById(
                         size(get(item, "store_layout_details", [])) > 0
                           ? get(item, "store_layout_details.0.logo_image", "")
