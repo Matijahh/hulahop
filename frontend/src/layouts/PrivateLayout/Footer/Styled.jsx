@@ -14,7 +14,7 @@ export const FooterWrapperStyled = styled.div`
 
   .background-logo {
     position: absolute;
-    top: 0;
+    top: 30px;
     right: 100px;
     opacity: 0.2;
     width: 300px;

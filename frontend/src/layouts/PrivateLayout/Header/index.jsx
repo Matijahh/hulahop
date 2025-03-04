@@ -234,9 +234,9 @@ const Header = () => {
                   <img src={logo} alt="" />
                 </div>
                 <div className="contact-phone-wrapper">
-                  <a href="tel:+381 63 54 03 73">
+                  <a href="tel:+38163494645">
                     <LocalPhoneIcon />
-                    +381 63 54 03 73
+                    +381 63 49 46 45
                   </a>
                 </div>
               </div>
