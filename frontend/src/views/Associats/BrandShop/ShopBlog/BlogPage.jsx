@@ -13,7 +13,6 @@ import {
   slugifyString,
 } from "../../../../utils/commonFunctions";
 import parse from "html-react-parser";
-import moment from "moment";
 
 import { Helmet } from "react-helmet";
 import { LoaderContainer } from "../../../../components/Loader";
@@ -98,11 +97,6 @@ const ShopBlogPage = () => {
                           blogData?.store?.name
                         }`}</p>
                       )}
-                      <p className="blog-post-date">
-                        {moment(Number(get(blogData, "created_at", ""))).format(
-                          "MMMM, DD,YYYY"
-                        )}
-                      </p>
                     </div>
                   </div>
                   <div className="blog-poster-img">
@@ -171,11 +165,6 @@ const ShopBlogPage = () => {
                                       {`${item?.store?.name}`}
                                     </p>
                                   )}
-                                  <p className="blog-post-date">
-                                    {moment(
-                                      Number(get(item, "created_at", ""))
-                                    ).format("MMMM, DD,YYYY")}
-                                  </p>
                                 </div>
                               </div>
                             </div>
