@@ -10,7 +10,6 @@ import {
   ROUTE_MAIN_BLOG_SINGLE,
 } from "../../../routes/routes";
 import parse from "html-react-parser";
-import moment from "moment";
 
 import { Helmet } from "react-helmet";
 import { LoaderContainer } from "../../../components/Loader";
@@ -92,14 +91,9 @@ const BlogPage = () => {
                     <div className="blog-head-footer">
                       {blogData?.store?.name && (
                         <p className="blog-author-text">
-                          {t("by:")} {`${blogData?.store?.name} /`}
+                          {t("by:")} {`${blogData?.store?.name}`}
                         </p>
                       )}
-                      <p className="blog-post-date">
-                        {moment(Number(get(blogData, "created_at", ""))).format(
-                          "MM.DD.YYYY."
-                        )}
-                      </p>
                     </div>
                   </div>
                   <div className="blog-poster-img">
@@ -168,11 +162,6 @@ const BlogPage = () => {
                                       {`${item?.store?.name} / `}
                                     </p>
                                   )}
-                                  <p className="blog-post-date">
-                                    {moment(
-                                      Number(get(item, "created_at", ""))
-                                    ).format("MM.DD.YYYY.")}
-                                  </p>
                                   <p className="description">
                                     {get(item, "content", "") &&
                                       parse(get(item, "content"))}

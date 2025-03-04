@@ -13,7 +13,6 @@ import {
 import { commonGetQuery } from "../../../utils/axiosInstance";
 import { get, map, size } from "lodash";
 import parse from "html-react-parser";
-import moment from "moment";
 
 import { Helmet } from "react-helmet";
 import { LoaderContainer } from "../../../components/Loader";
@@ -155,13 +154,8 @@ const Blog = () => {
                           <h2 className="blog-name">{get(item, "heading")}</h2>
                           <div className="blog-card-footer">
                             {item.store?.name && (
-                              <p className="blog-auther-name">{`${item.store?.name} /`}</p>
+                              <p className="blog-auther-name">{`${item.store?.name}`}</p>
                             )}
-                            <p className="blog-post-date">
-                              {moment(
-                                Number(get(item, "created_at", ""))
-                              ).format("DD.MM.YYYY.")}{" "}
-                            </p>
                           </div>
                           <p className="blog-detail">
                             {parse(get(item, "content"))}
