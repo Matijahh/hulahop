@@ -21,6 +21,8 @@ import ButtonComponent from "../../../components/ButtonComponent";
 const Footer = () => {
   const { t } = useTranslation();
 
+  const currentYear = new Date().getFullYear();
+
   return (
     <>
       <FooterWrapperStyled>
@@ -122,7 +124,7 @@ const Footer = () => {
                     )}
                   </p>
                   <span className="copyright">
-                    © Hulahop - {t("All Right Reserved")} 2024.
+                    © Hulahop - {t("All Right Reserved")} {currentYear}.
                   </span>
                 </div>
               </div>
