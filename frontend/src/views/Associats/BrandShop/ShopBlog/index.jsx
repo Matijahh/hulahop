@@ -13,7 +13,6 @@ import {
 } from "../../../../utils/commonFunctions";
 import { commonGetQuery } from "../../../../utils/axiosInstance";
 import parse from "html-react-parser";
-import moment from "moment";
 
 import { Helmet } from "react-helmet";
 import { HomeContainer } from "../Home/styled";
@@ -108,11 +107,6 @@ const ShopBlog = ({ storeData }) => {
                             {item.store?.name && (
                               <p className="blog-auther-name">{`${item?.store?.name}`}</p>
                             )}
-                            <p className="blog-post-date">
-                              {moment(
-                                Number(get(item, "created_at", ""))
-                              ).format("MMMM, DD,YYYY")}{" "}
-                            </p>
                           </div>
                           <p className="blog-detail">
                             {parse(get(item, "content"))}
