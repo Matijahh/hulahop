@@ -11,6 +11,7 @@ import { LoaderContainer } from "../../../components/Loader";
 
 import SliderComponent from "../../../components/SliderComponent/SliderComponent";
 import { AboutProductsContainer } from "./styled";
+import NoResults from "../../../assets/images/no-results.png";
 
 const AboutProducts = () => {
   const [loading, setLoading] = useState(false);
@@ -56,70 +57,129 @@ const AboutProducts = () => {
 
         {loading && <LoaderContainer />}
 
-        <div className="banner-slider-section">
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-12 col-lg-7">
-                <div className="image-hero-section">
-                  <img
-                    className="main-image"
-                    src={getImageUrlById(
-                      get(
-                        aboutProductsData,
-                        "0.about_product_top_bar_image.0.top_bar_images_id"
-                      )
-                    )}
-                  />
+        {aboutProductsData?.length > 0 ? (
+          <div className="banner-slider-section">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-12 col-lg-7">
+                  <div className="image-hero-section">
+                    <img
+                      className="main-image"
+                      src={getImageUrlById(
+                        get(
+                          aboutProductsData,
+                          "0.about_product_top_bar_image.0.top_bar_images_id"
+                        )
+                      )}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="col-sm-12 col-lg-5">
-                <div className="hero-section">
-                  <h3 className="banner-head">
-                    {t(get(aboutProductsData, "0.sub_category.name"))}
-                  </h3>
-                  <div className="paragraph-container">
-                    <p>
-                      {(get(aboutProductsData, "0.product_description_1_ab") ||
-                        get(aboutProductsData, "0.product_description_1")) &&
-                        (lang == "sr"
-                          ? get(
-                              aboutProductsData,
-                              "0.product_description_1_ab"
-                            ) &&
-                            parse(
-                              get(
+                <div className="col-sm-12 col-lg-5">
+                  <div className="hero-section">
+                    <h3 className="banner-head">
+                      {t(get(aboutProductsData, "0.sub_category.name"))}
+                    </h3>
+                    <div className="paragraph-container">
+                      <p>
+                        {(get(
+                          aboutProductsData,
+                          "0.product_description_1_ab"
+                        ) ||
+                          get(aboutProductsData, "0.product_description_1")) &&
+                          (lang == "sr"
+                            ? get(
                                 aboutProductsData,
                                 "0.product_description_1_ab"
+                              ) &&
+                              parse(
+                                get(
+                                  aboutProductsData,
+                                  "0.product_description_1_ab"
+                                )
                               )
-                            )
-                          : get(aboutProductsData, "0.product_description_1") &&
-                            parse(
-                              get(aboutProductsData, "0.product_description_1")
-                            ))}
-                      {(get(aboutProductsData, "0.product_description_2_sb") ||
-                        get(aboutProductsData, "0.product_description_2")) &&
-                        (lang == "sr"
-                          ? get(
-                              aboutProductsData,
-                              "0.product_description_2_sb"
-                            ) &&
-                            parse(
-                              get(
+                            : get(
+                                aboutProductsData,
+                                "0.product_description_1"
+                              ) &&
+                              parse(
+                                get(
+                                  aboutProductsData,
+                                  "0.product_description_1"
+                                )
+                              ))}
+                        {(get(
+                          aboutProductsData,
+                          "0.product_description_2_sb"
+                        ) ||
+                          get(aboutProductsData, "0.product_description_2")) &&
+                          (lang == "sr"
+                            ? get(
                                 aboutProductsData,
                                 "0.product_description_2_sb"
+                              ) &&
+                              parse(
+                                get(
+                                  aboutProductsData,
+                                  "0.product_description_2_sb"
+                                )
                               )
-                            )
-                          : get(aboutProductsData, "0.product_description_2") &&
-                            parse(
-                              get(aboutProductsData, "0.product_description_2")
-                            ))}
-                    </p>
+                            : get(
+                                aboutProductsData,
+                                "0.product_description_2"
+                              ) &&
+                              parse(
+                                get(
+                                  aboutProductsData,
+                                  "0.product_description_2"
+                                )
+                              ))}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div className="col-lg-12">
+                  <div className="paragraph-container">
+                    {(get(aboutProductsData, "0.product_description_1_ab") ||
+                      get(aboutProductsData, "0.product_description_1")) &&
+                      (lang == "sr"
+                        ? get(aboutProductsData, "0.product_description_1") &&
+                          parse(
+                            get(aboutProductsData, "0.product_description_1")
+                          )
+                        : get(
+                            aboutProductsData,
+                            "0.product_description_1_ab"
+                          ) &&
+                          parse(
+                            get(aboutProductsData, "0.product_description_1_ab")
+                          ))}
+                    {(get(aboutProductsData, "0.product_description_2_sb") ||
+                      get(aboutProductsData, "0.product_description_2")) &&
+                      (lang == "sr"
+                        ? get(aboutProductsData, "0.product_description_2") &&
+                          parse(
+                            get(aboutProductsData, "0.product_description_2")
+                          )
+                        : get(
+                            aboutProductsData,
+                            "0.product_description_2_sb"
+                          ) &&
+                          parse(
+                            get(aboutProductsData, "0.product_description_2_sb")
+                          ))}
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        ) : (
+          <center>
+            <h3 className="banner-head" style={{ margin: "50px 0" }}>
+              {t("There is no information about this product")}
+            </h3>
+            <img src={NoResults} alt="" style={{ width: 300, opacity: 0.4 }} />
+          </center>
+        )}
         {size(get(aboutProductsData, "0.about_product_size_chart_image")) >
           0 && (
           <div className="product-sizing-section">
