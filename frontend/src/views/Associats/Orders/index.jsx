@@ -134,7 +134,10 @@ const Orders = () => {
   }, []);
 
   const removeCompressedFromImage = (image) => {
-    return image.replace("/compressed", "");
+    if(image.includes("/compressed")){
+      return image.replace("/compressed", "");
+    }
+    return image;
   };
 
   return (
