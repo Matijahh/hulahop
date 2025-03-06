@@ -31,9 +31,8 @@ const HeaderWrapperStyled = styled.div`
     background: white;
     display: block;
     width: 100%;
-    max-width: 1400px;
     margin: 0 auto;
-    padding: 20px 0;
+    padding: 20px;
 
     .flex-box-header {
       width: 100%;
@@ -42,7 +41,7 @@ const HeaderWrapperStyled = styled.div`
       justify-content: space-between;
       gap: 10px;
 
-      @media (max-width: 1140px) {
+      @media (max-width: 1280px) {
         flex-direction: column;
       }
     }
@@ -52,7 +51,7 @@ const HeaderWrapperStyled = styled.div`
       align-items: center;
       width: max-content;
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         display: none;
       }
 
@@ -70,7 +69,7 @@ const HeaderWrapperStyled = styled.div`
         width: max-content;
         margin-left: 30px;
 
-        @media screen and (max-width: 1320px) {
+        @media screen and (max-width: 1470px) {
           display: none;
         }
 
@@ -111,7 +110,7 @@ const HeaderWrapperStyled = styled.div`
       }
     }
 
-    @media (max-width: 970px) {
+    @media (max-width: 1080px) {
       .open-menu-box {
         display: flex;
         justify-content: space-between;
@@ -147,19 +146,20 @@ const HeaderWrapperStyled = styled.div`
             width: 100%;
 
             .profile-box-container {
-              @media screen and (max-width: 969px) {
+              @media screen and (max-width: 1079px) {
                 display: flex;
+                justify-content: center;
                 margin-bottom: 20px;
                 margin-left: 0;
               }
 
-              @media screen and (min-width: 970px) {
+              @media screen and (min-width: 1080px) {
                 display: none;
               }
             }
 
             .logo-box {
-              @media screen and (max-width: 969px) {
+              @media screen and (max-width: 1079px) {
                 display: flex;
 
                 img {
@@ -168,7 +168,7 @@ const HeaderWrapperStyled = styled.div`
                 }
               }
 
-              @media screen and (min-width: 970px) {
+              @media screen and (min-width: 1080px) {
                 display: none;
               }
             }
@@ -251,7 +251,7 @@ const HeaderWrapperStyled = styled.div`
         }
       }
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         padding: 0;
 
         .header-main-user {
@@ -302,11 +302,14 @@ const HeaderWrapperStyled = styled.div`
       display: flex;
       align-items: center;
       width: 100%;
-      max-width: 220px;
       justify-content: end;
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         display: none;
+      }
+
+      .language-transfer-tab {
+        margin-right: 10px;
       }
 
       .profile-box {
@@ -315,6 +318,7 @@ const HeaderWrapperStyled = styled.div`
         border-radius: 30px;
         color: white;
         cursor: pointer;
+        display: flex;
 
         a {
           color: white;
@@ -345,7 +349,7 @@ const HeaderWrapperStyled = styled.div`
     }
   }
 
-  @media screen and (max-width: 970px) {
+  @media screen and (max-width: 1080px) {
     position: relative;
   }
 `;

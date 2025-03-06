@@ -52,7 +52,7 @@ const HeaderMainContainer = styled.div`
       align-items: center;
       width: max-content;
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         display: none;
       }
 
@@ -130,7 +130,7 @@ const HeaderMainContainer = styled.div`
       }
     }
 
-    @media (max-width: 970px) {
+    @media (max-width: 1080px) {
       .open-menu-box {
         display: flex;
         justify-content: space-between;
@@ -169,19 +169,19 @@ const HeaderMainContainer = styled.div`
             width: 100%;
 
             .profile-box-container {
-              @media screen and (max-width: 969px) {
+              @media screen and (max-width: 1079px) {
                 display: flex;
                 margin-bottom: 20px;
                 margin-left: 0;
               }
 
-              @media screen and (min-width: 970px) {
+              @media screen and (min-width: 1080px) {
                 display: none;
               }
             }
 
             .logo-box {
-              @media screen and (max-width: 969px) {
+              @media screen and (max-width: 1079px) {
                 display: flex;
 
                 img {
@@ -191,7 +191,7 @@ const HeaderMainContainer = styled.div`
                 }
               }
 
-              @media screen and (min-width: 970px) {
+              @media screen and (min-width: 1080px) {
                 display: none;
               }
             }
@@ -274,7 +274,7 @@ const HeaderMainContainer = styled.div`
         }
       }
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         padding: 0;
 
         .header-main-user {
@@ -328,7 +328,7 @@ const HeaderMainContainer = styled.div`
       max-width: 220px;
       justify-content: end;
 
-      @media screen and (max-width: 970px) {
+      @media screen and (max-width: 1080px) {
         display: none;
       }
 
@@ -368,7 +368,7 @@ const HeaderMainContainer = styled.div`
     }
   }
 
-  @media screen and (max-width: 970px) {
+  @media screen and (max-width: 1080px) {
     position: relative;
   }
 `;
