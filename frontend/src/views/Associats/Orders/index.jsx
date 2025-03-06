@@ -133,6 +133,10 @@ const Orders = () => {
     getOrdersProducts();
   }, []);
 
+  const removeCompressedFromImage = (image) => {
+    return image.replace("/compressed", "");
+  };
+
   return (
     <OrdersContainer>
       <Helmet>
@@ -257,7 +261,7 @@ const Orders = () => {
                                     className="download-icon"
                                     onClick={() => {
                                       DownloadFile(
-                                        get(jsonData, "0.image"),
+                                        removeCompressedFromImage(get(jsonData, "0.image")),
                                         `${selectedOrder.sku}-product-${item.id}`
                                       );
                                     }}
