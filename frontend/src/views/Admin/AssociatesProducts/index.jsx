@@ -93,7 +93,6 @@ const AssociatesProducts = () => {
           : null,
         productData: item,
         isBestSelling: get(item, "best_selling", false),
-        status: item.is_approve ? t("Active") : t("Inactive"),
         handleOpenToggle,
         EditAssociateProducts,
         handleBestSellingImage,
