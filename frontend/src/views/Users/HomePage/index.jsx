@@ -543,7 +543,7 @@ const HomePage = () => {
                   return (
                     <div className="associates-box" key={index}>
                       <img
-                      style={{ objectFit: "contain" }}
+                      style={{ objectFit: "contain", cursor: 'pointer' }}
                         src={getImageUrlById(
                           size(get(item, "store_layout_details", [])) > 0
                             ? get(item, "store_layout_details.0.logo_image", "")
@@ -552,6 +552,17 @@ const HomePage = () => {
                             : undefined
                         )}
                         alt=""
+                        onClick={() =>
+                          window.open(
+                            ROUTE_ASSOCIATE_BRAND_STORE.replace(
+                              ":id",
+                              slugifyString(
+                                get(item, "store_layout_details.0.name", null)
+                              )
+                            ),
+                            "_self"
+                          )
+                        }
                       />
                       <div className="associates-info">
                         <div
@@ -570,7 +581,16 @@ const HomePage = () => {
                         >
                           <OpenInNewIcon />
                         </div>
-                        <h3 className="title">
+                        <h3 className="title" style={{cursor: 'pointer'}} onClick={() =>
+                            window.open(
+                              ROUTE_ASSOCIATE_BRAND_STORE.replace(
+                                ":id",
+                                slugifyString(
+                                  get(item, "store_layout_details.0.name", null)
+                                )
+                              ),
+                              "_self"
+                            )}>
                           {get(item, "store_layout_details.0.name", null)}
                         </h3>
                         <p>

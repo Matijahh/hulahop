@@ -58,7 +58,7 @@ const Associates = () => {
                 return (
                   <div className="associates-box" key={index}>
                     <img
-                      style={{objectFit: "contain"}}
+                      style={{objectFit: "contain", cursor: "pointer"}}
                       src={getImageUrlById(
                         size(get(item, "store_layout_details", [])) > 0
                           ? get(item, "store_layout_details.0.logo_image", "")
@@ -66,6 +66,17 @@ const Associates = () => {
                           ? get(item, "image_id", "")
                           : undefined
                       )}
+                      onClick={() =>
+                        window.open(
+                          ROUTE_ASSOCIATE_BRAND_STORE.replace(
+                            ":id",
+                            slugifyString(
+                              get(item, "store_layout_details.0.name", null)
+                            )
+                          ),
+                          "_self"
+                        )
+                      }
                       alt=""
                     />
                     <div className="associates-info">
@@ -85,7 +96,17 @@ const Associates = () => {
                       >
                         <OpenInNewIcon />
                       </div>
-                      <h3 className="title">
+                      <h3 className="title" style={{cursor: "pointer"}} onClick={() =>
+                        window.open(
+                          ROUTE_ASSOCIATE_BRAND_STORE.replace(
+                            ":id",
+                            slugifyString(
+                              get(item, "store_layout_details.0.name", null)
+                            )
+                          ),
+                          "_self"
+                        )
+                      }>
                         {get(item, "store_layout_details.0.name", null)}
                       </h3>
                       <p>
