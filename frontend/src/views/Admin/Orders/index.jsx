@@ -210,6 +210,13 @@ const Orders = () => {
     }
   };
 
+  const removeCompressedFromImage = (image) => {
+    if(image.includes("/compressed")){
+      return image.replace("/compressed", "");
+    }
+    return image;
+  };
+
   useEffect(() => {
     getOrdersProducts();
   }, []);
@@ -397,7 +404,7 @@ const Orders = () => {
                                     className="download-icon"
                                     onClick={() => {
                                       DownloadFile(
-                                        get(jsonData, "0.image"),
+                                        removeCompressedFromImage(get(jsonData, "0.image")),
                                         `${selectedOrder.sku}-product-${item.id}`
                                       );
                                     }}
