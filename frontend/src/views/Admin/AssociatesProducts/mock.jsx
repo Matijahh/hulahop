@@ -77,12 +77,6 @@ export const renderHeader = [
     align: "left",
   },
   {
-    field: "status",
-    headerName: "Status",
-    width: 150,
-    align: "center",
-  },
-  {
     field: "best selling product",
     headerName: "Best Selling",
     width: 150,
