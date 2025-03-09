@@ -75,7 +75,7 @@ const Main = (props) => {
 
     const sort = sortBy.split(",")[0];
 
-    let url = `associate_products?limit=${limit}&page=${page}&${sort}`;
+    let url = `associate_products?status=true&limit=${limit}&page=${page}&${sort}`;
 
     if (categoryId && categoryId !== "all") {
       url = `${url}&category_ids=${categoryId}`;

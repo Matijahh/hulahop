@@ -16,30 +16,23 @@ import {
 } from "../../../routes/routes";
 import * as Yup from "yup";
 import cx from "classnames";
-import parse from "html-react-parser";
 
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCartOutlined";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import { BiLogoFacebook } from "react-icons/bi";
 import ButtonComponent from "../../../components/ButtonComponent";
 import SliderComponent from "../../../components/SliderComponent/SliderComponent";
 import GobackButton from "../../../components/GoBackButton";
 import PreviewJsonImage from "../../../components/PreviewJsonImage";
-import CommonCategorySidebar from "../../../components/CommonCategorySidebar";
 import AuthModal from "../../../components/AuthenticationModal";
 
-import { GiReceiveMoney } from "react-icons/gi";
 import { Col, Row } from "react-bootstrap";
 import { ColorBox } from "../../Associats/Products/EditProduct/styled";
 import { Loader } from "../../../components/Loader";
 import { ErrorTaster, SuccessTaster } from "../../../components/Toast";
 import { Helmet } from "react-helmet";
-import { FacebookShareButton } from "react-share";
 import { connect } from "react-redux";
 
 const SingleProduct = ({ isAssociateProduct, storeData }) => {
@@ -224,7 +217,8 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
         );
 
         const filteredData = get(data, "product.product_variants").filter(
-          (item) => associatePData.includes(item.color_id)
+          (item) =>
+            associatePData.includes(item.color_id) && item.variant_status
         );
 
         setAssociateProductColors(filteredData);
@@ -600,6 +594,10 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                           startIcon={<ShoppingCartIcon />}
                           variant="contained"
                           className="add-btn"
+                          disabled={
+                            associateProductColors &&
+                            associateProductColors.length === 0
+                          }
                           onClick={() => formik.submitForm()}
                         />
                       </div>

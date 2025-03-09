@@ -13,7 +13,6 @@ import {
 } from "../../routes/routes";
 
 import ButtonComponent from "../ButtonComponent";
-import SliderComponent from "../SliderComponent/SliderComponent";
 
 import { Loader } from "../Loader";
 

@@ -133,7 +133,7 @@ const HomePage = () => {
   };
 
   const getBestSellingProduct = async (id) => {
-    let url = "associate_products?best_selling=true";
+    let url = "associate_products?status=true&best_selling=true";
     let categoryIds = [];
 
     if (id) {
@@ -543,7 +543,7 @@ const HomePage = () => {
                   return (
                     <div className="associates-box" key={index}>
                       <img
-                      style={{ objectFit: "contain", cursor: 'pointer' }}
+                        style={{ objectFit: "contain", cursor: "pointer" }}
                         src={getImageUrlById(
                           size(get(item, "store_layout_details", [])) > 0
                             ? get(item, "store_layout_details.0.logo_image", "")
@@ -581,7 +581,10 @@ const HomePage = () => {
                         >
                           <OpenInNewIcon />
                         </div>
-                        <h3 className="title" style={{cursor: 'pointer'}} onClick={() =>
+                        <h3
+                          className="title"
+                          style={{ cursor: "pointer" }}
+                          onClick={() =>
                             window.open(
                               ROUTE_ASSOCIATE_BRAND_STORE.replace(
                                 ":id",
@@ -590,7 +593,9 @@ const HomePage = () => {
                                 )
                               ),
                               "_self"
-                            )}>
+                            )
+                          }
+                        >
                           {get(item, "store_layout_details.0.name", null)}
                         </h3>
                         <p>

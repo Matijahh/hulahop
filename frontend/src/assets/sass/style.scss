@@ -2321,6 +2321,10 @@ form {
       border-radius: 20px;
       position: relative;
 
+      .color-col {
+        width: max-content;
+      }
+
       .add-cart-btn {
         position: absolute;
         bottom: 10px;

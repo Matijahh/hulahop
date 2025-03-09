@@ -22,7 +22,7 @@ const Products = ({ storeData }) => {
     setLoading(true);
 
     const response = await commonGetQuery(
-      `/associate_products?user_id=${storeData?.user_id}`
+      `/associate_products?status=true&user_id=${storeData?.user_id}`
     );
 
     setLoading(false);

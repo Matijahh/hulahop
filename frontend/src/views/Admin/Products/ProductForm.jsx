@@ -127,7 +127,7 @@ const ProductForm = () => {
       price: "",
       category_id: "",
       subcategory_id: "",
-      product_status: true,
+      status: true,
       x_position: 163,
       y_position: 103,
       frame_width: 171,
@@ -159,16 +159,21 @@ const ProductForm = () => {
       const URL = id ? `/products/${id}` : "/products";
       let categoryId = getSelectobjectValue(values.category_id);
       let subcategoryId = getSelectobjectValue(values.subcategory_id);
-      let productStatusId = getSelectobjectValue(values.product_status);
-      let productVariants = values.product_variants.map((variant) => ({
-        color_id: variant.color_id.split(",")[0], // Extracting the ID from "2,Sky"
-        image_id: variant.image_id,
-        sub_variants: values.sub_variants.map((subVariant) => ({
-          value: subVariant.value,
-          quantity: values.quantity,
-        })),
-        variant_status: variant.variant_status.id,
-      }));
+      let productStatusId = getSelectobjectValue(values.status);
+      let productVariants = values.product_variants.map((variant) => {
+        return {
+          color_id: variant.color_id.split(",")[0], // Extracting the ID from "2,Sky"
+          image_id: variant.image_id,
+          sub_variants: values.sub_variants.map((subVariant) => ({
+            value: subVariant.value,
+            quantity: values.quantity,
+          })),
+          variant_status:
+            getSelectobjectValue(variant.variant_status).id === "true"
+              ? true
+              : false,
+        };
+      });
 
       const reqBody = {
         name: values.name,
@@ -177,7 +182,7 @@ const ProductForm = () => {
         price: values.price,
         category_id: categoryId.id,
         subcategory_id: subcategoryId.id,
-        product_status: productStatusId.id,
+        status: productStatusId.id === "true" ? true : false,
         product_variants: productVariants,
         x_position: values.x_position,
         y_position: values.y_position,
@@ -298,7 +303,7 @@ const ProductForm = () => {
         y_position,
         frame_width,
         frame_height,
-        product_status,
+        status,
       } = data;
 
       setProductdata(data);
@@ -366,10 +371,8 @@ const ProductForm = () => {
       );
       formik.setFieldValue("quantity", quantity || 9999);
       formik.setFieldValue(
-        "product_status",
-        product_status === false
-          ? `false,${t("Inactive")}`
-          : `true,${t("Active")}`
+        "status",
+        status === false ? `false,${t("Inactive")}` : `true,${t("Active")}`
       );
       formik.setFieldValue(
         "sub_variants",
@@ -536,7 +539,7 @@ const ProductForm = () => {
                       <div className="col-lg-6">
                         <SelectComponent
                           fullWidth
-                          name="product_status"
+                          name="status"
                           size="small"
                           title={t("Status")}
                           optionList={statusList}
