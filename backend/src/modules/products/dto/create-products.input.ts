@@ -17,6 +17,9 @@ export class productVariants {
   @ApiProperty()
   image_id: string | null;
 
+  @ApiProperty()
+  variant_status: boolean | null;
+
   @ApiProperty({ type: [productSubVariants] })
   @Type(() => productSubVariants)
   @ValidateNested({ each: true })
