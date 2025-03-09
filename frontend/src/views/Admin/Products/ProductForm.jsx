@@ -101,6 +101,17 @@ const ProductForm = () => {
   const navigation = useNavigate();
   const { t } = useTranslation();
 
+  const statusList = [
+    {
+      id: true,
+      title: t("Active"),
+    },
+    {
+      id: false,
+      title: t("Inactive"),
+    },
+  ];
+
   const validation = Yup.object().shape({
     name: Yup.string().required(t("Name is required!")),
     price: Yup.string().required(t("Price is required!")),
@@ -116,6 +127,7 @@ const ProductForm = () => {
       price: "",
       category_id: "",
       subcategory_id: "",
+      product_status: true,
       x_position: 163,
       y_position: 103,
       frame_width: 171,
@@ -130,6 +142,7 @@ const ProductForm = () => {
         {
           color_id: "",
           image_id: "",
+          variant_status: `true,${t("Active")}`,
           sub_variants: [
             {
               value: "",
@@ -146,6 +159,7 @@ const ProductForm = () => {
       const URL = id ? `/products/${id}` : "/products";
       let categoryId = getSelectobjectValue(values.category_id);
       let subcategoryId = getSelectobjectValue(values.subcategory_id);
+      let productStatusId = getSelectobjectValue(values.product_status);
       let productVariants = values.product_variants.map((variant) => ({
         color_id: variant.color_id.split(",")[0], // Extracting the ID from "2,Sky"
         image_id: variant.image_id,
@@ -153,6 +167,7 @@ const ProductForm = () => {
           value: subVariant.value,
           quantity: values.quantity,
         })),
+        variant_status: variant.variant_status.id,
       }));
 
       const reqBody = {
@@ -162,6 +177,7 @@ const ProductForm = () => {
         price: values.price,
         category_id: categoryId.id,
         subcategory_id: subcategoryId.id,
+        product_status: productStatusId.id,
         product_variants: productVariants,
         x_position: values.x_position,
         y_position: values.y_position,
@@ -282,6 +298,7 @@ const ProductForm = () => {
         y_position,
         frame_width,
         frame_height,
+        product_status,
       } = data;
 
       setProductdata(data);
@@ -301,6 +318,10 @@ const ProductForm = () => {
           ""
         )}`,
         image_id: get(variant, "image_id", "") || "",
+        variant_status:
+          get(variant, "variant_status", "") === false
+            ? `false,${t("Inactive")}`
+            : `true,${t("Active")}`,
         sub_variants:
           variant.sub_variants && size(variant.sub_variants) > 0
             ? variant.sub_variants.map((subVariant) => ({
@@ -344,6 +365,12 @@ const ProductForm = () => {
         `${sub_category.id},${sub_category.name}`
       );
       formik.setFieldValue("quantity", quantity || 9999);
+      formik.setFieldValue(
+        "product_status",
+        product_status === false
+          ? `false,${t("Inactive")}`
+          : `true,${t("Active")}`
+      );
       formik.setFieldValue(
         "sub_variants",
         (size(productSubVariantsValues) > 0 && productSubVariantsValues[0]) ||
@@ -496,7 +523,7 @@ const ProductForm = () => {
                           disabled={loading}
                         />
                       </div>
-                      <div className="col-lg-12">
+                      <div className="col-lg-6">
                         <InputComponent
                           name="quantity"
                           InnerPlaceholder={t("Quantity")}
@@ -504,6 +531,17 @@ const ProductForm = () => {
                           formik={formik}
                           disabled={loading}
                           label={t("Quantity")}
+                        />
+                      </div>
+                      <div className="col-lg-6">
+                        <SelectComponent
+                          fullWidth
+                          name="product_status"
+                          size="small"
+                          title={t("Status")}
+                          optionList={statusList}
+                          formik={formik}
+                          disabled={loading}
                         />
                       </div>
                     </div>
@@ -666,7 +704,11 @@ const ProductForm = () => {
                                               name={`product_variants.${variantIndex}.image_id`}
                                               id={item.image_id}
                                               formik={formik}
-                                              disabled={variantIndex == 0}
+                                              disabled={
+                                                size(
+                                                  formik.values.product_variants
+                                                ) < 2
+                                              }
                                             />
                                           </div>
                                           <div className="my-3">
@@ -685,14 +727,36 @@ const ProductForm = () => {
                                               formik={formik}
                                             />
                                           </div>
+                                          <div className="my-3">
+                                            <SelectComponent
+                                              label={t("Status")}
+                                              fullWidth
+                                              size="small"
+                                              name={`product_variants.${variantIndex}.variant_status`}
+                                              value={
+                                                formik.values.product_variants[
+                                                  variantIndex
+                                                ].variant_status
+                                              }
+                                              isShowValue
+                                              optionList={statusList}
+                                              formik={formik}
+                                            />
+                                          </div>
                                           <div>
                                             <ButtonComponent
                                               width="100%"
                                               variant="outlined"
                                               text={t("Remove")}
-                                              disabled={variantIndex == 0}
+                                              disabled={
+                                                size(
+                                                  formik.values.product_variants
+                                                ) < 2
+                                              }
                                               onClick={
-                                                variantIndex == 0
+                                                size(
+                                                  formik.values.product_variants
+                                                ) < 2
                                                   ? () => {}
                                                   : () => {
                                                       remove(variantIndex);
