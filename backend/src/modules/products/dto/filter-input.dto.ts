@@ -9,4 +9,7 @@ export class filterInputDto {
 
   @ApiPropertyOptional()
   search_string: string | null;
+
+  @ApiPropertyOptional()
+  status: 'true' | 'false' | null;
 }

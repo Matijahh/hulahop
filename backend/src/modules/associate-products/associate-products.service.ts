@@ -61,6 +61,12 @@ export class AssociateProductsService extends AbstractService {
         },
       };
     }
+
+    if (filterDto.status) {
+      const queryStatusFlag = filterDto.status === 'true' ? 1 : 0;
+      where = { ...where, product: { status: queryStatusFlag } };
+    }
+
     if (filterDto.search_string) {
       where = { ...where, name: Like(`%${filterDto.search_string}%`) };
     }
