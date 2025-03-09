@@ -43,29 +43,28 @@ export class AssociateProductsService extends AbstractService {
         : null;
 
     let where = {};
+    let productWhere = {};
     let order = {};
 
     if (categoryIds) {
-      where = {
-        ...where,
-        product: {
-          category_id: In(categoryIds),
-        },
+      productWhere = {
+        ...productWhere,
+        category_id: In(categoryIds),
       };
     }
     if (subCategoryIds) {
-      where = {
-        ...where,
-        product: {
-          subcategory_id: In(subCategoryIds),
-        },
+      productWhere = {
+        ...productWhere,
+        subcategory_id: In(subCategoryIds),
       };
     }
 
     if (filterDto.status) {
       const queryStatusFlag = filterDto.status === 'true' ? 1 : 0;
-      where = { ...where, product: { status: queryStatusFlag } };
+      productWhere = { ...productWhere, status: queryStatusFlag };
     }
+
+    where = { ...where, product: productWhere };
 
     if (filterDto.search_string) {
       where = { ...where, name: Like(`%${filterDto.search_string}%`) };
