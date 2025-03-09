@@ -12,6 +12,7 @@ import { ProductSubVariants } from '../product-sub-variants/entities/product-sub
 import { filterInputDto } from './dto/filter-input.dto';
 import { masterFilterInputDto } from './dto/master-filter.dto';
 import { productVariantsRepository } from '../product-variants/repository/product-variants.repository';
+import { log } from 'node:console';
 
 @Injectable()
 export class ProductsService extends AbstractService {
@@ -96,6 +97,7 @@ export class ProductsService extends AbstractService {
               product_id: id,
               color_id: product_variant.color_id,
               image_id: product_variant.image_id,
+              variant_status: product_variant.variant_status,
             },
           );
           for (const variant of product_variant.sub_variants) {
@@ -158,6 +160,12 @@ export class ProductsService extends AbstractService {
     }
     if (query.search_string) {
       where = { ...where, name: Like(`%${query.search_string}%`) };
+    }
+
+    
+    if (query.status) {
+      const queryStatusFlag = query.status === 'true' ? 1 : 0
+      where = { ...where, status: queryStatusFlag };
     }
     const findProduct = await this.find({
       where,

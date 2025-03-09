@@ -30,4 +30,7 @@ export class GetAssociateProductFilterInputDto {
 
   @ApiPropertyOptional()
   page?: number;
+
+  @ApiPropertyOptional()
+  status: 'true' | 'false' | null;
 }

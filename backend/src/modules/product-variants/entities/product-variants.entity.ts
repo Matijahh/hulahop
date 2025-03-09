@@ -31,6 +31,10 @@ export class ProductVariants {
   @Column('int', { name: 'color_id', nullable: true })
   color_id: number | null;
 
+  @ValidateIf((val) => val.variant_status !== null)
+  @Column('boolean', { name: 'variant_status', nullable: true, default: () => 'true' })
+  variant_status: boolean | null;
+
   @ValidateIf((val) => val.image_id !== null)
   @MaxLength(36)
   @Column('varchar', { name: 'image_id', nullable: true })
