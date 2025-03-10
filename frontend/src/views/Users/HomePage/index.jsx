@@ -23,6 +23,7 @@ import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOu
 import PhoneCallbackOutlinedIcon from "@mui/icons-material/PermPhoneMsgOutlined";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import ButtonComponent from "../../../components/ButtonComponent";
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
 import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
 import SliderSection from "./SliderSection";
@@ -57,6 +58,7 @@ const HomePage = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const searchModal = Boolean(anchorEl);
   const [searchDataList, setSearchDataList] = useState([]);
+  const [hasStoresButNoProducts, setHasStoresButNoProducts] = useState(false);
 
   const navigate = useNavigate();
   const targetSearchField = useRef(null);
@@ -80,11 +82,30 @@ const HomePage = () => {
   };
 
   const filterSearch = (query) => {
-    return searchDataList.filter(
+    const result = searchDataList.filter(
       (item) =>
         item.name?.toLowerCase().includes(query.toLowerCase()) || // Search by Name
         item.storeName?.toLowerCase().includes(query.toLowerCase()) // Search by Store Name
     );
+
+    let hasProducts = false;
+    let hasStores = false;
+    if(result.length > 0){
+      result.forEach((r) => {
+        if(r.productId){
+          hasProducts = true;
+        }else if(r.userId){
+          hasStores = true;
+        }
+      })
+    }
+
+    if(hasStores && !hasProducts){
+      setHasStoresButNoProducts(true);
+    }else{
+      setHasStoresButNoProducts(false);
+    }
+    return result;
   };
 
   const debouncedHandleSearch = useCallback(
@@ -210,9 +231,11 @@ const HomePage = () => {
   const initSearchData = () => {
     let initData = [];
 
-    productsList?.forEach((p) =>
-      initData.push({ productId: p.id, name: p.name })
-    );
+    productsList?.forEach((p) => {
+      if (p.product.status) {
+        initData.push({ productId: p.id, name: p.name });
+      }
+    });
     associatesList?.forEach((a) =>
       initData.push({
         userId: a.id,
@@ -313,7 +336,7 @@ const HomePage = () => {
                       {searchMode
                         ? filteredSearchData &&
                           filteredSearchData.length > 0 &&
-                          filteredSearchData.map((l, index) => {
+                          (filteredSearchData.map((l, index) => {
                             return (
                               <MenuItem
                                 key={index}
@@ -328,6 +351,7 @@ const HomePage = () => {
                               </MenuItem>
                             );
                           })
+                        )
                         : searchDataList &&
                           searchDataList.length > 0 &&
                           searchDataList.map((l, index) => {
@@ -345,6 +369,15 @@ const HomePage = () => {
                               </MenuItem>
                             );
                           })}
+                          {searchMode && searchDataList.length > 0 && filteredSearchData.length > 0 && !hasStoresButNoProducts && (
+                            <>
+                            <hr/>
+                            <MenuItem onClick={() => navigate(ROUTE_MAIN_SHOP + "?search_string=" + searchTerm)} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: 'fit'}} className="view-all-products">
+                                {t("View Products")}
+                                <ArrowForwardIcon className="me-2" />
+                            </MenuItem>
+                            </>
+                          )}
                     </Menu>
                   </div>
                 </div>
