@@ -122,6 +122,7 @@ const PreviewJsonImage = ({
                   key={item.id}
                   x={item.x}
                   y={item.y}
+                  rotation={item.rotation}
                   width={item.width}
                   height={item.height}
                   image={imageURL}

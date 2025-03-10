@@ -144,14 +144,17 @@ export const ImageContainer = styled.div`
 
   .image-action-buttons {
     position: absolute;
-    top: 20px;
+    display: flex;
 
     @media screen and (max-width: 768px) {
+      top: 10px;
+      left: 10px;
       z-index: 2;
     }
   }
 
   .button-list {
+    margin-right: 5px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 6px;
 
@@ -190,6 +193,10 @@ export const ImageContainer = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 30px;
+
+    canvas {
+      border-radius: 15px;
+    }
 
     @media screen and (max-width: 768px) {
       width: 100%;

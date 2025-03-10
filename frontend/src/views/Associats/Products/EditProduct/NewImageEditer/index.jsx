@@ -6,6 +6,7 @@ import { Stage, Layer, Image, Transformer, Rect, Group } from "react-konva";
 import { ImageContainer } from "../styled";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import ControlCameraIcon from "@mui/icons-material/ControlCamera";
 
 const ImageComponent = ({
   imageProps,
@@ -13,10 +14,12 @@ const ImageComponent = ({
   onSelect,
   onChange,
   dragBoundFunc,
+  productData,
 }) => {
   const imageRef = useRef();
   const trRef = useRef();
   const [image] = useImage(imageProps.image, "anonymous", "origin");
+  const [dragging, setDragging] = useState(false);
 
   useEffect(() => {
     if (isSelected) {
@@ -27,37 +30,57 @@ const ImageComponent = ({
 
   return (
     <React.Fragment>
-      <Image
-        onClick={onSelect}
-        onTap={onSelect}
-        ref={imageRef}
-        {...imageProps}
+      <Group
         draggable
-        image={image}
-        onDragEnd={(e) => {
-          onChange({
-            ...imageProps,
-            x: e.target.x(),
-            y: e.target.y(),
-          });
-        }}
-        onTransformEnd={(e) => {
-          const node = imageRef.current;
-          const scaleX = node.scaleX();
-          const scaleY = node.scaleY();
+        clipFunc={
+          !dragging
+            ? (ctx) => {
+                ctx.rect(
+                  get(productData, "x_position"),
+                  get(productData, "y_position"),
+                  get(productData, "frame_width"),
+                  get(productData, "frame_height")
+                );
+              }
+            : undefined
+        }
+      >
+        <Image
+          onClick={onSelect}
+          onTap={onSelect}
+          ref={imageRef}
+          {...imageProps}
+          draggable
+          image={image}
+          onDragStart={() => setDragging(true)}
+          onDragEnd={(e) => {
+            onChange({
+              ...imageProps,
+              x: e.target.x(),
+              y: e.target.y(),
+            });
+            setDragging(false);
+          }}
+          opacity={dragging ? 0.3 : 1}
+          onTransformEnd={(e) => {
+            const node = imageRef.current;
+            const scaleX = node.scaleX();
+            const scaleY = node.scaleY();
 
-          node.scaleX(1);
-          node.scaleY(1);
-          onChange({
-            ...imageProps,
-            x: node.x(),
-            y: node.y(),
-            width: Math.max(5, node.width() * scaleX),
-            height: Math.max(node.height() * scaleY),
-          });
-        }}
-        dragBoundFunc={dragBoundFunc}
-      />
+            node.scaleX(1);
+            node.scaleY(1);
+            onChange({
+              ...imageProps,
+              rotation: e.target.attrs.rotation,
+              x: node.x(),
+              y: node.y(),
+              width: Math.max(5, node.width() * scaleX),
+              height: Math.max(node.height() * scaleY),
+            });
+          }}
+          dragBoundFunc={dragBoundFunc}
+        />
+      </Group>
       {isSelected && (
         <Transformer
           ref={trRef}
@@ -113,7 +136,9 @@ const NewImageEditor = ({
 
   useEffect(() => {
     setLoading(true);
+
     const savedState = localStorage.getItem("canvasState");
+
     if (pickImageUrl !== images[0]?.image) {
       const img = new window.Image();
       img.src = pickImageUrl;
@@ -137,6 +162,7 @@ const NewImageEditor = ({
     }
 
     const mainProductImage = new window.Image();
+
     mainProductImage.src = imgURL;
     mainProductImage.onload = () => {
       setLoading(false);
@@ -178,9 +204,19 @@ const NewImageEditor = ({
   }, [images]);
 
   const removeImage = () => {
-    const updatedImages = images.filter((img) => img.id !== selectedId);
-    setImages(updatedImages);
+    // There is no need for this line of code since we are always going to have only one image and delete should remove it
+    //const updatedImages = images.filter((img) => img.id !== selectedId);
+    setImages([]);
     localStorage.removeItem("canvasState");
+  };
+
+  const centerImage = () => {
+    const updatedImages = images.map((img) => ({
+      ...img,
+      x: parseFloat(get(productData, "x_position")),
+      y: parseFloat(get(productData, "y_position")),
+    }));
+    setImages(updatedImages);
   };
 
   const SaveImage = async () => {
@@ -194,32 +230,37 @@ const NewImageEditor = ({
     handleSubmit(dataURL);
   };
 
-  const dragBoundFunc = (pos, imageProps) => {
-    return {
-      x: Math.min(
-        Math.max(pos.x, get(productData, "x_position")),
-        parseFloat(get(productData, "x_position")) +
-          parseFloat(get(productData, "frame_width")) -
-          imageProps.width
-      ),
-      y: Math.min(
-        Math.max(pos.y, get(productData, "y_position")),
-        parseFloat(get(productData, "y_position")) +
-          parseFloat(get(productData, "frame_height")) -
-          imageProps.height
-      ),
-    };
-  };
+  // const dragBoundFunc = (pos, imageProps) => {
+  //   return {
+  //     x: Math.min(
+  //       Math.max(pos.x, get(productData, "x_position")),
+  //       parseFloat(get(productData, "x_position")) +
+  //         parseFloat(get(productData, "frame_width")) -
+  //         imageProps.width
+  //     ),
+  //     y: Math.min(
+  //       Math.max(pos.y, get(productData, "y_position")),
+  //       parseFloat(get(productData, "y_position")) +
+  //         parseFloat(get(productData, "frame_height")) -
+  //         imageProps.height
+  //     ),
+  //   };
+  // };
 
   return (
     <ImageContainer>
       <div className="image-action-buttons">
         <div className="button-list">
-          <div className="list-item">
-            <DeleteIcon onClick={removeImage} />
+          <div className="list-item" onClick={removeImage}>
+            <DeleteIcon />
           </div>
-          <div className="item" onClick={() => SaveImage()} ref={imageRef}>
-            {/* <SaveOutlinedIcon /> */}
+        </div>
+        <div className="item" onClick={() => SaveImage()} ref={imageRef}>
+          {/* <SaveOutlinedIcon /> */}
+        </div>
+        <div className="button-list">
+          <div className="list-item" onClick={centerImage}>
+            <ControlCameraIcon />
           </div>
         </div>
       </div>
@@ -227,47 +268,37 @@ const NewImageEditor = ({
         <Stage width={500} height={500} ref={stageRef}>
           <Layer>
             <MainImage />
-            {showFrame && (
-              <Rect
-                x={get(productData, "x_position")}
-                y={get(productData, "y_position")}
-                width={get(productData, "frame_width")}
-                height={get(productData, "frame_height")}
-                stroke="black"
-                strokeWidth={1}
-              />
-            )}
-            <Group
-              clipFunc={(ctx) => {
-                ctx.rect(
-                  get(productData, "x_position"),
-                  get(productData, "y_position"),
-                  get(productData, "frame_width"),
-                  get(productData, "frame_height")
-                );
-              }}
-            >
-              {images.map((img, i) => {
-                return (
-                  <ImageComponent
-                    key={i}
-                    imageProps={img}
-                    isSelected={img.id === selectedId}
-                    onSelect={() => {
-                      selectImage(img.id);
-                    }}
-                    onChange={(newAttrs) => {
-                      const updatedImages = images.slice();
-                      updatedImages[i] = newAttrs;
-                      setImages(updatedImages);
-                      selectImage(null);
-                      setShowFrame(false);
-                    }}
-                    dragBoundFunc={(po) => dragBoundFunc(po, img)}
-                  />
-                );
-              })}
-            </Group>
+            <Rect
+              x={get(productData, "x_position")}
+              y={get(productData, "y_position")}
+              width={get(productData, "frame_width")}
+              height={get(productData, "frame_height")}
+              stroke="#004E6480"
+              strokeWidth={1}
+              dashEnabled
+              dash={[6]}
+            />
+            {images.map((img, i) => {
+              return (
+                <ImageComponent
+                  key={i}
+                  imageProps={img}
+                  isSelected={img.id === selectedId}
+                  onSelect={() => {
+                    selectImage(img.id);
+                  }}
+                  onChange={(newAttrs) => {
+                    const updatedImages = images.slice();
+                    updatedImages[i] = newAttrs;
+                    setImages(updatedImages);
+                    selectImage(null);
+                    setShowFrame(false);
+                  }}
+                  productData={productData}
+                  //dragBoundFunc={(po) => dragBoundFunc(po, img)}
+                />
+              );
+            })}
           </Layer>
         </Stage>
       </div>

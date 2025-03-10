@@ -49,7 +49,10 @@ export const ImageLibraryContainer = styled.div`
   .image-box {
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 6px;
-    cursor: pointer;
+
+    .image-cover {
+      height: 300px;
+    }
 
     .input-check {
       position: absolute;
@@ -61,6 +64,10 @@ export const ImageLibraryContainer = styled.div`
     .box-footer {
       padding: 10px;
       border-top: 1px solid rgba(0, 0, 0, 0.05);
+
+      .brand-btn {
+        padding: 5px 30px !important;
+      }
 
       .image-title {
         white-space: nowrap;

@@ -19,6 +19,10 @@ export const SidebarContainer = styled.div`
 
       img {
         width: 160px;
+
+        @media screen and (max-width: 768px) {
+          width: 100px;
+        }
       }
     }
 

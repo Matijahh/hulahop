@@ -155,11 +155,17 @@ export const ImageContainer = styled.div`
 
   .image-action-buttons {
     position: absolute;
-    top: 20px;
     z-index: 2;
+    display: flex;
+
+    @media screen and (max-width: 768px) {
+      top: 10px;
+      left: 10px;
+    }
   }
 
   .button-list {
+    margin-right: 5px;
     border: 1px solid rgba(0, 0, 0, 0.05);
     border-radius: 6px;
 

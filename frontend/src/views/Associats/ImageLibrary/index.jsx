@@ -91,7 +91,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
     if (response) {
       const { message } = response.data;
       getAllAssociateImage();
-      SuccessTaster(message);
+      SuccessTaster(t(message));
     }
   };
 
@@ -107,7 +107,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
     if (response) {
       getAllAssociateImage();
       const { message } = response.data;
-      SuccessTaster(message);
+      SuccessTaster(t(message));
     }
   };
 
@@ -141,21 +141,23 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
                 <Col md={4} lg={4} sm={6} key={key}>
                   <div className="image-box">
                     <div className="image-cover">
-                      <img
-                        onClick={() => {
-                          onPickImage(
-                            `${REST_URL_SERVER}/images/${item.image_id}`
-                          );
-                        }}
-                        src={`${REST_URL_SERVER}/images/${item.image_id}`}
-                      />
+                      <img src={`${REST_URL_SERVER}/images/${item.image_id}`} />
                     </div>
                     <div className="box-footer">
                       <div className="content">
                         <FlexBox
-                          justifyContent={"flex-start"}
+                          justifyContent={"center"}
                           className="content-list"
                         >
+                          <ButtonComponent
+                            variant="outlined"
+                            onClick={() => {
+                              onPickImage(
+                                `${REST_URL_SERVER}/images/${item.image_id}`
+                              );
+                            }}
+                            text={t("Add")}
+                          />
                           <ButtonComponent
                             variant="outlined"
                             onClick={() => handleRemove(item.id)}
