@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { commonGetQuery } from "../../../utils/axiosInstance";
 import { size, get } from "lodash";
@@ -14,6 +14,7 @@ import CategoryImg from "@mui/icons-material/CategoryOutlined";
 const Main = (props) => {
   const { setMainLoading, mainLoading } = props;
 
+  const [searchParams, setSearchParams] = useSearchParams()
   const [loading, setLoading] = useState(false);
   const [associateProductsList, setAssociateProductsList] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
@@ -75,7 +76,11 @@ const Main = (props) => {
 
     const sort = sortBy.split(",")[0];
 
+    const searchString = searchParams.get("search_string")
     let url = `associate_products?status=true&limit=${limit}&page=${page}&${sort}`;
+    if (searchString) {
+      url = `${url}&search_string=${searchString}`
+    }
 
     if (categoryId && categoryId !== "all") {
       url = `${url}&category_ids=${categoryId}`;
