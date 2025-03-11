@@ -213,6 +213,7 @@ const NewImageEditor = ({
   const centerImage = () => {
     const updatedImages = images.map((img) => ({
       ...img,
+      rotation: 0,
       x: parseFloat(get(productData, "x_position")),
       y: parseFloat(get(productData, "y_position")),
     }));
