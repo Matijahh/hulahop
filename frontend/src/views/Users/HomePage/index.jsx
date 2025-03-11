@@ -1,39 +1,29 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { commonGetQuery } from "../../../utils/axiosInstance";
-import { debounce, get, map, size } from "lodash";
+import { get, map, size } from "lodash";
 import { ACCESS_TOKEN } from "../../../utils/constant";
 import { connect } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   ROUTE_ASSOCIATE_BRAND_STORE,
-  ROUTE_ASSOCIATE_BRAND_STORE_SHOP,
   ROUTE_MAIN_SHOP,
-  ROUTE_MAIN_SHOP_PRODUCT,
   ROUTE_SIGN_UP,
 } from "../../../routes/routes";
-import {
-  getImageUrlById,
-  slugify,
-  slugifyString,
-} from "../../../utils/commonFunctions";
+import { getImageUrlById, slugifyString } from "../../../utils/commonFunctions";
 
 import SearchOutlined from "@mui/icons-material/SearchOutlined";
 import CurrencyExchangeOutlinedIcon from "@mui/icons-material/CurrencyExchangeOutlined";
 import PhoneCallbackOutlinedIcon from "@mui/icons-material/PermPhoneMsgOutlined";
 import RocketLaunchOutlinedIcon from "@mui/icons-material/LocalShippingOutlined";
 import ButtonComponent from "../../../components/ButtonComponent";
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ShoppingBagOutlinedIcon from "@mui/icons-material/ShoppingBagOutlined";
-import StoreOutlinedIcon from "@mui/icons-material/StoreOutlined";
-import SliderSection from "./SliderSection";
-import SliderComponent from "../../../components/SliderComponent/SliderComponent";
 import Product from "../../../components/Product/Product";
 import CommonCategorySidebar from "../../../components/CommonCategorySidebar";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-
 import { Helmet } from "react-helmet";
 import { Loader } from "../../../components/Loader";
+import { InputAdornment, TextField } from "@mui/material";
+
 import laptopImage from "../../../assets/images/laptop-image.png";
 import step1 from "../../../assets/images/step1.png";
 import step2 from "../../../assets/images/step2.png";
@@ -41,116 +31,20 @@ import step3 from "../../../assets/images/step3.png";
 import step4 from "../../../assets/images/step4.png";
 import step5 from "../../../assets/images/step5.png";
 import step6 from "../../../assets/images/step6.png";
-import { InputAdornment, Menu, MenuItem, TextField } from "@mui/material";
 
 const HomePage = () => {
-  const [value, setValue] = useState("1");
   const [bestSellingProducts, setBestSellingProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
   const [associatesList, setAssociatesList] = useState([]);
-  const [productsList, setProductList] = useState([]);
-  const [bestSellingCategories, setBestSellingCategories] = useState([]);
   const [wishListData, setWishListData] = useState([]);
-  const [filteredSearchData, setFilteredSearchData] = useState([]);
-  const [searchMode, setSearchMode] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
-  const [anchorEl, setAnchorEl] = useState(null);
-  const searchModal = Boolean(anchorEl);
-  const [searchDataList, setSearchDataList] = useState([]);
-  const [hasStoresButNoProducts, setHasStoresButNoProducts] = useState(false);
 
   const navigate = useNavigate();
   const targetSearchField = useRef(null);
   const { t } = useTranslation();
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
-
-  const handleClick = () => {
-    setAnchorEl(targetSearchField.current);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
   const handleSearchChange = (event) => {
     setSearchTerm(event.target.value);
-    debouncedHandleSearch(event.target.value);
-  };
-
-  const filterSearch = (query) => {
-    const result = searchDataList.filter(
-      (item) =>
-        item.name?.toLowerCase().includes(query.toLowerCase()) || // Search by Name
-        item.storeName?.toLowerCase().includes(query.toLowerCase()) // Search by Store Name
-    );
-
-    let hasProducts = false;
-    let hasStores = false;
-    if(result.length > 0){
-      result.forEach((r) => {
-        if(r.productId){
-          hasProducts = true;
-        }else if(r.userId){
-          hasStores = true;
-        }
-      })
-    }
-
-    if(hasStores && !hasProducts){
-      setHasStoresButNoProducts(true);
-    }else{
-      setHasStoresButNoProducts(false);
-    }
-    return result;
-  };
-
-  const debouncedHandleSearch = useCallback(
-    debounce((query) => {
-      if (query) {
-        setSearchMode(true);
-      } else {
-        setSearchMode(false);
-      }
-
-      const filteredItems = filterSearch(query);
-      setFilteredSearchData(filteredItems);
-    }, 1000),
-    [searchTerm]
-  );
-
-  const handleItemPick = (item) => {
-    setAnchorEl(null);
-    let url = item.productId
-      ? ROUTE_MAIN_SHOP_PRODUCT.replace(":sId", item.productId).replace(
-          ":id",
-          slugify(item.name, item.productId)
-        )
-      : ROUTE_ASSOCIATE_BRAND_STORE_SHOP.replace(
-          ":id",
-          slugifyString(item.storeName)
-        );
-
-    if (url) {
-      navigate(url);
-      window.location.reload();
-    }
-  };
-
-  const getAllCategory = async () => {
-    let url = "/categories";
-
-    const response = await commonGetQuery(url);
-
-    if (response) {
-      const { data } = response.data;
-      setCategories(
-        [...data].filter((d) => bestSellingCategories.find((i) => i === d.id))
-      );
-    }
   };
 
   const getBestSellingProduct = async (id) => {
@@ -178,7 +72,6 @@ const HomePage = () => {
         }
       });
 
-      setBestSellingCategories(categoryIds);
       setBestSellingProducts(data);
     }
   };
@@ -204,15 +97,6 @@ const HomePage = () => {
     }
   };
 
-  const getProductList = async () => {
-    const response = await commonGetQuery("/associate_products");
-
-    if (response) {
-      const { data } = response.data;
-      setProductList(data);
-    }
-  };
-
   const getAssociatesList = async () => {
     setLoading(true);
 
@@ -228,46 +112,14 @@ const HomePage = () => {
     setLoading(false);
   };
 
-  const initSearchData = () => {
-    let initData = [];
-
-    productsList?.forEach((p) => {
-      if (p.product.status) {
-        initData.push({ productId: p.id, name: p.name });
-      }
-    });
-    associatesList?.forEach((a) =>
-      initData.push({
-        userId: a.id,
-        name: `${a.first_name} ${a.last_name}`,
-        storeName:
-          a.store_layout_details &&
-          a.store_layout_details[0] &&
-          a.store_layout_details[0].name,
-      })
-    );
-
-    return initData;
-  };
-
   useEffect(() => {
     getBestSellingProduct();
-    getProductList();
     getAssociatesList();
 
     if (ACCESS_TOKEN) {
       getWishListData();
     }
   }, []);
-
-  useEffect(() => {
-    getAllCategory();
-  }, [bestSellingCategories]);
-
-  useEffect(() => {
-    const dataSearch = initSearchData();
-    if (dataSearch) setSearchDataList(dataSearch);
-  }, [associatesList, productsList]);
 
   return (
     <div className="page-wrapper home-page">
@@ -312,90 +164,25 @@ const HomePage = () => {
                             <SearchOutlined
                               className="search-btn"
                               id="basic-button"
-                              aria-controls={
-                                searchModal ? "basic-menu" : undefined
-                              }
                               aria-haspopup="true"
-                              aria-expanded={searchModal ? "true" : undefined}
-                              onClick={handleClick}
+                              onClick={() =>
+                                navigate(
+                                  ROUTE_MAIN_SHOP +
+                                    "?search_string=" +
+                                    searchTerm
+                                )
+                              }
                             />
                           </InputAdornment>
                         ),
                       }}
                     />
-                    <Menu
-                      anchorEl={anchorEl}
-                      id="basic-menu"
-                      className="search-menu-container"
-                      open={searchModal}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "basic-button",
-                      }}
-                    >
-                      {searchMode
-                        ? filteredSearchData &&
-                          filteredSearchData.length > 0 &&
-                          (filteredSearchData.map((l, index) => {
-                            return (
-                              <MenuItem
-                                key={index}
-                                onClick={() => handleItemPick(l)}
-                              >
-                                {l.productId ? (
-                                  <ShoppingBagOutlinedIcon className="me-2" />
-                                ) : (
-                                  <StoreOutlinedIcon className="me-2" />
-                                )}
-                                {l.storeName || l.name}
-                              </MenuItem>
-                            );
-                          })
-                        )
-                        : searchDataList &&
-                          searchDataList.length > 0 &&
-                          searchDataList.map((l, index) => {
-                            return (
-                              <MenuItem
-                                key={index}
-                                onClick={() => handleItemPick(l)}
-                              >
-                                {l.productId ? (
-                                  <ShoppingBagOutlinedIcon className="me-2" />
-                                ) : (
-                                  <StoreOutlinedIcon className="me-2" />
-                                )}
-                                {l.storeName || l.name}
-                              </MenuItem>
-                            );
-                          })}
-                          {searchMode && searchDataList.length > 0 && filteredSearchData.length > 0 && !hasStoresButNoProducts && (
-                            <>
-                            <hr/>
-                            <MenuItem onClick={() => navigate(ROUTE_MAIN_SHOP + "?search_string=" + searchTerm)} style={{display: 'flex', justifyContent: 'center', alignItems: 'center', width: 'fit'}} className="view-all-products">
-                                {t("View Products")}
-                                <ArrowForwardIcon className="me-2" />
-                            </MenuItem>
-                            </>
-                          )}
-                    </Menu>
                   </div>
                 </div>
               </div>
             </div>
             <div className="col-lg-7 order-1 order-lg-2 banner-image-container">
               <img src={laptopImage} alt="Laptop" />
-              {/* <div className="banner-video-section">
-                <iframe
-                  width="560"
-                  height="315"
-                  src="https://www.youtube.com/embed/PgniL3fILmM?si=qcqCY5kBg7g3lMUD"
-                  title={t("YouTube Video Player")}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  allowfullscreen
-                ></iframe>
-              </div> */}
             </div>
           </div>
         </div>
@@ -408,9 +195,6 @@ const HomePage = () => {
                 <h3 className="banner-head">{t("How Does It Work?")}</h3>
               </div>
             </div>
-            {/* <div className="slider-container">
-                <SliderSection />
-              </div> */}
             <div className="row">
               <div className="col-lg-6 d-flex justify-content-center align-items-center step-info-container">
                 <div className="step-container">
@@ -642,52 +426,6 @@ const HomePage = () => {
                     </div>
                   );
                 })}
-              {/* <div className="associates-slider">
-                <SliderComponent dots={false} arrows={true} slidesToShow={5}>
-                  {size(associatesList) > 0 &&
-                    map(associatesList, (item, index) => {
-                      return (
-                        <>
-                          <div className="associates-slide" key={index}>
-                            <div
-                              className="associates-box"
-                              onClick={() =>
-                                window.location.replace(
-                                  ROUTE_ASSOCIATE_BRAND_STORE.replace(
-                                    ":id",
-                                    slugifyString(
-                                      get(
-                                        item,
-                                        "store_layout_details.0.name",
-                                        null
-                                      )
-                                    )
-                                  )
-                                )
-                              }
-                            >
-                              <img
-                                src={getImageUrlById(
-                                  size(get(item, "store_layout_details", [])) >
-                                    0
-                                    ? get(
-                                        item,
-                                        "store_layout_details.0.logo_image",
-                                        ""
-                                      )
-                                    : get(item, "image_id", "")
-                                    ? get(item, "image_id", "")
-                                    : undefined
-                                )}
-                                alt=""
-                              />
-                            </div>
-                          </div>
-                        </>
-                      );
-                    })}
-                </SliderComponent>
-              </div> */}
             </div>
           </div>
         </div>
