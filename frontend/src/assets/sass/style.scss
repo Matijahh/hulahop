@@ -44,6 +44,12 @@ p {
   }
 }
 
+.narrow-btn {
+  &.brand-btn {
+    padding: 5px 30px !important;
+  }
+}
+
 .MuiListItemText-root {
   .MuiTypography-root {
     font-family: "Roboto", serif;

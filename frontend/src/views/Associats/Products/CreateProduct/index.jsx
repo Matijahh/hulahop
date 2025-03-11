@@ -68,7 +68,7 @@ const CreateProduct = () => {
       <CommonWhiteBackground>
         <ButtonComponent
           text={t("Back")}
-          className="mb-3"
+          className="mb-3 narrow-btn"
           startIcon={<ArrowBackOutlinedIcon />}
           variant="outlined"
           onClick={() => navigate(ROUTE_ASSOCIATE_MAIN_PRODUCTS)}
