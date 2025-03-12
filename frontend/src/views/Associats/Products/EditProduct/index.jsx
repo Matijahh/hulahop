@@ -231,6 +231,7 @@ const EditProduct = () => {
                             item?.image_id === activeProductId && "active"
                           }`}
                           style={{
+                            borderRadius: 4,
                             background: item?.color?.code,
                           }}
                         ></div>

@@ -152,8 +152,8 @@ const NewImageEditor = ({
       const ratio = Math.min(maxWidth / width, maxHeight / height);
       setImages([
         {
-          x: get(productData, "x_position"),
-          y: get(productData, "y_position"),
+          x: parseInt(get(productData, "x_position")),
+          y: parseInt(get(productData, "y_position")),
           width: width * ratio,
           height: height * ratio,
           image: pickImageUrl,

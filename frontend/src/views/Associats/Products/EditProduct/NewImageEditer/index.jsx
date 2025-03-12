@@ -13,7 +13,6 @@ const ImageComponent = ({
   isSelected,
   onSelect,
   onChange,
-  dragBoundFunc,
   productData,
 }) => {
   const imageRef = useRef();
@@ -78,7 +77,6 @@ const ImageComponent = ({
               height: Math.max(node.height() * scaleY),
             });
           }}
-          dragBoundFunc={dragBoundFunc}
         />
       </Group>
       {isSelected && (
@@ -149,8 +147,8 @@ const NewImageEditor = ({
       const ratio = Math.min(maxWidth / width, maxHeight / height);
       setImages([
         {
-          x: get(productData, "x_position"),
-          y: get(productData, "y_position"),
+          x: parseInt(get(productData, "x_position")),
+          y: parseInt(get(productData, "y_position")),
           width: width * ratio,
           height: height * ratio,
           image: pickImageUrl,
@@ -231,23 +229,6 @@ const NewImageEditor = ({
     handleSubmit(dataURL);
   };
 
-  // const dragBoundFunc = (pos, imageProps) => {
-  //   return {
-  //     x: Math.min(
-  //       Math.max(pos.x, get(productData, "x_position")),
-  //       parseFloat(get(productData, "x_position")) +
-  //         parseFloat(get(productData, "frame_width")) -
-  //         imageProps.width
-  //     ),
-  //     y: Math.min(
-  //       Math.max(pos.y, get(productData, "y_position")),
-  //       parseFloat(get(productData, "y_position")) +
-  //         parseFloat(get(productData, "frame_height")) -
-  //         imageProps.height
-  //     ),
-  //   };
-  // };
-
   return (
     <ImageContainer>
       <div className="image-action-buttons">
@@ -256,9 +237,7 @@ const NewImageEditor = ({
             <DeleteIcon />
           </div>
         </div>
-        <div className="item" onClick={() => SaveImage()} ref={imageRef}>
-          {/* <SaveOutlinedIcon /> */}
-        </div>
+        <div className="item" onClick={() => SaveImage()} ref={imageRef}></div>
         <div className="button-list">
           <div className="list-item" onClick={centerImage}>
             <ControlCameraIcon />
@@ -296,7 +275,6 @@ const NewImageEditor = ({
                     setShowFrame(false);
                   }}
                   productData={productData}
-                  //dragBoundFunc={(po) => dragBoundFunc(po, img)}
                 />
               );
             })}
