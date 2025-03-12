@@ -11,6 +11,7 @@ import {
   Res,
   HttpStatus,
   BadRequestException,
+  Query,
 } from '@nestjs/common';
 import { AssociateImagesService } from './associate-images.service';
 import { CreateAssociateImagesInput } from './dto/create-associate-images.input';
@@ -22,6 +23,7 @@ import { CurrentUserDto } from '../auth/dto/current-user.dto';
 import { baseController } from 'src/core/baseController';
 import { Response } from 'express';
 import { DeleteAssociateImagesInput } from './dto/delete-associate-images.input';
+import { GetAssociateImagesFilterInputDto } from './dto/get-associate-images-filter.input';
 
 @ApiTags('associate_images')
 @ApiBearerAuth()
@@ -54,10 +56,9 @@ export class AssociateImagesController {
   async findAll(
     @Res() res: Response,
     @CurrentUser() currentUser: CurrentUserDto,
+    @Query() filterDto: GetAssociateImagesFilterInputDto,
   ) {
-    const result = await this.associateImagesService.find({
-      where: { user_id: currentUser.id },
-    });
+    const result = await this.associateImagesService.findAll(filterDto, currentUser.id);
     return baseController.getResult(
       res,
       HttpStatus.OK,
