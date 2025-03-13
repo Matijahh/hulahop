@@ -59,6 +59,10 @@ export const ProductFormWrapper = styled.div`
     }
   }
 
+  .back-image {
+    margin-top: 20px;
+  }
+
   .product-variant-box {
     padding: 20px;
     margin: 15px 0;
@@ -124,6 +128,7 @@ const ProductForm = () => {
       name: "",
       description: "",
       image_id: "",
+      image_id_back: "",
       price: "",
       category_id: "",
       subcategory_id: "",
@@ -132,6 +137,10 @@ const ProductForm = () => {
       y_position: 103,
       frame_width: 171,
       frame_height: 211,
+      x_position_back: 163,
+      y_position_back: 103,
+      frame_width_back: 171,
+      frame_height_back: 211,
       quantity: 9999,
       sub_variants: [
         {
@@ -179,6 +188,7 @@ const ProductForm = () => {
         name: values.name,
         description: values.description,
         image_id: values.image_id,
+        image_id_back: values.image_id_back,
         price: values.price,
         category_id: categoryId.id,
         subcategory_id: subcategoryId.id,
@@ -188,6 +198,10 @@ const ProductForm = () => {
         y_position: values.y_position,
         frame_width: values.frame_width,
         frame_height: values.frame_height,
+        x_position_back: values.x_position_back,
+        y_position_back: values.y_position_back,
+        frame_width_back: values.frame_width_back,
+        frame_height_back: values.frame_height_back,
       };
 
       setLoading(true);
@@ -295,6 +309,7 @@ const ProductForm = () => {
         name,
         description,
         image_id,
+        image_id_back,
         price,
         product_variants,
         category,
@@ -303,6 +318,10 @@ const ProductForm = () => {
         y_position,
         frame_width,
         frame_height,
+        x_position_back,
+        y_position_back,
+        frame_width_back,
+        frame_height_back,
         status,
       } = data;
 
@@ -359,12 +378,17 @@ const ProductForm = () => {
       formik.setFieldValue("name", name || "");
       formik.setFieldValue("description", description || "");
       formik.setFieldValue("image_id", image_id || "");
+      formik.setFieldValue("image_id_back", image_id_back || "");
       formik.setFieldValue("price", price || "");
       formik.setFieldValue("category_id", `${category?.id},${category?.name}`);
       formik.setFieldValue("x_position", x_position || 163);
       formik.setFieldValue("y_position", y_position || 103);
       formik.setFieldValue("frame_width", frame_width || 171);
       formik.setFieldValue("frame_height", frame_height || 211);
+      formik.setFieldValue("x_position_back", x_position_back || 163);
+      formik.setFieldValue("y_position_back", y_position_back || 103);
+      formik.setFieldValue("frame_width_back", frame_width_back || 171);
+      formik.setFieldValue("frame_height_back", frame_height_back || 211);
       formik.setFieldValue(
         "subcategory_id",
         `${sub_category.id},${sub_category.name}`
@@ -408,12 +432,40 @@ const ProductForm = () => {
     );
   };
 
+  const BackImage = () => {
+    let image_url =
+      "https://api.hulahop.shop/images/ff904dee-8d74-4e9a-adbc-bc5b7e739f54";
+
+    if (formik.values.image_id_back) {
+      image_url = getImageUrlById(formik.values.image_id_back);
+    }
+
+    const [mainProductImage] = useImage(image_url, "anonymous", "origin");
+
+    return (
+      <Image
+        width={500}
+        height={500}
+        className="main-image"
+        image={mainProductImage}
+      />
+    );
+  };
+
   const handelChangeCoverImage = (id) => {
     formik.setFieldValue("product_variants.0.image_id", id);
   };
 
   const handelDeleteCoverImage = () => {
     formik.setFieldValue("product_variants.0.image_id", "");
+  };
+
+  const handleChangeBackImage = (id) => {
+    formik.setFieldValue("product_variants.0.image_id_back", id);
+  };
+
+  const handleDeleteBackImage = () => {
+    formik.setFieldValue("product_variants.0.image_id_back", "");
   };
 
   useEffect(() => {
@@ -458,6 +510,15 @@ const ProductForm = () => {
                       onUpload={handelChangeCoverImage}
                       onDelete={handelDeleteCoverImage}
                     />
+                    <div className="back-image">
+                      <ImageUploadBox
+                        name="image_id_back"
+                        id={formik.values.image_id_back}
+                        formik={formik}
+                        onUpload={handleChangeBackImage}
+                        onDelete={handleDeleteBackImage}
+                      />
+                    </div>
                   </div>
                   <div className="col-lg-7">
                     <div className="row g-4">
@@ -669,6 +730,68 @@ const ProductForm = () => {
                       <div className="col-12">
                         <InputComponent
                           name="frame_height"
+                          InnerPlaceholder={t("Enter Frame Height")}
+                          fullWidth
+                          label={t("Frame Height")}
+                          formik={formik}
+                          disabled={loading}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="container-canvas">
+                      <Stage width={500} height={500} ref={stageRef}>
+                        <Layer>
+                          <BackImage />
+                          <Rect
+                            x={formik.values.x_position_back}
+                            y={formik.values.y_position_back}
+                            width={formik.values.frame_width_back}
+                            height={formik.values.frame_height_back}
+                            stroke="red"
+                            strokeWidth={1}
+                            dash={[0, 0]}
+                          />
+                        </Layer>
+                      </Stage>
+                    </div>
+                  </div>
+                  <div className="col-lg-6">
+                    <div className="row positions-inputs">
+                      <div className="col-12">
+                        <InputComponent
+                          name="x_position_back"
+                          InnerPlaceholder={t("Enter X Position")}
+                          fullWidth
+                          label={t("X Position")}
+                          formik={formik}
+                          disabled={loading}
+                        />
+                      </div>
+                      <div className="col-12">
+                        <InputComponent
+                          name="y_position_back"
+                          InnerPlaceholder={t("Enter Y Position")}
+                          fullWidth
+                          label={t("Y Position")}
+                          formik={formik}
+                          disabled={loading}
+                        />
+                      </div>
+                      <div className="col-12">
+                        <InputComponent
+                          name="frame_width_back"
+                          InnerPlaceholder={t("Enter Frame Width")}
+                          fullWidth
+                          label={t("Frame Width")}
+                          formik={formik}
+                          disabled={loading}
+                        />
+                      </div>
+                      <div className="col-12">
+                        <InputComponent
+                          name="frame_height_back"
                           InnerPlaceholder={t("Enter Frame Height")}
                           fullWidth
                           label={t("Frame Height")}
