@@ -108,7 +108,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
 
     if (response) {
       const { message } = response.data;
-      getAllAssociateImage();
+      getAllAssociateImage(page, searchVal);
       SuccessTaster(t(message));
     }
   };
@@ -123,7 +123,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
     );
 
     if (response) {
-      getAllAssociateImage();
+      getAllAssociateImage(page, searchVal);
       const { message } = response.data;
       SuccessTaster(t(message));
     }
@@ -131,7 +131,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
 
   const onSearchValue = debounce((e) => {
     const value = e.target && e.target.value;
-    getAllAssociateImage(page, value);
+    getAllAssociateImage(page);
     setSearchVal(value);
   }, 300);
 
