@@ -30,8 +30,6 @@ export class Products {
   @Column('varchar', { name: 'image_id', nullable: true })
   image_id: string | null;
 
-  @ValidateIf((val) => val.image_id !== null)
-  @MaxLength(36)
   @Column('varchar', { name: 'image_id_back', nullable: true })
   image_id_back: string | null;
 
