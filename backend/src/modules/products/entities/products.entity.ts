@@ -30,6 +30,11 @@ export class Products {
   @Column('varchar', { name: 'image_id', nullable: true })
   image_id: string | null;
 
+  @ValidateIf((val) => val.image_id !== null)
+  @MaxLength(36)
+  @Column('varchar', { name: 'image_id_back', nullable: true })
+  image_id_back: string | null;
+
   @ValidateIf((val) => val.category_id !== null)
   @MaxLength(36)
   @Column('int', { name: 'category_id', nullable: true })
@@ -89,6 +94,39 @@ export class Products {
     scale: 2,
   })
   frame_height: string | null;
+
+  @Column('decimal', {
+    name: 'x_position_back',
+    nullable: true,
+    precision: 10,
+    scale: 2,
+  })
+  x_position_back: string | null;
+
+  @Column('decimal', {
+    name: 'y_position_back',
+    nullable: true,
+    precision: 10,
+    scale: 2,
+  })
+  y_position_back: string | null;
+
+  @Column('decimal', {
+    name: 'frame_width_back',
+    nullable: true,
+    precision: 10,
+    scale: 2,
+  })
+  frame_width_back: string | null;
+
+  @Column('decimal', {
+    name: 'frame_height_back',
+    nullable: true,
+    precision: 10,
+    scale: 2,
+  })
+  frame_height_back: string | null;
+
 
   @OneToMany(
     () => AssociateProducts,

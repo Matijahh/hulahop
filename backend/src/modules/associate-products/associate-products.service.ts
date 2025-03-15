@@ -171,9 +171,20 @@ export class AssociateProductsService extends AbstractService {
         );
       }
     }
+
+
     const saveImage = await this.convertBase64ToImgWithSave(data.base64);
+    let imageAbstractCreateObject = {
+      ...data,
+      image_id: saveImage.id,
+    }
+    let saveImageBack = null;
+    if(data.base64_back){
+      saveImageBack = await this.convertBase64ToImgWithSave(data.base64_back);
+    }
+
     const createdProduct = await this.abstractCreate(
-      { ...data, image_id: saveImage.id },
+      { ...data, image_id: saveImage.id, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
       relations,
     );
     if (createdProduct && data?.selected_colors?.length) {
@@ -220,9 +231,14 @@ export class AssociateProductsService extends AbstractService {
     data.updated_at = Date.now().toString();
     const { selected_colors, base64, ...rest } = data;
     const saveImage = await this.convertBase64ToImgWithSave(base64);
+    let saveImageBack = null;
+    if(data.base64_back){
+      saveImageBack = await this.convertBase64ToImgWithSave(data.base64_back);
+    }
+
     const updatedProduct = await this.abstractUpdate(
       id,
-      { ...rest, image_id: saveImage.id },
+      { ...rest, image_id: saveImage.id, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
       relations,
     );
     await this.imagesService.remove(associateProductData.image_id);

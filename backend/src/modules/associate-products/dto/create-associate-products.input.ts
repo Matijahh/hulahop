@@ -20,6 +20,9 @@ export class CreateAssociateProductsInput {
   @ApiProperty()
   image_json: any;
 
+  @ApiPropertyOptional()
+  image_json_back: any;
+
   @ApiProperty({ type: [Number], isArray: true, nullable: true })
   selected_colors: number[] | null;
 
@@ -29,6 +32,9 @@ export class CreateAssociateProductsInput {
   @ApiProperty()
   @IsNotEmpty()
   base64: string | null;
+
+  @ApiPropertyOptional()
+  base64_back: string | null;
 
   created_at: string | null;
 

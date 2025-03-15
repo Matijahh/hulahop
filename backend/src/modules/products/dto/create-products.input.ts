@@ -64,6 +64,21 @@ export class CreateProductsInput {
   @ApiPropertyOptional()
   frame_height: string | null;
 
+  @ApiPropertyOptional()
+  image_id_back: string | null;
+
+  @ApiPropertyOptional()
+  x_position_back: string | null;
+
+  @ApiPropertyOptional()
+  y_position_back: string | null;
+
+  @ApiPropertyOptional()
+  frame_width_back: string | null;
+
+  @ApiPropertyOptional()
+  frame_height_back: string | null;
+
   @ApiProperty({ type: [productVariants] })
   @Type(() => productVariants)
   @ValidateNested({ each: true })
