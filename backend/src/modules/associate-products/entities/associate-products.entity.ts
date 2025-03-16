@@ -51,6 +51,12 @@ export class AssociateProducts {
   @Column('varchar', { name: 'image_id', nullable: true, length: 36 })
   image_id: string | null;
 
+  @Column('simple-json', { name: 'image_json_back', nullable: true })
+  image_json_back: string | null;
+
+  @Column('varchar', { name: 'image_id_back', nullable: true })
+  image_id_back: string | null;
+
   @Column('decimal', {
     name: 'price',
     nullable: true,
