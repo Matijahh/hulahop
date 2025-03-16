@@ -227,12 +227,11 @@ export class AssociateProductsService extends AbstractService {
       }
     }
     data.updated_at = Date.now().toString();
-    const { selected_colors, base64, ...rest } = data;
+    const { selected_colors, base64, base64_back, ...rest } = data;
     const saveImage = await this.convertBase64ToImgWithSave(base64);
     let saveImageBack = null;
-    if(data.base64_back){
-      saveImageBack = await this.convertBase64ToImgWithSave(data.base64_back);
-      delete data.base64_back;
+    if(base64_back){
+      saveImageBack = await this.convertBase64ToImgWithSave(base64_back);
     }
 
     const updatedProduct = await this.abstractUpdate(
@@ -241,6 +240,9 @@ export class AssociateProductsService extends AbstractService {
       relations,
     );
     await this.imagesService.remove(associateProductData.image_id);
+    if(associateProductData.image_id_back){
+      await this.imagesService.remove(associateProductData.image_id_back);
+    }
     if (updatedProduct) {
       const existingColors = await this.associateProductColorsService.find({
         where: { associate_product_id: updatedProduct.id },
