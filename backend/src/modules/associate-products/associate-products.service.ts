@@ -174,13 +174,11 @@ export class AssociateProductsService extends AbstractService {
 
 
     const saveImage = await this.convertBase64ToImgWithSave(data.base64);
-    let imageAbstractCreateObject = {
-      ...data,
-      image_id: saveImage.id,
-    }
+
     let saveImageBack = null;
     if(data.base64_back){
       saveImageBack = await this.convertBase64ToImgWithSave(data.base64_back);
+      delete data.base64_back;
     }
 
     const createdProduct = await this.abstractCreate(
@@ -234,6 +232,7 @@ export class AssociateProductsService extends AbstractService {
     let saveImageBack = null;
     if(data.base64_back){
       saveImageBack = await this.convertBase64ToImgWithSave(data.base64_back);
+      delete data.base64_back;
     }
 
     const updatedProduct = await this.abstractUpdate(
