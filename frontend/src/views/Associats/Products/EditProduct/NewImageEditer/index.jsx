@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { get } from "lodash";
+import { get, pick } from "lodash";
 import useImage from "use-image";
 
 import { Stage, Layer, Image, Transformer, Rect, Group } from "react-konva";

@@ -305,6 +305,7 @@
   "Announcement": "Announcement",
   "Logout": "Logout",
   "Search Products": "Search Products",
+  "Search Images": "Search Images",
   "Create Product": "Create Product",
   "Your Products": "Your Products",
   "No Product Found!": "No Product Found!",
@@ -903,6 +904,5 @@
   "Your old password is wrong! make sure correct.": "Your old password is wrong! make sure correct.",
   "Popularity": "Popularity",
   "There is no information about this product": "There is no information about this product",
-  "View Products": "View Products",
-  "Search Images": "Search Images"
+  "View Products": "View Products"
 }

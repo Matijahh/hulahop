@@ -305,6 +305,7 @@
   "Announcement": "Obaveštenje",
   "Logout": "Odjavi se",
   "Search Products": "Pretraži proizvode",
+  "Search Images": "Pretraži slike",
   "Create Product": "Kreiraj proizvod",
   "Your Products": "Vaši proizvodi",
   "No Product Found!": "Proizvod nije pronađen!",
@@ -903,6 +904,5 @@
   "Your old password is wrong! make sure correct.": "Vaša stara lozinka je pogrešna! Proverite ispravnost.",
   "Popularity": "Popularnosti",
   "There is no information about this product": "Nema informacija o ovom artiklu",
-  "View Products": "Pogledaj proizvode",
-  "Search Images": "Pretrazi slike"
+  "View Products": "Pogledaj proizvode"
 }
