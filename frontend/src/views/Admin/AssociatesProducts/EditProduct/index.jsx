@@ -32,6 +32,7 @@ const EditProduct = () => {
   const [showFrame, setShowFrame] = useState(true);
   const [activeProductId, setActiveProductId] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
+  const [back, setBack] = useState(false);
 
   const { productId } = useParams();
   const generatedImageRef = useRef();
@@ -53,6 +54,7 @@ const EditProduct = () => {
           .min(1, t("Color is required!"))
       : Yup.array(),
   });
+
   const formik = useFormik({
     initialValues: {
       productName: "",
@@ -71,7 +73,7 @@ const EditProduct = () => {
     },
   });
 
-  const handleSubmit = async (base64) => {
+  const handleSubmit = async (base64, base64Back) => {
     selectImage(null);
 
     const values = formik?.values;
@@ -86,9 +88,13 @@ const EditProduct = () => {
       image_json: {
         imageObj: values.customizedJson?.imageObj,
       },
+      image_json_back: {
+        imageObj: values.customizedJsonBack?.imageObj,
+      },
       selected_colors: hasColors ? values.selectedColorIds : null,
       price: productPrice,
       base64: base64,
+      base64_back: base64Back,
     };
 
     const data = new URLSearchParams(window.location.search);
@@ -107,6 +113,7 @@ const EditProduct = () => {
     if (response) {
       const { message } = response.data;
       localStorage.removeItem("canvasState");
+      localStorage.removeItem("canvasStateBack");
       Navigator(ROUTE_ADMIN_ASSOCIATE_PRODUCTS);
       SuccessTaster(t(message));
     }
@@ -131,8 +138,7 @@ const EditProduct = () => {
   };
 
   const onPickImage = (url) => {
-    const copyUrl = url;
-    setSelectedImage(url !== selectedImage && copyUrl);
+    setSelectedImage(url);
     handleToggle();
   };
 
@@ -153,6 +159,7 @@ const EditProduct = () => {
         productPrice: data?.price,
         associateProfit: "",
         customizedJson: data?.image_json,
+        customizedJsonBack: data?.image_json_back,
       });
 
       setActiveProductId(data?.product?.image_id);
@@ -170,6 +177,14 @@ const EditProduct = () => {
       getProductData();
     }
   }, []);
+
+  useEffect(() => {
+    if (product && back) {
+      setActiveProductId(product?.image_id_back);
+    } else if (product) {
+      setActiveProductId(product?.image_id);
+    }
+  }, [back]);
 
   return (
     <EditProductContainer>
@@ -197,6 +212,8 @@ const EditProduct = () => {
                   handleSubmit={handleSubmit}
                   setShowFrame={setShowFrame}
                   showFrame={showFrame}
+                  setBackIndicator={setBack}
+                  setSelectedImage={setSelectedImage}
                 />
 
                 <ColorBarList>
@@ -205,11 +222,16 @@ const EditProduct = () => {
                       return (
                         <div
                           key={key}
-                          onClick={() => setActiveProductId(item?.image_id)}
+                          onClick={() => {
+                            if (!back) {
+                              setActiveProductId(item?.image_id);
+                            }
+                          }}
                           className={`color-item ${
                             item?.image_id === activeProductId && "active"
-                          }`}
+                          } ${back ? "disabled-color" : ""}`}
                           style={{
+                            borderRadius: 4,
                             background: item?.color?.code,
                           }}
                         ></div>

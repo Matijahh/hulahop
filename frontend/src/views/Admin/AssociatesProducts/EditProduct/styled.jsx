@@ -154,14 +154,9 @@ export const ImageContainer = styled.div`
   }
 
   .image-action-buttons {
-    position: absolute;
-    z-index: 2;
+    margin-top: 10px;
     display: flex;
-
-    @media screen and (max-width: 768px) {
-      top: 10px;
-      left: 10px;
-    }
+    justify-content: center;
   }
 
   .button-list {
@@ -203,6 +198,31 @@ export const ImageContainer = styled.div`
     justify-content: center;
     align-items: center;
     margin-top: 30px;
+
+    .konvajs-content {
+      border-radius: 20px;
+
+      canvas {
+        border-radius: 20px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+
+      div {
+        width: 100%;
+
+        .konvajs-content {
+          width: 100% !important;
+
+          canvas {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+  }
   }
 `;
 
@@ -210,7 +230,7 @@ export const ColorBarList = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 30px;
   gap: 0 20px;
 
   .color-item {
@@ -221,6 +241,11 @@ export const ColorBarList = styled.div`
     box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.1);
     padding: 3px;
     border: 2px solid transparent;
+  }
+
+  .disabled-color {
+    opacity: 20%;
+    cursor: initial;
   }
 
   .active {

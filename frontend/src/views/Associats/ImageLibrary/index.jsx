@@ -49,7 +49,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
     if (response) {
       const { data } = response.data;
       setImages(data.data);
-      if(data.totalPages){
+      if (data.totalPages) {
         setTotalPages(data.totalPages);
       }
       setLoading(false);
@@ -144,7 +144,12 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
       <ImageLibraryContainer>
         <FlexBox className="mb-2 header">
           <div className="modal-title">{t("A Collection of Files")}</div>
-          <FlexBox isWrap alignItems={"center"} justifyContent={"center"} className="filters-wrapper">
+          <FlexBox
+            isWrap
+            alignItems={"center"}
+            justifyContent={"center"}
+            className="filters-wrapper"
+          >
             <InputComponent
               type="search"
               onChange={onSearchValue}
@@ -156,6 +161,7 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
               styled={{ position: "relative" }}
               text={t("Add Photo")}
               type="file"
+              className="narrow-btn"
               handleFileChange={handleFileChange}
               loading={buttonLoading}
             />
@@ -171,7 +177,9 @@ const ImageLibrary = ({ open, handleClose, onPickImage }) => {
                   <Col md={4} lg={4} sm={6} key={key}>
                     <div className="image-box">
                       <div className="image-cover">
-                        <img src={`${REST_URL_SERVER}/images/${item.image_id}`} />
+                        <img
+                          src={`${REST_URL_SERVER}/images/${item.image_id}`}
+                        />
                       </div>
                       <div className="box-footer">
                         <div className="content">
