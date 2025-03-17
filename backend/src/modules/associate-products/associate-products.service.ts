@@ -188,7 +188,7 @@ export class AssociateProductsService extends AbstractService {
     }
 
     const createdProduct = await this.abstractCreate(
-      { ...data, image_id: saveImage.id, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
+      { ...data, image_id: saveImage?.id ? saveImage?.id : null, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
       relations,
     );
     if (createdProduct && data?.selected_colors?.length) {
@@ -250,7 +250,7 @@ export class AssociateProductsService extends AbstractService {
 
     const updatedProduct = await this.abstractUpdate(
       id,
-      { ...rest, image_id: saveImage.id, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
+      { ...rest, image_id: saveImage?.id ? saveImage?.id : null, image_id_back: saveImageBack?.id ? saveImageBack?.id : null },
       relations,
     );
     await this.imagesService.remove(associateProductData.image_id);
@@ -375,6 +375,8 @@ export class AssociateProductsService extends AbstractService {
       original_name: filename,
       created_at: Date.now().toString(),
     });
+
+
     return saveImage;
   }
 
