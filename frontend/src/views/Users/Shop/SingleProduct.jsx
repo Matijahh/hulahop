@@ -277,7 +277,10 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
   };
 
   const mouseOverProduct = () => {
-    if (get(productData.product, "image_id_back")) {
+    if (
+      get(productData.product, "image_id_back") &&
+      get(productData, "image_json_back")
+    ) {
       setActiveImage(get(productData.product, "image_id_back"));
       setBack(true);
     }
