@@ -673,136 +673,146 @@ const ProductForm = () => {
                     />
                   </div>
                   <div className="col-12"></div>
-                  <div className="col-12">
-                    <h4 className="mb-3">{t("Set Frame Position")}</h4>
-                    <hr />
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="container-canvas">
-                      <Stage width={500} height={500} ref={stageRef}>
-                        <Layer>
-                          <MainImage />
-                          <Rect
-                            x={formik.values.x_position}
-                            y={formik.values.y_position}
-                            width={formik.values.frame_width}
-                            height={formik.values.frame_height}
-                            stroke="red"
-                            strokeWidth={1}
-                            dash={[0, 0]}
+                  {(formik.values.image_id || formik.values.image_id_back) && (
+                    <div className="col-12">
+                      <h4 className="mb-3">{t("Set Frame Position")}</h4>
+                      <hr />
+                    </div>
+                  )}
+                  {formik.values.image_id && (
+                    <div className="col-lg-6">
+                      <div className="container-canvas">
+                        <Stage width={500} height={500} ref={stageRef}>
+                          <Layer>
+                            <MainImage />
+                            <Rect
+                              x={formik.values.x_position}
+                              y={formik.values.y_position}
+                              width={formik.values.frame_width}
+                              height={formik.values.frame_height}
+                              stroke="red"
+                              strokeWidth={1}
+                              dash={[0, 0]}
+                            />
+                          </Layer>
+                        </Stage>
+                      </div>
+                    </div>
+                  )}
+                  {formik.values.image_id && (
+                    <div className="col-lg-6">
+                      <div className="row positions-inputs">
+                        <div className="col-12">
+                          <InputComponent
+                            name="x_position"
+                            InnerPlaceholder={t("Enter X Position")}
+                            fullWidth
+                            label={t("X Position")}
+                            formik={formik}
+                            disabled={loading}
                           />
-                        </Layer>
-                      </Stage>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="row positions-inputs">
-                      <div className="col-12">
-                        <InputComponent
-                          name="x_position"
-                          InnerPlaceholder={t("Enter X Position")}
-                          fullWidth
-                          label={t("X Position")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="y_position"
-                          InnerPlaceholder={t("Enter Y Position")}
-                          fullWidth
-                          label={t("Y Position")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="frame_width"
-                          InnerPlaceholder={t("Enter Frame Width")}
-                          fullWidth
-                          label={t("Frame Width")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="frame_height"
-                          InnerPlaceholder={t("Enter Frame Height")}
-                          fullWidth
-                          label={t("Frame Height")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="container-canvas">
-                      <Stage width={500} height={500} ref={stageRef}>
-                        <Layer>
-                          <BackImage />
-                          <Rect
-                            x={formik.values.x_position_back}
-                            y={formik.values.y_position_back}
-                            width={formik.values.frame_width_back}
-                            height={formik.values.frame_height_back}
-                            stroke="red"
-                            strokeWidth={1}
-                            dash={[0, 0]}
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="y_position"
+                            InnerPlaceholder={t("Enter Y Position")}
+                            fullWidth
+                            label={t("Y Position")}
+                            formik={formik}
+                            disabled={loading}
                           />
-                        </Layer>
-                      </Stage>
-                    </div>
-                  </div>
-                  <div className="col-lg-6">
-                    <div className="row positions-inputs">
-                      <div className="col-12">
-                        <InputComponent
-                          name="x_position_back"
-                          InnerPlaceholder={t("Enter X Position")}
-                          fullWidth
-                          label={t("X Position")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="y_position_back"
-                          InnerPlaceholder={t("Enter Y Position")}
-                          fullWidth
-                          label={t("Y Position")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="frame_width_back"
-                          InnerPlaceholder={t("Enter Frame Width")}
-                          fullWidth
-                          label={t("Frame Width")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-12">
-                        <InputComponent
-                          name="frame_height_back"
-                          InnerPlaceholder={t("Enter Frame Height")}
-                          fullWidth
-                          label={t("Frame Height")}
-                          formik={formik}
-                          disabled={loading}
-                        />
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="frame_width"
+                            InnerPlaceholder={t("Enter Frame Width")}
+                            fullWidth
+                            label={t("Frame Width")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="frame_height"
+                            InnerPlaceholder={t("Enter Frame Height")}
+                            fullWidth
+                            label={t("Frame Height")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  )}
+                  {formik.values.image_id_back && (
+                    <div className="col-lg-6">
+                      <div className="container-canvas">
+                        <Stage width={500} height={500} ref={stageRef}>
+                          <Layer>
+                            <BackImage />
+                            <Rect
+                              x={formik.values.x_position_back}
+                              y={formik.values.y_position_back}
+                              width={formik.values.frame_width_back}
+                              height={formik.values.frame_height_back}
+                              stroke="red"
+                              strokeWidth={1}
+                              dash={[0, 0]}
+                            />
+                          </Layer>
+                        </Stage>
+                      </div>
+                    </div>
+                  )}
+                  {formik.values.image_id_back && (
+                    <div className="col-lg-6">
+                      <div className="row positions-inputs">
+                        <div className="col-12">
+                          <InputComponent
+                            name="x_position_back"
+                            InnerPlaceholder={t("Enter X Position")}
+                            fullWidth
+                            label={t("X Position")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="y_position_back"
+                            InnerPlaceholder={t("Enter Y Position")}
+                            fullWidth
+                            label={t("Y Position")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="frame_width_back"
+                            InnerPlaceholder={t("Enter Frame Width")}
+                            fullWidth
+                            label={t("Frame Width")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
+                        <div className="col-12">
+                          <InputComponent
+                            name="frame_height_back"
+                            InnerPlaceholder={t("Enter Frame Height")}
+                            fullWidth
+                            label={t("Frame Height")}
+                            formik={formik}
+                            disabled={loading}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                   <div className="col-12">
-                    <h5 className="">{t("Product Variant")}</h5>
+                    <h4 className="">{t("Product Variant")}</h4>
                     <hr />
                     <FieldArray
                       name="product_variants"

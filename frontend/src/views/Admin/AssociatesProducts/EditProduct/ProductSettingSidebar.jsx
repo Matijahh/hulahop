@@ -148,7 +148,7 @@ const ProductSettingSidebar = ({
         {formik.errors.coverImageColor && (
           <div className="error-msg">{formik.errors.coverImageColor}</div>
         )}
-        <Row>
+        <Row className="mb-3">
           <Col className={"price-wrapper"}>
             <label className="mt-3">{t("Selling Price")}</label>
             <NumericComponent
