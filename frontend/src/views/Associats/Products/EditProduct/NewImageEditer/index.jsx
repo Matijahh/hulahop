@@ -120,6 +120,7 @@ const NewImageEditor = ({
   handleSubmit,
   setShowFrame,
   setBackIndicator,
+  setSelectedImage,
 }) => {
   const [images, setImages] = useState([]);
   const [imagesBack, setImagesBack] = useState([]);
@@ -262,6 +263,7 @@ const NewImageEditor = ({
   const removeImage = () => {
     // There is no need for this line of code since we are always going to have only one image and delete should remove it
     //const updatedImages = images.filter((img) => img.id !== selectedId);
+    setSelectedImage({});
     back ? setImagesBack([]) : setImages([]);
     back
       ? localStorage.removeItem("canvasStateBack")

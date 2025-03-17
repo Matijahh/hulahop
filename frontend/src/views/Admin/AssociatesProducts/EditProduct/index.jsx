@@ -138,8 +138,7 @@ const EditProduct = () => {
   };
 
   const onPickImage = (url) => {
-    const copyUrl = url;
-    setSelectedImage(url !== selectedImage && copyUrl);
+    setSelectedImage(url);
     handleToggle();
   };
 
@@ -214,6 +213,7 @@ const EditProduct = () => {
                   setShowFrame={setShowFrame}
                   showFrame={showFrame}
                   setBackIndicator={setBack}
+                  setSelectedImage={setSelectedImage}
                 />
 
                 <ColorBarList>
