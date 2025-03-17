@@ -47,8 +47,7 @@ export class AssociateProducts {
   @Column('simple-json', { name: 'image_json', nullable: true })
   image_json: string | null;
 
-  @MaxLength(36)
-  @Column('varchar', { name: 'image_id', nullable: true, length: 36 })
+  @Column('varchar', { name: 'image_id', nullable: true })
   image_id: string | null;
 
   @Column('simple-json', { name: 'image_json_back', nullable: true })

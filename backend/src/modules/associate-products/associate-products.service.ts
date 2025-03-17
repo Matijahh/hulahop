@@ -173,7 +173,13 @@ export class AssociateProductsService extends AbstractService {
     }
 
 
-    const saveImage = await this.convertBase64ToImgWithSave(data.base64);
+    if(!data.base64 && !data.base64_back){
+      throw new BadRequestException('Please provide an image');
+    }
+    let saveImage = null;
+    if(data.base64){
+      saveImage = await this.convertBase64ToImgWithSave(data.base64);
+    }
 
     let saveImageBack = null;
     if(data.base64_back){
@@ -228,7 +234,15 @@ export class AssociateProductsService extends AbstractService {
     }
     data.updated_at = Date.now().toString();
     const { selected_colors, base64, base64_back, ...rest } = data;
-    const saveImage = await this.convertBase64ToImgWithSave(base64);
+
+    if(!base64 && !base64_back){
+      throw new BadRequestException('Please provide an image');
+    }
+
+    let saveImage = null;
+    if(base64){
+      saveImage = await this.convertBase64ToImgWithSave(base64);
+    }
     let saveImageBack = null;
     if(base64_back){
       saveImageBack = await this.convertBase64ToImgWithSave(base64_back);
