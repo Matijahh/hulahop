@@ -39,6 +39,7 @@ const PreviewJsonImage = ({
   previewImageUrl,
   json,
   autoHeight = false,
+  back,
   maxHeight,
   productData,
 }) => {
@@ -107,10 +108,18 @@ const PreviewJsonImage = ({
             clipFunc={(ctx) => {
               productData &&
                 ctx.rect(
-                  get(productData, "product.x_position"),
-                  get(productData, "product.y_position"),
-                  get(productData, "product.frame_width"),
-                  get(productData, "product.frame_height")
+                  back
+                    ? get(productData, "product.x_position_back")
+                    : get(productData, "product.x_position"),
+                  back
+                    ? get(productData, "product.y_position_back")
+                    : get(productData, "product.y_position"),
+                  back
+                    ? get(productData, "product.frame_width_back")
+                    : get(productData, "product.frame_width"),
+                  back
+                    ? get(productData, "product.frame_height_back")
+                    : get(productData, "product.frame_height")
                 );
             }}
           >

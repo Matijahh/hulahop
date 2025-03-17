@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { get } from "lodash";
+import { get, pick } from "lodash";
 import useImage from "use-image";
 import { REST_URL_SERVER } from "../../../../../utils/constant";
 
@@ -126,8 +126,8 @@ const NewImageEditor = ({
   const [imagesBack, setImagesBack] = useState([]);
   const [back, setBack] = useState(false);
 
-  const stageRef = useRef();
-  const stageRefBack = useRef();
+  let stageRef = useRef();
+  let stageRefBack = useRef();
 
   const MainImage = useMemo(() => {
     return () => {
@@ -158,10 +158,12 @@ const NewImageEditor = ({
       ? localStorage.getItem("canvasStateBack")
       : localStorage.getItem("canvasState");
 
+    const url = pickImageUrl?.url;
+
     if (!back) {
-      if (pickImageUrl !== images[0]?.image) {
+      if (url && url !== images[0]?.image) {
         const img = new window.Image();
-        img.src = pickImageUrl;
+        img.src = url;
         const maxWidth = get(productData, "frame_width") * 0.7;
         const maxHeight = get(productData, "frame_height") * 0.7;
         const width = img?.width;
@@ -173,7 +175,7 @@ const NewImageEditor = ({
             y: parseInt(get(productData, "y_position")),
             width: width * ratio,
             height: height * ratio,
-            image: pickImageUrl,
+            image: url,
             id: "image1",
           },
         ]);
@@ -181,9 +183,9 @@ const NewImageEditor = ({
         setImages(JSON.parse(savedState));
       }
     } else {
-      if (pickImageUrl !== imagesBack[0]?.image) {
+      if (url && url !== imagesBack[0]?.image) {
         const img = new window.Image();
-        img.src = pickImageUrl;
+        img.src = url;
         const maxWidth = get(productData, "frame_width_back") * 0.7;
         const maxHeight = get(productData, "frame_height_back") * 0.7;
         const width = img?.width;
@@ -195,7 +197,7 @@ const NewImageEditor = ({
             y: parseInt(get(productData, "y_position_back")),
             width: width * ratio,
             height: height * ratio,
-            image: pickImageUrl,
+            image: url,
             id: "image1",
           },
         ]);
@@ -263,11 +265,17 @@ const NewImageEditor = ({
   const removeImage = () => {
     // There is no need for this line of code since we are always going to have only one image and delete should remove it
     //const updatedImages = images.filter((img) => img.id !== selectedId);
-    setSelectedImage({});
-    back ? setImagesBack([]) : setImages([]);
-    back
-      ? localStorage.removeItem("canvasStateBack")
-      : localStorage.removeItem("canvasState");
+    setSelectedImage(null);
+
+    if (back) {
+      setImagesBack([]);
+      stageRefBack = null;
+      localStorage.removeItem("canvasStateBack");
+    } else {
+      setImages([]);
+      stageRef = null;
+      localStorage.removeItem("canvasState");
+    }
   };
 
   const centerImage = () => {
@@ -285,19 +293,27 @@ const NewImageEditor = ({
   };
 
   const SaveImage = async () => {
-    const stage = stageRef.current.getStage();
-    const stageBack = stageRefBack.current.getStage();
+    const stage = stageRef?.current?.getStage();
+    const stageBack = stageRefBack?.current?.getStage();
     selectImage(null);
 
-    const dataURL = await stage.toDataURL({
-      mimeType: "image/png",
-      quality: 1.0,
-    });
+    const dataURL =
+      stage &&
+      images &&
+      images.length > 0 &&
+      (await stage.toDataURL({
+        mimeType: "image/png",
+        quality: 1.0,
+      }));
 
-    const dataURLBack = await stageBack.toDataURL({
-      mimeType: "image/png",
-      quality: 1.0,
-    });
+    const dataURLBack =
+      stageBack &&
+      imagesBack &&
+      imagesBack.length > 0 &&
+      (await stageBack.toDataURL({
+        mimeType: "image/png",
+        quality: 1.0,
+      }));
 
     handleSubmit(dataURL, dataURLBack);
   };

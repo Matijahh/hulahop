@@ -43,6 +43,8 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
   const [authenticationModal, setAuthenticationModal] = useState(false);
   const [associateProductColors, setAssociateProductColors] = useState([]);
   const [wishListData, setWishListData] = useState([]);
+  const [activeImage, setActiveImage] = useState(null);
+  const [back, setBack] = useState(false);
 
   const params = useParams();
   const { t } = useTranslation();
@@ -198,6 +200,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
           ...get(data, "product.product_variants"),
         ].filter((item) => item.color_id === get(data, "cover_image_color_id"));
 
+        setActiveImage(get(findCoverImage[0], "image_id"));
         setPrieviewProduct(findCoverImage[0]);
 
         formik.setFieldValue(
@@ -239,6 +242,7 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
       (item) => item.id === id
     );
 
+    setActiveImage(get(currentProduct, "image_id"));
     setPrieviewProduct(currentProduct);
   };
 
@@ -270,6 +274,18 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
     if (wishListData.length > 0) {
       return wishListData.find((item) => item.associate_product_id == id);
     }
+  };
+
+  const mouseOverProduct = () => {
+    if (get(productData.product, "image_id_back")) {
+      setActiveImage(get(productData.product, "image_id_back"));
+      setBack(true);
+    }
+  };
+
+  const mouseOutProduct = () => {
+    setActiveImage(get(prieviewProduct, "image_id"));
+    setBack(false);
   };
 
   useEffect(() => {
@@ -317,7 +333,11 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
             <div className="col-lg-5">
               <GobackButton className="back-btn" />
               <div className="product-img-section">
-                <div className="product-img-box">
+                <div
+                  className="product-img-box"
+                  onMouseOver={mouseOverProduct}
+                  onMouseOut={mouseOutProduct}
+                >
                   <div className="image-box-wrapper">
                     <div
                       className="wishlist-icon"
@@ -338,16 +358,17 @@ const SingleProduct = ({ isAssociateProduct, storeData }) => {
                       )}{" "}
                     </div>
                     <PreviewJsonImage
-                      previewImageUrl={getImageUrlById(
-                        get(prieviewProduct, "image_id")
-                      )}
+                      previewImageUrl={
+                        activeImage && getImageUrlById(activeImage)
+                      }
                       json={
-                        get(productData, "image_json.imageObj", "")
-                          ? JSON.parse(
-                              get(productData, "image_json.imageObj", "")
-                            )
+                        !back && productData?.image_json?.imageObj
+                          ? JSON.parse(productData?.image_json?.imageObj)
+                          : back && productData?.image_json_back?.imageObj
+                          ? JSON.parse(productData?.image_json_back?.imageObj)
                           : null
                       }
+                      back={back}
                       autoHeight
                       productData={productData}
                     />

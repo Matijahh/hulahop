@@ -90,16 +90,20 @@ const EditProduct = () => {
       cover_image_color_id: hasColors
         ? parseInt(values.coverImageColor.split(",")[0])
         : null,
-      image_json: {
-        imageObj: values.customizedJson?.imageObj,
-      },
-      image_json_back: {
-        imageObj: values.customizedJsonBack?.imageObj,
-      },
+      image_json: base64
+        ? {
+            imageObj: values.customizedJson?.imageObj,
+          }
+        : null,
+      image_json_back: base64Back
+        ? {
+            imageObj: values.customizedJsonBack?.imageObj,
+          }
+        : null,
       selected_colors: hasColors ? values.selectedColorIds : null,
       price: productPrice,
-      base64: base64,
-      base64_back: base64Back,
+      base64: base64 || undefined,
+      base64_back: base64Back || undefined,
     };
 
     const data = new URLSearchParams(window.location.search);
@@ -153,7 +157,7 @@ const EditProduct = () => {
   };
 
   const onPickImage = (url) => {
-    setSelectedImage(url);
+    setSelectedImage({ url: url });
     handleToggle();
   };
 

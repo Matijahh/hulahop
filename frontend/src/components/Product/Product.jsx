@@ -37,6 +37,8 @@ const Product = ({
   const [categoryUrl, setCategoryUrl] = useState("");
   const [subCategoryUrl, setSubCategoryUrl] = useState("");
   const [prieviewProduct, setPrieviewProduct] = useState({});
+  const [activeImage, setActiveImage] = useState(null);
+  const [back, setBack] = useState(false);
 
   const params = useParams();
   const navigate = useNavigate();
@@ -86,6 +88,18 @@ const Product = ({
     setLoading(false);
   };
 
+  const mouseOverProduct = () => {
+    if (get(productData.product, "image_id_back")) {
+      setActiveImage(get(productData.product, "image_id_back"));
+      setBack(true);
+    }
+  };
+
+  const mouseOutProduct = () => {
+    setActiveImage(get(prieviewProduct, "image_id"));
+    setBack(false);
+  };
+
   const productName = get(productData, "name");
   const productId = get(productData, "id");
 
@@ -122,7 +136,12 @@ const Product = ({
       ].filter(
         (item) => item.color_id === get(productData, "cover_image_color_id")
       );
-      setPrieviewProduct(findCoverImage[0]);
+      if (findCoverImage[0]) {
+        setPrieviewProduct(findCoverImage[0]);
+        if (get(findCoverImage[0], "image_id")) {
+          setActiveImage(get(findCoverImage[0], "image_id"));
+        }
+      }
     }
 
     setProductUrl(ProductUrl);
@@ -133,17 +152,24 @@ const Product = ({
   return (
     <div className="product-wrapper">
       <div className="product-box">
-        <div className="product-img" onClick={() => navigate(productUrl)}>
+        <div
+          className="product-img"
+          onClick={() => navigate(productUrl)}
+          onMouseOver={mouseOverProduct}
+          onMouseOut={mouseOutProduct}
+        >
           {!mainLoading && (
             <PreviewJsonImage
-              previewImageUrl={getImageUrlById(
-                get(prieviewProduct, "image_id")
-              )}
+              previewImageUrl={activeImage && getImageUrlById(activeImage)}
               json={
-                productData?.image_json?.imageObj
+                !back && productData?.image_json?.imageObj
                   ? JSON.parse(productData?.image_json?.imageObj)
+                  : back && productData?.image_json_back?.imageObj
+                  ? JSON.parse(productData?.image_json_back?.imageObj)
                   : null
               }
+              back={back}
+              maxHeight={undefined}
               productData={productData}
             />
           )}
