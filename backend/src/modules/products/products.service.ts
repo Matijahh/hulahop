@@ -117,6 +117,18 @@ export class ProductsService extends AbstractService {
           }
         }
         await queryRunner.commitTransaction();
+
+        const oldProductDoubleDesignPrice = oldProduct.double_design_price;
+        const newProductDoubleDesignPrice = data.double_design_price;
+        const doubleDesignPriceDifference =
+          newProductDoubleDesignPrice - oldProductDoubleDesignPrice;
+
+        if (doubleDesignPriceDifference !== 0) {
+          this.associateProductsService.updateAllAssociateProductsPrices(
+            doubleDesignPriceDifference,
+            id,
+          );
+        }
         if (updateProduct && updateProduct.affected > 0) {
           return await this.findOne({
             where: { id },
@@ -129,18 +141,6 @@ export class ProductsService extends AbstractService {
               sub_category: true,
             },
           });
-        }
-
-        const oldProductDoubleDesignPrice = oldProduct.double_design_price;
-        const newProductDoubleDesignPrice = data.double_design_price;
-        const doubleDesignPriceDifference =
-          newProductDoubleDesignPrice - oldProductDoubleDesignPrice;
-
-        if (doubleDesignPriceDifference !== 0) {
-          this.associateProductsService.updateAllAssociateProductsPrices(
-            doubleDesignPriceDifference,
-            id,
-          );
         }
       }
       return false;
@@ -182,7 +182,7 @@ export class ProductsService extends AbstractService {
       where = { ...where, name: Like(`%${query.search_string}%`) };
     }
 
-    
+
     if (query.status) {
       const queryStatusFlag = query.status === 'true' ? 1 : 0
       where = { ...where, status: queryStatusFlag };
