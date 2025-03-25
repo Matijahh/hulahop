@@ -10,7 +10,7 @@ import { CreateAssociateProductsInput } from './dto/create-associate-products.in
 import { UpdateAssociateProductsInput } from './dto/update-associate-products.input';
 import { AssociateProductColorsService } from '../associate-product-colors/associate-product-colors.service';
 import { GetAssociateProductFilterInputDto } from './dto/get-associate-product-filter.input';
-import { In, Like, Repository } from 'typeorm';
+import { In, IsNull, Like, Not, Repository } from 'typeorm';
 import { ImagesService } from '../images/images.service';
 import * as fs from 'fs';
 import { v4 as uuid } from 'uuid';
@@ -445,5 +445,15 @@ export class AssociateProductsService extends AbstractService {
       ),
     ];
     return { categoryIds, subCategoryIds };
+  }
+
+  public updateAllAssociateProductsPrices(
+    secondDesingPriceDifference: number,
+    productId: number,
+  ) {
+    return this.repository.update(
+      { product_id: productId, image_id_back: Not(IsNull()) },
+      { price: () => `price + ${secondDesingPriceDifference}` },
+    );
   }
 }

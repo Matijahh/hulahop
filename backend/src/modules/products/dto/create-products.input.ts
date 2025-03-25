@@ -39,6 +39,9 @@ export class CreateProductsInput {
   @ApiProperty()
   price: number | null;
 
+  @ApiProperty()
+  double_design_price: number | null;
+
   @ApiPropertyOptional()
   category_id: number | null;
 

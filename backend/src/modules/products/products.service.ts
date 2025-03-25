@@ -13,10 +13,14 @@ import { filterInputDto } from './dto/filter-input.dto';
 import { masterFilterInputDto } from './dto/master-filter.dto';
 import { productVariantsRepository } from '../product-variants/repository/product-variants.repository';
 import { log } from 'node:console';
+import { AssociateProductsService } from '../associate-products/associate-products.service';
 
 @Injectable()
 export class ProductsService extends AbstractService {
-  constructor(private productVariantsService: ProductVariantsService) {
+  constructor(
+    private productVariantsService: ProductVariantsService,
+    private associateProductsService: AssociateProductsService,
+  ) {
     super(productsRepository);
   }
 
@@ -73,6 +77,10 @@ export class ProductsService extends AbstractService {
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      const oldProduct = await this.findOne({
+        where: { id },
+      });
+
       const updateProduct = await queryRunner.manager.update(Products, id, {
         ...rest,
         created_at: Date.now(),
@@ -121,6 +129,18 @@ export class ProductsService extends AbstractService {
               sub_category: true,
             },
           });
+        }
+
+        const oldProductDoubleDesignPrice = oldProduct.double_design_price;
+        const newProductDoubleDesignPrice = data.double_design_price;
+        const doubleDesignPriceDifference =
+          newProductDoubleDesignPrice - oldProductDoubleDesignPrice;
+
+        if (doubleDesignPriceDifference !== 0) {
+          this.associateProductsService.updateAllAssociateProductsPrices(
+            doubleDesignPriceDifference,
+            id,
+          );
         }
       }
       return false;
