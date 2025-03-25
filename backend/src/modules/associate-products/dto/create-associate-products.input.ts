@@ -30,6 +30,9 @@ export class CreateAssociateProductsInput {
   price: string | null;
 
   @ApiProperty()
+  double_design_price: string | null;
+
+  @ApiProperty()
   base64: string | null;
 
   @ApiPropertyOptional()

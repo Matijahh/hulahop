@@ -48,8 +48,17 @@ export class Products {
     nullable: true,
     precision: 10,
     scale: 2,
+    default: () => '0.00',
   })
   price: number | null;
+
+  @Column('numeric', {
+    name: 'double_design_price',
+    nullable: true,
+    precision: 10,
+    scale: 2,
+  })
+  double_design_price: number | null;
 
   @ValidateIf((val) => val.status !== null)
   @Column('boolean', { name: 'status', nullable: true })
