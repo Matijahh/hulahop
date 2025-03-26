@@ -22,9 +22,15 @@ const ProductSettingSidebar = ({
   setProductPrice,
 }) => {
   const [priceProduct, setPriceProduct] = useState(null);
+  const [basePrice, setBasePrice] = useState(null);
 
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const doubleDesign = !!(
+    localStorage.getItem("canvasState") &&
+    localStorage.getItem("canvasStateBack")
+  );
 
   const onColorChange = (data) => {
     if (formik.values.selectedColorIds.includes(data.id)) {
@@ -63,7 +69,23 @@ const ProductSettingSidebar = ({
     setPriceProduct(
       parseInt(get(product, "productPrice") || parseInt(get(product, "price")))
     );
+
+    setBasePrice(parseInt(get(product, "price")));
   }, [product]);
+
+  useEffect(() => {
+    if (doubleDesign) {
+      setBasePrice(basePrice + parseInt(get(product, "double_design_price")));
+    } else {
+      setBasePrice(parseInt(get(product, "price")));
+    }
+  }, [doubleDesign]);
+
+  useEffect(() => {
+    if (basePrice > priceProduct) {
+      setPriceProduct(basePrice);
+    }
+  }, [basePrice]);
 
   useEffect(() => {
     setProductPrice(priceProduct);
@@ -158,7 +180,7 @@ const ProductSettingSidebar = ({
               isUseCustomValue={true}
               onChange={(e) => setPriceProduct(parseInt(e.target.value))}
               value={priceProduct}
-              min={parseInt(get(product, "price"))}
+              min={basePrice}
               name="productPrice"
             />
           </Col>
@@ -168,7 +190,7 @@ const ProductSettingSidebar = ({
               helperText={`${t("Best Price")} (RSD)`}
               InnerPlaceholder={`${t("Best Price")} (RSD)`}
               fullWidth
-              value={parseInt(get(product, "price"))}
+              value={basePrice}
               disabled
             />
           </Col>
@@ -179,11 +201,21 @@ const ProductSettingSidebar = ({
               InnerPlaceholder={`${t("Earning")} (RSD)`}
               fullWidth
               name="associateProfit"
-              value={priceProduct - parseInt(get(product, "price"))}
+              value={priceProduct - basePrice}
               disabled
             />
           </Col>
         </Row>
+        {doubleDesign && (
+          <Row>
+            <span className="small-info">
+              {`* ${t("Price is Increased by ")}${get(
+                product,
+                "double_design_price"
+              )} RSD${t(" due to Product Double Design")}`}
+            </span>
+          </Row>
+        )}
         <div className="fix-footer">
           <ButtonComponent
             text={t("Cancel")}

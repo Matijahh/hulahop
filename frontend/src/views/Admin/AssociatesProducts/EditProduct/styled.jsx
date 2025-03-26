@@ -94,6 +94,12 @@ export const ProductSettingSidebarContainer = styled.div`
     }
   }
 
+  .small-info {
+    color: #b3b3b3;
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+
   .color-row {
     gap: 15px 0px;
 

@@ -130,6 +130,7 @@ const ProductForm = () => {
       image_id: "",
       image_id_back: "",
       price: "",
+      double_design_price: "0",
       category_id: "",
       subcategory_id: "",
       status: true,
@@ -190,6 +191,7 @@ const ProductForm = () => {
         image_id: values.image_id,
         image_id_back: values.image_id_back,
         price: values.price,
+        double_design_price: values.double_design_price,
         category_id: categoryId.id,
         subcategory_id: subcategoryId.id,
         status: productStatusId.id === "true" ? true : false,
@@ -323,6 +325,7 @@ const ProductForm = () => {
         frame_width_back,
         frame_height_back,
         status,
+        double_design_price,
       } = data;
 
       setProductdata(data);
@@ -380,6 +383,7 @@ const ProductForm = () => {
       formik.setFieldValue("image_id", image_id || "");
       formik.setFieldValue("image_id_back", image_id_back || "");
       formik.setFieldValue("price", price || "");
+      formik.setFieldValue("double_design_price", double_design_price || "");
       formik.setFieldValue("category_id", `${category?.id},${category?.name}`);
       formik.setFieldValue("x_position", x_position || 163);
       formik.setFieldValue("y_position", y_position || 103);
@@ -606,6 +610,16 @@ const ProductForm = () => {
                           optionList={statusList}
                           formik={formik}
                           disabled={loading}
+                        />
+                      </div>
+                      <div className="col-lg-6">
+                        <InputComponent
+                          name="double_design_price"
+                          InnerPlaceholder={t("Price for Second Design")}
+                          fullWidth
+                          formik={formik}
+                          disabled={loading}
+                          label={t("Price for Second Design")}
                         />
                       </div>
                     </div>
