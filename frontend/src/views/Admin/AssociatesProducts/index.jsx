@@ -71,6 +71,7 @@ const AssociatesProducts = () => {
   };
 
   const setTableRenderData = (data) => {
+    console.log("data", data);
     const renderData = map(data, (item, index) => {
       return {
         ...item,

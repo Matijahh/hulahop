@@ -107,6 +107,7 @@ const Product = ({
   const productId = get(productData, "id");
 
   useEffect(() => {
+    //console.log("product Data", productData);
     let ProductUrl = !isAssociateProduct
       ? ROUTE_MAIN_SHOP_PRODUCT.replace(":id", slugify(productName, productId))
       : ROUTE_ASSOCIATE_BRAND_STORE_SHOP_SINGLE_VIEW.replace(

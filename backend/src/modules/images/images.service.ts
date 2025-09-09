@@ -15,24 +15,36 @@ export class ImagesService extends AbstractService {
   }
 
   async create(data: CreateImagesInput): Promise<Images> {
-  const originalImagePath = join(process.cwd(), 'uploads', data.name);
+    const originalImagePath = join(process.cwd(), 'uploads', data.name);
 
-  // Define compressed image name and path
-  const compressedName = `compressed_${data.name.split('.')[0]}.webp`;
-  const compressedImagePath = join(process.cwd(), 'uploads', compressedName);
+    // Define compressed image name and path
+    const compressedName = `compressed_${data.name.split('.')[0]}.webp`;
+    const compressedImagePath = join(process.cwd(), 'uploads', compressedName);
 
-  // Compress the image using Sharp
-  await sharp(originalImagePath)
-    .webp({ quality: 60 }) // Adjust quality as needed
-    .toFile(compressedImagePath);
+    // Compress the image using Sharp
+    await sharp(originalImagePath)
+      .rotate() // auto-orient based on EXIF
+      .resize({
+        width: 1200, // cap longest edge at 1200px
+        height: 1200,
+        fit: 'inside',
+        withoutEnlargement: true,
+        fastShrinkOnLoad: true, // faster + less memory
+      })
+      .webp({
+        quality: 60, // 1–100, adjust balance between size/quality
+        alphaQuality: 60, // alpha channel compression (0–100)
+        effort: 5, // 0–6: higher = smaller file, slower encode
+        smartSubsample: true, // better color for text/edges
+      })
+      .toFile(compressedImagePath);
 
     const newData = {
       ...data,
       compressed_name: compressedName,
     };
 
-
-  return await this.abstractCreate(newData);
+    return await this.abstractCreate(newData);
   }
 
   async basicCreate(data: CreateImagesInput): Promise<Images> {
@@ -41,16 +53,33 @@ export class ImagesService extends AbstractService {
 
   async createCompressedImage(data: CreateImagesInput): Promise<Images> {
     const originalImagePath = join(process.cwd(), 'uploads', data.name);
-  
+
     // Define the compressed image name and path
     const compressedName = `${data.name.split('.')[0]}.webp`; // Use the same base name
     const compressedImagePath = join(process.cwd(), 'uploads', compressedName);
-  
+
     // Compress the image using Sharp
+    // await sharp(originalImagePath)
+    //   .webp({ quality: 60 }) // Adjust compression quality as needed
+    //   .toFile(compressedImagePath);
+
     await sharp(originalImagePath)
-      .webp({ quality: 60 }) // Adjust compression quality as needed
+      .rotate() // auto-orient based on EXIF
+      .resize({
+        width: 1200, // cap longest edge at 1200px
+        height: 1200,
+        fit: 'inside',
+        withoutEnlargement: true,
+        fastShrinkOnLoad: true, // faster + less memory
+      })
+      .webp({
+        quality: 60, // 1–100, adjust balance between size/quality
+        alphaQuality: 60, // alpha channel compression (0–100)
+        effort: 5, // 0–6: higher = smaller file, slower encode
+        smartSubsample: true, // better color for text/edges
+      })
       .toFile(compressedImagePath);
-  
+
     // Update the data object to use the compressed name for both fields
     data.name = compressedName;
 
@@ -58,7 +87,7 @@ export class ImagesService extends AbstractService {
       ...data,
       compressed_name: compressedName,
     };
-  
+
     // Save the compressed image record in the database
     return await this.abstractCreate(newData);
   }
@@ -83,7 +112,7 @@ export class ImagesService extends AbstractService {
       throw new BadRequestException('Record does not exist');
     }
     const path = join(process.cwd(), 'uploads');
-  
+
     return compressed
       ? {
           path: path,
@@ -95,7 +124,6 @@ export class ImagesService extends AbstractService {
           ext: extname(file.name).substring(1),
         };
   }
-  
 
   extractBase64img = (data: string) => {
     const reg = /^data:image\/([\w+]+);base64,([\s\S]+)/;
