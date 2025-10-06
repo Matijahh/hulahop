@@ -61,7 +61,7 @@ const SignUp = ({ maxWidth }) => {
       email: "",
       mobile: "",
       status: true,
-      type: "USER",
+      type: "ASSOCIATE",
       password: "",
       confirmPassword: "",
       image_id: "",
@@ -83,7 +83,11 @@ const SignUp = ({ maxWidth }) => {
   });
 
   const handleCheckboxChange = () => {
-    formik.setFieldValue("type", !formik.values.type);
+    if(formik.values.type === "USER") {
+      formik.setFieldValue("type", "ASSOCIATE");
+    } else {
+      formik.setFieldValue("type", "USER");
+    }
   };
 
   return (
@@ -222,7 +226,7 @@ const SignUp = ({ maxWidth }) => {
               <FlexBox justifyContent="flex-start" className="remember-me">
                 <span className="text">{`${t("Register as Associate")}:`}</span>
                 <Checkbox
-                  checked={formik.values.type}
+                  checked={formik.values.type === "ASSOCIATE"}
                   onClick={handleCheckboxChange}
                 />
               </FlexBox>
