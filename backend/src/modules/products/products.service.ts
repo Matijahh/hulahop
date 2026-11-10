@@ -46,6 +46,8 @@ export class ProductsService extends AbstractService {
               product_id: createdProduct.id,
               color_id: product_variant.color_id,
               image_id: product_variant.image_id,
+              image_id_back: product_variant.image_id_back || null,
+              variant_status: product_variant.variant_status,
             },
           );
           for (const variant of product_variant.sub_variants) {
@@ -105,6 +107,7 @@ export class ProductsService extends AbstractService {
               product_id: id,
               color_id: product_variant.color_id,
               image_id: product_variant.image_id,
+              image_id_back: product_variant.image_id_back || null,
               variant_status: product_variant.variant_status,
             },
           );

@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { MaxLength, ValidateNested } from 'class-validator';
 import { productSubVariants } from '../../products/dto/create-products.input';
 import { Type } from 'class-transformer';
@@ -12,6 +12,9 @@ export class CreateProductVariantsInput {
 
   @ApiProperty()
   image_id: string | null;
+
+  @ApiPropertyOptional()
+  image_id_back: string | null;
 
   @ApiProperty({ type: [productSubVariants] })
   @Type(() => productSubVariants)

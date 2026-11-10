@@ -201,13 +201,18 @@ const EditProduct = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (product && back) {
-      setActiveProductId(product?.image_id_back);
-    } else if (product) {
-      setActiveProductId(product?.image_id);
-    }
-  }, [back]);
+  // activeProductId is the selected color's front photo. Each color can have
+  // its own back photo; otherwise fall back to the product's back photo.
+  const activeVariant =
+    product?.product_variants?.find(
+      (item) => item?.image_id === activeProductId
+    ) || product?.product_variants?.[0];
+  const backImageId =
+    activeVariant?.image_id_back ||
+    product?.image_id_back ||
+    product?.product_variants?.find((item) => item?.image_id_back)
+      ?.image_id_back;
+  const displayedImageId = back ? backImageId : activeProductId;
 
   return (
     <EditProductContainer>
@@ -228,7 +233,8 @@ const EditProduct = () => {
                     : t("Add Product")}
                 </div>
                 <NewImageEditor
-                  imgURL={`${REST_URL_SERVER}/images/${activeProductId}`}
+                  imgURL={`${REST_URL_SERVER}/images/${displayedImageId}`}
+                  hasBack={!!backImageId}
                   pickImageUrl={selectedImage}
                   productData={product}
                   formik={formik}
@@ -248,14 +254,10 @@ const EditProduct = () => {
                       return (
                         <div
                           key={key}
-                          onClick={
-                            back
-                              ? () => {}
-                              : () => setActiveProductId(item?.image_id)
-                          }
+                          onClick={() => setActiveProductId(item?.image_id)}
                           className={`color-item ${
                             item?.image_id === activeProductId && "active"
-                          } ${back ? "disabled-color" : ""}`}
+                          }`}
                           style={{
                             borderRadius: 4,
                             background: item?.color?.code,

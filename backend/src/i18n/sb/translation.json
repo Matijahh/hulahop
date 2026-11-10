@@ -906,5 +906,20 @@
   "User address not found": "Adresa korisnika nije pronađena",
   "Your old password is wrong! make sure correct.": "Vaša stara lozinka je pogrešna! Proverite ispravnost.",
   "Popularity": "Popularnosti",
-  "There is no information about this product": "Nema informacija o ovom artiklu"
+  "There is no information about this product": "Nema informacija o ovom artiklu",
+  "Product Details": "Detalji proizvoda",
+  "Sizes": "Veličine",
+  "Colors and Photos": "Boje i fotografije",
+  "Front side": "Prednja strana",
+  "Back side": "Zadnja strana",
+  "Main color": "Glavna boja",
+  "Print Area": "Oblast štampe",
+  "Front photo is required!": "Prednja fotografija je obavezna!",
+  "Size is required!": "Veličina je obavezna!",
+  "Optional. If empty, the main color's back photo is shown.": "Opciono. Ako je prazno, prikazuje se zadnja fotografija glavne boje.",
+  "The main color's photos are the product cover and set the print area preview.": "Fotografije glavne boje su naslovna slika proizvoda i koriste se za prikaz oblasti štampe.",
+  "The print area is the same for every color.": "Oblast štampe je ista za sve boje.",
+  "Upload the main color's front photo to set the print area.": "Otpremite prednju fotografiju glavne boje da biste podesili oblast štampe.",
+  "Upload the main color's back photo to set the back print area.": "Otpremite zadnju fotografiju glavne boje da biste podesili zadnju oblast štampe.",
+  "Quantity is applied to every size of every color.": "Količina se primenjuje na svaku veličinu svake boje."
 }
