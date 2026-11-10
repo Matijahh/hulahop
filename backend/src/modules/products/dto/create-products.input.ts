@@ -17,6 +17,9 @@ export class productVariants {
   @ApiProperty()
   image_id: string | null;
 
+  @ApiPropertyOptional()
+  image_id_back: string | null;
+
   @ApiProperty()
   variant_status: boolean | null;
 

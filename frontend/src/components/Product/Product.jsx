@@ -89,11 +89,13 @@ const Product = ({
   };
 
   const mouseOverProduct = () => {
-    if (
-      get(productData.product, "image_id_back") &&
-      get(productData, "image_json_back")
-    ) {
-      setActiveImage(get(productData.product, "image_id_back"));
+    // Prefer the shown color's own back photo, then the product's back photo.
+    const backImageId =
+      get(prieviewProduct, "image_id_back") ||
+      get(productData.product, "image_id_back");
+
+    if (backImageId && get(productData, "image_json_back")) {
+      setActiveImage(backImageId);
       setBack(true);
     }
   };

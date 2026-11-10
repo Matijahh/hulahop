@@ -138,3 +138,7 @@ ALTER TABLE cart_products MODIFY product_sub_variant_id INT NULL;
 ALTER TABLE about_product_data
 ADD COLUMN product_description_1_ab text,
 ADD COLUMN product_description_2_sb text;
+
+-- Back photo per color variant (falls back to products.image_id_back when empty)
+ALTER TABLE product_variants
+ADD COLUMN image_id_back varchar(36) NULL AFTER image_id;

@@ -1010,5 +1010,20 @@
   "User address not found": "User address not found",
   "Your old password is wrong! make sure correct.": "Your old password is wrong! make sure correct.",
   "Popularity": "Popularity",
-  "There is no information about this product": "There is no information about this product"
+  "There is no information about this product": "There is no information about this product",
+  "Product Details": "Product Details",
+  "Sizes": "Sizes",
+  "Colors and Photos": "Colors and Photos",
+  "Front side": "Front side",
+  "Back side": "Back side",
+  "Main color": "Main color",
+  "Print Area": "Print Area",
+  "Front photo is required!": "Front photo is required!",
+  "Size is required!": "Size is required!",
+  "Optional. If empty, the main color's back photo is shown.": "Optional. If empty, the main color's back photo is shown.",
+  "The main color's photos are the product cover and set the print area preview.": "The main color's photos are the product cover and set the print area preview.",
+  "The print area is the same for every color.": "The print area is the same for every color.",
+  "Upload the main color's front photo to set the print area.": "Upload the main color's front photo to set the print area.",
+  "Upload the main color's back photo to set the back print area.": "Upload the main color's back photo to set the back print area.",
+  "Quantity is applied to every size of every color.": "Quantity is applied to every size of every color."
 }

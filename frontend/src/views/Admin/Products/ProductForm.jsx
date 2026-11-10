@@ -1,10 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { find, get, isEmpty, map, size } from "lodash";
-import {
-  getImageUrlById,
-  getSelectobjectValue,
-} from "../../../utils/commonFunctions";
+import { getImageUrlById } from "../../../utils/commonFunctions";
 import {
   commonAddUpdateQuery,
   commonGetQuery,
@@ -28,45 +25,130 @@ import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined
 import ImageUploadBox from "../../../components/ImageUploadBox";
 import GobackButton from "../../../components/GoBackButton";
 
-const subVariantsInitialData = {
-  value: "",
-  quantity: "",
+const DEFAULT_FRAME = { x: 163, y: 103, width: 171, height: 211 };
+
+const FRAME_SIDES = [
+  {
+    key: "front",
+    suffix: "",
+    imageField: "image_id",
+    title: "Front side",
+    emptyText: "Upload the main color's front photo to set the print area.",
+  },
+  {
+    key: "back",
+    suffix: "_back",
+    imageField: "image_id_back",
+    title: "Back side",
+    emptyText: "Upload the main color's back photo to set the back print area.",
+  },
+];
+
+const FRAME_FIELDS = [
+  { name: "x_position", label: "X Position", placeholder: "Enter X Position" },
+  { name: "y_position", label: "Y Position", placeholder: "Enter Y Position" },
+  { name: "frame_width", label: "Frame Width", placeholder: "Enter Frame Width" },
+  {
+    name: "frame_height",
+    label: "Frame Height",
+    placeholder: "Enter Frame Height",
+  },
+];
+
+// Select values are stored as "id,title". Defaults can also be plain values,
+// so read the id defensively instead of assuming a string.
+const getSelectId = (value) => {
+  if (value === null || value === undefined) return "";
+  const text = String(value);
+  return text.includes(",") ? text.split(",")[0] : text;
 };
 
-const subVariantsStartInitialData = {
-  value: "",
-};
-
-const productVariantsInitialData = {
+const createVariant = (t) => ({
   color_id: "",
   image_id: "",
-  sub_variants: [subVariantsInitialData],
-};
+  image_id_back: "",
+  variant_status: `true,${t("Active")}`,
+});
 
 export const ProductFormWrapper = styled.div`
-  .add-product-btn {
-    width: 100%;
-    border: 2px dashed #000;
-    height: 55px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
+  .form-section {
+    margin-bottom: 40px;
+  }
 
-    svg {
-      width: 35px;
-      height: 35px;
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    h4 {
+      margin: 0;
     }
   }
 
-  .back-image {
-    margin-top: 20px;
+  .section-hint,
+  .field-hint {
+    font-size: 12px;
+    color: #666666;
+    margin: 8px 0 0;
   }
 
   .product-variant-box {
     padding: 20px;
-    margin: 15px 0;
+    height: 100%;
     background-color: #f4f4f4;
+  }
+
+  .variant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+  }
+
+  .variant-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: #004e64;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .size-remove {
+    cursor: pointer;
+
+    &.disabled {
+      cursor: not-allowed;
+      opacity: 0.3;
+    }
+  }
+
+  .frame-side {
+    margin-bottom: 30px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .frame-side-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .empty-frame {
+    min-height: 150px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border: 2px dotted #004e64;
+    font-size: 12px;
+    font-weight: bold;
+    color: #004e64;
   }
 
   .konvajs-content {
@@ -92,18 +174,39 @@ export const ProductFormWrapper = styled.div`
   }
 `;
 
+const FramePreview = ({ imageId, x, y, width, height }) => {
+  const [image] = useImage(getImageUrlById(imageId), "anonymous", "origin");
+
+  return (
+    <Stage width={500} height={500}>
+      <Layer>
+        <Image width={500} height={500} image={image} />
+        <Rect
+          x={Number(x) || 0}
+          y={Number(y) || 0}
+          width={Number(width) || 0}
+          height={Number(height) || 0}
+          stroke="red"
+          strokeWidth={1}
+        />
+      </Layer>
+    </Stage>
+  );
+};
+
 const ProductForm = () => {
   const [loading, setLoading] = useState(false);
   const [categoriesData, setCategoriesData] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [subCategoryList, setSubCategoryList] = useState([]);
   const [colorList, setColorList] = useState([]);
-  const [productdata, setProductdata] = useState([]);
+  const [productData, setProductData] = useState({});
 
   const params = useParams();
-  const stageRef = useRef();
   const navigation = useNavigate();
   const { t } = useTranslation();
+
+  const productId = get(params, "id");
 
   const statusList = [
     {
@@ -121,80 +224,70 @@ const ProductForm = () => {
     price: Yup.string().required(t("Price is required!")),
     category_id: Yup.string().required(t("Category is required!")),
     subcategory_id: Yup.string().required(t("Sub category is required!")),
+    sub_variants: Yup.array().of(
+      Yup.object().shape({
+        value: Yup.string().required(t("Size is required!")),
+      })
+    ),
+    product_variants: Yup.array().of(
+      Yup.object().shape({
+        color_id: Yup.string().required(t("Color is required!")),
+        image_id: Yup.string()
+          .nullable()
+          .required(t("Front photo is required!")),
+      })
+    ),
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
       description: "",
-      image_id: "",
-      image_id_back: "",
       price: "",
       double_design_price: "0",
       category_id: "",
       subcategory_id: "",
-      status: true,
-      x_position: 163,
-      y_position: 103,
-      frame_width: 171,
-      frame_height: 211,
-      x_position_back: 163,
-      y_position_back: 103,
-      frame_width_back: 171,
-      frame_height_back: 211,
+      status: `true,${t("Active")}`,
+      x_position: DEFAULT_FRAME.x,
+      y_position: DEFAULT_FRAME.y,
+      frame_width: DEFAULT_FRAME.width,
+      frame_height: DEFAULT_FRAME.height,
+      x_position_back: DEFAULT_FRAME.x,
+      y_position_back: DEFAULT_FRAME.y,
+      frame_width_back: DEFAULT_FRAME.width,
+      frame_height_back: DEFAULT_FRAME.height,
       quantity: 9999,
-      sub_variants: [
-        {
-          value: "",
-        },
-      ],
-      product_variants: [
-        {
-          color_id: "",
-          image_id: "",
-          variant_status: `true,${t("Active")}`,
-          sub_variants: [
-            {
-              value: "",
-              quantity: "",
-            },
-          ],
-        },
-      ],
+      sub_variants: [{ value: "" }],
+      product_variants: [createVariant(t)],
     },
     validationSchema: validation,
     onSubmit: async (values) => {
-      let id = get(params, "id");
+      const sizes = values.sub_variants.map((subVariant) => ({
+        value: subVariant.value,
+        quantity: values.quantity,
+      }));
 
-      const URL = id ? `/products/${id}` : "/products";
-      let categoryId = getSelectobjectValue(values.category_id);
-      let subcategoryId = getSelectobjectValue(values.subcategory_id);
-      let productStatusId = getSelectobjectValue(values.status);
-      let productVariants = values.product_variants.map((variant) => {
-        return {
-          color_id: variant.color_id.split(",")[0], // Extracting the ID from "2,Sky"
-          image_id: variant.image_id,
-          sub_variants: values.sub_variants.map((subVariant) => ({
-            value: subVariant.value,
-            quantity: values.quantity,
-          })),
-          variant_status:
-            getSelectobjectValue(variant.variant_status).id === "true"
-              ? true
-              : false,
-        };
-      });
+      const productVariants = values.product_variants.map((variant) => ({
+        color_id: getSelectId(variant.color_id),
+        image_id: variant.image_id || null,
+        image_id_back: variant.image_id_back || null,
+        sub_variants: sizes,
+        variant_status: getSelectId(variant.variant_status) !== "false",
+      }));
+
+      // The main (first) color is the product cover and the print area preview.
+      const mainVariant = values.product_variants[0] || {};
 
       const reqBody = {
         name: values.name,
         description: values.description,
-        image_id: values.image_id,
-        image_id_back: values.image_id_back,
+        image_id: mainVariant.image_id || null,
+        image_id_back: mainVariant.image_id_back || null,
         price: values.price,
         double_design_price: values.double_design_price,
-        category_id: categoryId.id,
-        subcategory_id: subcategoryId.id,
-        status: productStatusId.id === "true" ? true : false,
+        category_id: getSelectId(values.category_id),
+        subcategory_id: getSelectId(values.subcategory_id),
+        status: getSelectId(values.status) !== "false",
         product_variants: productVariants,
         x_position: values.x_position,
         y_position: values.y_position,
@@ -208,284 +301,143 @@ const ProductForm = () => {
 
       setLoading(true);
 
-      await commonAddUpdateQuery(URL, reqBody, id ? "PATCH" : "POST");
+      const response = await commonAddUpdateQuery(
+        productId ? `/products/${productId}` : "/products",
+        reqBody,
+        productId ? "PATCH" : "POST"
+      );
 
       setLoading(false);
-      navigation(ROUTE_ADMIN_PRODUCTS);
+
+      if (response) {
+        navigation(ROUTE_ADMIN_PRODUCTS);
+      }
     },
   });
 
-  const getCategoryList = async () => {
-    const response = await commonGetQuery("/categories");
+  const getSubCategoriesByCategoryId = (categoryId, categories = categoriesData) => {
+    const category = find(categories, { id: categoryId });
 
-    if (response) {
-      const { data } = response.data;
-
-      if (size(data) > 0) {
-        setCategoriesData(data);
-        const updatedList =
-          data &&
-          data.map((item) => {
-            return { id: item.id, title: item.name };
-          });
-        setCategoryList(updatedList);
-      }
-
-      getColorList();
-    }
-  };
-
-  const getSubCategoriesByCategoryId = (categoryId) => {
-    const category = find(categoriesData, { id: categoryId });
-
-    if (category) {
-      return category.sub_categories.map((subCategory) => {
-        return {
+    return category
+      ? category.sub_categories.map((subCategory) => ({
           id: subCategory.id,
           title: subCategory.name,
-        };
-      });
-    } else {
-      return []; // Category with the given ID not found
-    }
+        }))
+      : [];
   };
 
-  const handeleSelectChange = (e, name) => {
-    const { value } = e.target;
-    const SelectObj = getSelectobjectValue(value);
+  const handleCategoryChange = (e) => {
+    const categoryId = Number(getSelectId(e.target.value));
 
-    if (name === "category_id") {
-      if (size(categoriesData) > 0) {
-        const subCategoriesData = getSubCategoriesByCategoryId(
-          Number(SelectObj.id)
-        );
-        setSubCategoryList(subCategoriesData || []);
-        formik.setFieldValue.subcategory_id = "";
-      }
-    }
-  };
-
-  const getColorList = async () => {
-    setLoading(true);
-
-    const response = await commonGetQuery("/colors");
-
-    if (response) {
-      const { data } = response.data;
-      const updatedList =
-        data &&
-        data.map((item) => {
-          return { id: item.id, title: item.name };
-        });
-
-      setColorList(updatedList);
-
-      setLoading(false);
-
-      let id = get(params, "id");
-
-      if (id) {
-        getProductData();
-      }
-    } else {
-      let id = get(params, "id");
-
-      if (id) {
-        getProductData();
-      }
-    }
-    setLoading(false);
+    setSubCategoryList(getSubCategoriesByCategoryId(categoryId));
+    formik.setFieldValue("subcategory_id", "");
   };
 
   const getProductData = async () => {
+    const response = await commonGetQuery(`/products/${productId}`);
+
+    if (!response) return;
+
+    const { data } = response.data;
+    const variants = get(data, "product_variants") || [];
+    const firstSizes = get(variants, "0.sub_variants") || [];
+
+    setProductData(data);
+
+    formik.setValues({
+      ...formik.values,
+      name: data.name || "",
+      description: data.description || "",
+      price: data.price || "",
+      double_design_price: data.double_design_price || "0",
+      category_id: data.category
+        ? `${data.category.id},${data.category.name}`
+        : "",
+      subcategory_id: data.sub_category
+        ? `${data.sub_category.id},${data.sub_category.name}`
+        : "",
+      status:
+        data.status === false
+          ? `false,${t("Inactive")}`
+          : `true,${t("Active")}`,
+      x_position: data.x_position || DEFAULT_FRAME.x,
+      y_position: data.y_position || DEFAULT_FRAME.y,
+      frame_width: data.frame_width || DEFAULT_FRAME.width,
+      frame_height: data.frame_height || DEFAULT_FRAME.height,
+      x_position_back: data.x_position_back || DEFAULT_FRAME.x,
+      y_position_back: data.y_position_back || DEFAULT_FRAME.y,
+      frame_width_back: data.frame_width_back || DEFAULT_FRAME.width,
+      frame_height_back: data.frame_height_back || DEFAULT_FRAME.height,
+      quantity: get(firstSizes, "0.quantity") || 9999,
+      sub_variants:
+        size(firstSizes) > 0
+          ? firstSizes.map((subVariant) => ({ value: subVariant.value || "" }))
+          : [{ value: "" }],
+      product_variants:
+        size(variants) > 0
+          ? variants.map((variant, index) => ({
+              color_id: variant.color
+                ? `${variant.color.id},${variant.color.name}`
+                : "",
+              image_id: variant.image_id || "",
+              // Before per-color back photos, the product's back photo
+              // belonged to the main color, so keep it there.
+              image_id_back:
+                variant.image_id_back ||
+                (index === 0 ? data.image_id_back || "" : ""),
+              variant_status:
+                variant.variant_status === false
+                  ? `false,${t("Inactive")}`
+                  : `true,${t("Active")}`,
+            }))
+          : [
+              {
+                ...createVariant(t),
+                image_id: data.image_id || "",
+                image_id_back: data.image_id_back || "",
+              },
+            ],
+    });
+  };
+
+  const loadFormData = async () => {
     setLoading(true);
 
-    let id = get(params, "id");
+    const [categoriesResponse, colorsResponse] = await Promise.all([
+      commonGetQuery("/categories"),
+      commonGetQuery("/colors"),
+    ]);
 
-    const response = await commonGetQuery(`/products/${id}`);
+    const categories = get(categoriesResponse, "data.data") || [];
+    setCategoriesData(categories);
+    setCategoryList(
+      categories.map((item) => ({ id: item.id, title: item.name }))
+    );
 
-    if (response) {
-      const { data } = response.data;
+    const colors = get(colorsResponse, "data.data") || [];
+    setColorList(colors.map((item) => ({ id: item.id, title: item.name })));
 
-      const {
-        name,
-        description,
-        image_id,
-        image_id_back,
-        price,
-        product_variants,
-        category,
-        sub_category,
-        x_position,
-        y_position,
-        frame_width,
-        frame_height,
-        x_position_back,
-        y_position_back,
-        frame_width_back,
-        frame_height_back,
-        status,
-        double_design_price,
-      } = data;
-
-      setProductdata(data);
-
-      if (size(categoriesData) > 0) {
-        const subCategoriesData = getSubCategoriesByCategoryId(
-          Number(category.id)
-        );
-
-        setSubCategoryList(subCategoriesData || []);
-      }
-
-      const productVariantsValues = product_variants.map((variant) => ({
-        color_id: `${get(variant, "color.id", "")},${get(
-          variant,
-          "color.name",
-          ""
-        )}`,
-        image_id: get(variant, "image_id", "") || "",
-        variant_status:
-          get(variant, "variant_status", "") === false
-            ? `false,${t("Inactive")}`
-            : `true,${t("Active")}`,
-        sub_variants:
-          variant.sub_variants && size(variant.sub_variants) > 0
-            ? variant.sub_variants.map((subVariant) => ({
-                value: subVariant.value || "",
-                quantity: subVariant.quantity || "",
-              }))
-            : [],
-      }));
-
-      let quantity = "";
-      const productSubVariantsValues = product_variants.map(
-        (variant, index) => {
-          if (index > 0) return;
-          let SubVariantsValues = [];
-          if (variant.sub_variants && size(variant.sub_variants) > 0) {
-            variant.sub_variants.map((subVariant, sub_index) => {
-              // if(sub_index>0) return;
-              let item = {};
-              item.value = subVariant.value;
-              SubVariantsValues.push(item);
-              if (sub_index == 0) {
-                quantity = subVariant.quantity;
-              }
-            });
-          }
-          return SubVariantsValues;
-        }
-      );
-
-      formik.setFieldValue("name", name || "");
-      formik.setFieldValue("description", description || "");
-      formik.setFieldValue("image_id", image_id || "");
-      formik.setFieldValue("image_id_back", image_id_back || "");
-      formik.setFieldValue("price", price || "");
-      formik.setFieldValue("double_design_price", double_design_price || "");
-      formik.setFieldValue("category_id", `${category?.id},${category?.name}`);
-      formik.setFieldValue("x_position", x_position || 163);
-      formik.setFieldValue("y_position", y_position || 103);
-      formik.setFieldValue("frame_width", frame_width || 171);
-      formik.setFieldValue("frame_height", frame_height || 211);
-      formik.setFieldValue("x_position_back", x_position_back || 163);
-      formik.setFieldValue("y_position_back", y_position_back || 103);
-      formik.setFieldValue("frame_width_back", frame_width_back || 171);
-      formik.setFieldValue("frame_height_back", frame_height_back || 211);
-      formik.setFieldValue(
-        "subcategory_id",
-        `${sub_category.id},${sub_category.name}`
-      );
-      formik.setFieldValue("quantity", quantity || 9999);
-      formik.setFieldValue(
-        "status",
-        status === false ? `false,${t("Inactive")}` : `true,${t("Active")}`
-      );
-      formik.setFieldValue(
-        "sub_variants",
-        (size(productSubVariantsValues) > 0 && productSubVariantsValues[0]) ||
-          ""
-      );
-      formik.setFieldValue("product_variants", productVariantsValues);
-
-      setLoading(false);
+    if (productId) {
+      await getProductData();
     }
 
     setLoading(false);
   };
 
-  // the first very simple and recommended way:
-  const MainImage = () => {
-    let image_url =
-      "https://api.hulahop.shop/images/ff904dee-8d74-4e9a-adbc-bc5b7e739f54";
-
-    if (formik.values.image_id) {
-      image_url = getImageUrlById(formik.values.image_id);
+  useEffect(() => {
+    if (!isEmpty(categoriesData) && !isEmpty(productData)) {
+      setSubCategoryList(
+        getSubCategoriesByCategoryId(Number(get(productData, "category_id")))
+      );
     }
-
-    const [mainProductImage] = useImage(image_url, "anonymous", "origin");
-
-    return (
-      <Image
-        width={500}
-        height={500}
-        className="main-image"
-        image={mainProductImage}
-      />
-    );
-  };
-
-  const BackImage = () => {
-    let image_url =
-      "https://api.hulahop.shop/images/ff904dee-8d74-4e9a-adbc-bc5b7e739f54";
-
-    if (formik.values.image_id_back) {
-      image_url = getImageUrlById(formik.values.image_id_back);
-    }
-
-    const [mainProductImage] = useImage(image_url, "anonymous", "origin");
-
-    return (
-      <Image
-        width={500}
-        height={500}
-        className="main-image"
-        image={mainProductImage}
-      />
-    );
-  };
-
-  const handelChangeCoverImage = (id) => {
-    formik.setFieldValue("product_variants.0.image_id", id);
-  };
-
-  const handelDeleteCoverImage = () => {
-    formik.setFieldValue("product_variants.0.image_id", "");
-  };
-
-  const handleChangeBackImage = (id) => {
-    formik.setFieldValue("product_variants.0.image_id_back", id);
-  };
-
-  const handleDeleteBackImage = () => {
-    formik.setFieldValue("product_variants.0.image_id_back", "");
-  };
+  }, [categoriesData, productData]);
 
   useEffect(() => {
-    if (!isEmpty(categoriesData) && !isEmpty(productdata)) {
-      if (size(categoriesData) > 0) {
-        const subCategoriesData = getSubCategoriesByCategoryId(
-          Number(get(productdata, "category_id"))
-        );
-        setSubCategoryList(subCategoriesData || []);
-      }
-    }
-  }, [categoriesData, productdata]);
-
-  useEffect(() => {
-    getCategoryList();
+    loadFormData();
   }, []);
+
+  const variants = formik.values.product_variants;
+  const sizes = formik.values.sub_variants;
 
   return (
     <ProductFormWrapper>
@@ -493,7 +445,7 @@ const ProductForm = () => {
       <CommonWhiteBackground>
         <FlexBox>
           <div className="main-title title-wrapper">
-            {get(params, "id") ? t("Edit Product") : t("Add Product")}
+            {productId ? t("Edit Product") : t("Add Product")}
           </div>
         </FlexBox>
         <hr />
@@ -505,437 +457,355 @@ const ProductForm = () => {
               onSubmit={formik.handleSubmit}
             >
               <div className="container-fluid">
-                <div className="row g-4">
-                  <div className="col-lg-5">
-                    <ImageUploadBox
-                      name="image_id"
-                      id={formik.values.image_id}
-                      formik={formik}
-                      onUpload={handelChangeCoverImage}
-                      onDelete={handelDeleteCoverImage}
-                    />
-                    <div className="back-image">
-                      <ImageUploadBox
-                        name="image_id_back"
-                        id={formik.values.image_id_back}
+                <section className="form-section">
+                  <div className="section-header">
+                    <h4>{t("Product Details")}</h4>
+                  </div>
+                  <hr />
+                  <div className="row g-4">
+                    <div className="col-lg-6">
+                      <InputComponent
+                        name="name"
+                        InnerPlaceholder={t("Product Name")}
+                        fullWidth
+                        label={t("Product Name")}
                         formik={formik}
-                        onUpload={handleChangeBackImage}
-                        onDelete={handleDeleteBackImage}
+                        disabled={loading}
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <SelectComponent
+                        fullWidth
+                        name="status"
+                        size="small"
+                        title={t("Status")}
+                        optionList={statusList}
+                        formik={formik}
+                        disabled={loading}
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <SelectComponent
+                        fullWidth
+                        name="category_id"
+                        size="small"
+                        title={t("Select Categories")}
+                        onChange={handleCategoryChange}
+                        optionList={categoryList}
+                        formik={formik}
+                        disabled={loading}
+                        isCustumeChangeFunction
+                      />
+                      <ErrorMessage
+                        component="p"
+                        className="input-error"
+                        name="category_id"
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <SelectComponent
+                        fullWidth
+                        name="subcategory_id"
+                        size="small"
+                        title={t("Select Sub Categories")}
+                        optionList={subCategoryList}
+                        formik={formik}
+                        disabled={loading}
+                      />
+                      <ErrorMessage
+                        component="p"
+                        className="input-error"
+                        name="subcategory_id"
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <InputComponent
+                        name="price"
+                        InnerPlaceholder={t("Price")}
+                        fullWidth
+                        formik={formik}
+                        disabled={loading}
+                        label={t("Price")}
+                      />
+                    </div>
+                    <div className="col-lg-6">
+                      <InputComponent
+                        name="double_design_price"
+                        InnerPlaceholder={t("Price for Second Design")}
+                        fullWidth
+                        formik={formik}
+                        disabled={loading}
+                        label={t("Price for Second Design")}
+                      />
+                    </div>
+                    <div className="col-12">
+                      <InputComponent
+                        InnerPlaceholder={t("Write Description")}
+                        fullWidth
+                        name="description"
+                        label={t("Description")}
+                        type="textarea"
+                        formik={formik}
+                        disabled={loading}
                       />
                     </div>
                   </div>
-                  <div className="col-lg-7">
-                    <div className="row g-4">
-                      <div className="col-lg-6">
-                        <InputComponent
-                          name="name"
-                          InnerPlaceholder={t("Product Name")}
-                          fullWidth
-                          label={t("Product Name")}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <InputComponent
-                          name="price"
-                          InnerPlaceholder={t("Price")}
-                          fullWidth
-                          formik={formik}
-                          disabled={loading}
-                          label={t("Price")}
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <SelectComponent
-                          fullWidth
-                          name="category_id"
-                          size="small"
-                          title={t("Select Categories")}
-                          onChange={handeleSelectChange}
-                          optionList={categoryList}
-                          formik={formik}
-                          disabled={loading}
-                          isCustumeChangeFunction
-                        />
-                        <ErrorMessage
-                          component="p"
-                          className="input-error"
-                          name="category_id"
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <SelectComponent
-                          fullWidth
-                          name="subcategory_id"
-                          size="small"
-                          title={t("Select Sub Categories")}
-                          optionList={subCategoryList}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                        <ErrorMessage
-                          component="p"
-                          className="input-error"
-                          name="subcategory_id"
-                        />
-                      </div>
-                      <div className="col-lg-12">
-                        <InputComponent
-                          InnerPlaceholder={t("Write Description")}
-                          fullWidth
-                          name="description"
-                          label={t("Description")}
-                          type="textarea"
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <InputComponent
-                          name="quantity"
-                          InnerPlaceholder={t("Quantity")}
-                          fullWidth
-                          formik={formik}
-                          disabled={loading}
-                          label={t("Quantity")}
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <SelectComponent
-                          fullWidth
-                          name="status"
-                          size="small"
-                          title={t("Status")}
-                          optionList={statusList}
-                          formik={formik}
-                          disabled={loading}
-                        />
-                      </div>
-                      <div className="col-lg-6">
-                        <InputComponent
-                          name="double_design_price"
-                          InnerPlaceholder={t("Price for Second Design")}
-                          fullWidth
-                          formik={formik}
-                          disabled={loading}
-                          label={t("Price for Second Design")}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12">
-                    <h4 className="mb-3">{t("Product Sub Variant")}</h4>
-                    <hr />
+                </section>
 
-                    <FieldArray
-                      name="sub_variants"
-                      render={({ remove, push }) => (
-                        <>
-                          <div className="d-flex justify-content-end">
-                            <ButtonComponent
-                              variant="contained"
-                              startIcon={<AddIcon />}
-                              text={t("Add Sub Variant")}
-                              className="sub-variant-value-btn"
-                              onClick={() => push(subVariantsStartInitialData)}
+                <section className="form-section">
+                  <FieldArray
+                    name="sub_variants"
+                    render={({ remove, push }) => (
+                      <>
+                        <div className="section-header">
+                          <h4>{t("Sizes")}</h4>
+                          <ButtonComponent
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            text={t("Add Sub Variant")}
+                            className="sub-variant-value-btn"
+                            onClick={() => push({ value: "" })}
+                          />
+                        </div>
+                        <p className="section-hint">
+                          {t("Quantity is applied to every size of every color.")}
+                        </p>
+                        <hr />
+                        <div className="row g-3">
+                          <div className="col-lg-3 col-sm-6">
+                            <InputComponent
+                              name="quantity"
+                              InnerPlaceholder={t("Quantity")}
+                              fullWidth
+                              formik={formik}
+                              disabled={loading}
+                              label={t("Quantity")}
                             />
                           </div>
-                          <div className="row g-3">
-                            {size(formik.values.sub_variants) > 0 &&
-                              map(
-                                formik.values.sub_variants,
-                                (item, variantIndex) => {
-                                  return (
-                                    <>
-                                      <div className="col-lg-4">
-                                        <div className="d-flex">
-                                          <div>
-                                            <InputComponent
-                                              InnerPlaceholder={t(
-                                                "Sub Variant Value"
-                                              )}
-                                              fullWidth
-                                              inputClassname="mb-0"
-                                              name={`sub_variants.${variantIndex}.value`}
-                                              value={
-                                                formik.values.sub_variants[
-                                                  variantIndex
-                                                ].value
-                                              }
-                                              formik={formik}
-                                              isUseCustomeValue
-                                              label={t("Sub Variant Value")}
-                                            />
-                                          </div>
-                                          <div className=" ms-3 pb-2 align-self-end">
-                                            <DeleteOutlineOutlinedIcon
-                                              onClick={() => {
-                                                remove(variantIndex);
-                                              }}
-                                            />
-                                          </div>
-                                        </div>
-                                      </div>
-                                    </>
-                                  );
-                                }
-                              )}
-                          </div>
-                        </>
-                      )}
-                    />
+                        </div>
+                        <div className="row g-3 mt-1">
+                          {map(sizes, (item, sizeIndex) => (
+                            <div className="col-lg-3 col-sm-6" key={sizeIndex}>
+                              <div className="d-flex">
+                                <div className="flex-grow-1">
+                                  <InputComponent
+                                    InnerPlaceholder={t("Sub Variant Value")}
+                                    fullWidth
+                                    inputClassname="mb-0"
+                                    name={`sub_variants.${sizeIndex}.value`}
+                                    value={item.value}
+                                    formik={formik}
+                                    isUseCustomeValue
+                                    label={t("Sub Variant Value")}
+                                  />
+                                </div>
+                                <div className="ms-2 pb-2 align-self-end">
+                                  <DeleteOutlineOutlinedIcon
+                                    className={`size-remove ${
+                                      size(sizes) < 2 ? "disabled" : ""
+                                    }`}
+                                    onClick={() => {
+                                      if (size(sizes) > 1) remove(sizeIndex);
+                                    }}
+                                  />
+                                </div>
+                              </div>
+                              <ErrorMessage
+                                component="p"
+                                className="input-error"
+                                name={`sub_variants.${sizeIndex}.value`}
+                              />
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  />
+                </section>
+
+                <section className="form-section">
+                  <FieldArray
+                    name="product_variants"
+                    render={({ remove, push }) => (
+                      <>
+                        <div className="section-header">
+                          <h4>{t("Colors and Photos")}</h4>
+                          <ButtonComponent
+                            variant="contained"
+                            startIcon={<AddIcon />}
+                            text={t("Add Color")}
+                            onClick={() => push(createVariant(t))}
+                          />
+                        </div>
+                        <p className="section-hint">
+                          {t(
+                            "The main color's photos are the product cover and set the print area preview."
+                          )}
+                        </p>
+                        <hr />
+                        <div className="row g-4">
+                          {map(variants, (variant, variantIndex) => (
+                            <div className="col-xl-6" key={variantIndex}>
+                              <div className="product-variant-box">
+                                <div className="variant-header">
+                                  <span className="variant-badge">
+                                    {variantIndex === 0
+                                      ? t("Main color")
+                                      : `${t("Color")} ${variantIndex + 1}`}
+                                  </span>
+                                  <ButtonComponent
+                                    variant="outlined"
+                                    startIcon={<DeleteOutlineOutlinedIcon />}
+                                    text={t("Remove")}
+                                    fontSize="12px"
+                                    disabled={size(variants) < 2}
+                                    onClick={() => {
+                                      if (size(variants) > 1) {
+                                        remove(variantIndex);
+                                      }
+                                    }}
+                                  />
+                                </div>
+                                <div className="row g-3">
+                                  <div className="col-md-6">
+                                    <SelectComponent
+                                      title={t("Select Color")}
+                                      fullWidth
+                                      size="small"
+                                      name={`product_variants.${variantIndex}.color_id`}
+                                      value={variant.color_id}
+                                      isShowValue
+                                      optionList={colorList}
+                                      formik={formik}
+                                      disabled={loading}
+                                    />
+                                    <ErrorMessage
+                                      component="p"
+                                      className="input-error"
+                                      name={`product_variants.${variantIndex}.color_id`}
+                                    />
+                                  </div>
+                                  <div className="col-md-6">
+                                    <SelectComponent
+                                      title={t("Status")}
+                                      fullWidth
+                                      size="small"
+                                      name={`product_variants.${variantIndex}.variant_status`}
+                                      value={variant.variant_status}
+                                      isShowValue
+                                      optionList={statusList}
+                                      formik={formik}
+                                      disabled={loading}
+                                    />
+                                  </div>
+                                  <div className="col-sm-6">
+                                    <label className="mb-2">
+                                      {t("Front side")}
+                                    </label>
+                                    <ImageUploadBox
+                                      name={`product_variants.${variantIndex}.image_id`}
+                                      id={variant.image_id}
+                                      formik={formik}
+                                    />
+                                    <ErrorMessage
+                                      component="p"
+                                      className="input-error"
+                                      name={`product_variants.${variantIndex}.image_id`}
+                                    />
+                                  </div>
+                                  <div className="col-sm-6">
+                                    <label className="mb-2">
+                                      {t("Back side")}
+                                    </label>
+                                    <ImageUploadBox
+                                      name={`product_variants.${variantIndex}.image_id_back`}
+                                      id={variant.image_id_back}
+                                      formik={formik}
+                                    />
+                                    {variantIndex > 0 &&
+                                      !variant.image_id_back && (
+                                        <p className="field-hint">
+                                          {t(
+                                            "Optional. If empty, the main color's back photo is shown."
+                                          )}
+                                        </p>
+                                      )}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </>
+                    )}
+                  />
+                </section>
+
+                <section className="form-section">
+                  <div className="section-header">
+                    <h4>{t("Print Area")}</h4>
                   </div>
-                  <div className="col-12"></div>
-                  {(formik.values.image_id || formik.values.image_id_back) && (
-                    <div className="col-12">
-                      <h4 className="mb-3">{t("Set Frame Position")}</h4>
-                      <hr />
-                    </div>
-                  )}
-                  {formik.values.image_id && (
-                    <div className="col-lg-6">
-                      <div className="container-canvas">
-                        <Stage width={500} height={500} ref={stageRef}>
-                          <Layer>
-                            <MainImage />
-                            <Rect
-                              x={formik.values.x_position}
-                              y={formik.values.y_position}
-                              width={formik.values.frame_width}
-                              height={formik.values.frame_height}
-                              stroke="red"
-                              strokeWidth={1}
-                              dash={[0, 0]}
-                            />
-                          </Layer>
-                        </Stage>
-                      </div>
-                    </div>
-                  )}
-                  {formik.values.image_id && (
-                    <div className="col-lg-6">
-                      <div className="row positions-inputs">
-                        <div className="col-12">
-                          <InputComponent
-                            name="x_position"
-                            InnerPlaceholder={t("Enter X Position")}
-                            fullWidth
-                            label={t("X Position")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="y_position"
-                            InnerPlaceholder={t("Enter Y Position")}
-                            fullWidth
-                            label={t("Y Position")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="frame_width"
-                            InnerPlaceholder={t("Enter Frame Width")}
-                            fullWidth
-                            label={t("Frame Width")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="frame_height"
-                            InnerPlaceholder={t("Enter Frame Height")}
-                            fullWidth
-                            label={t("Frame Height")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  {formik.values.image_id_back && (
-                    <div className="col-lg-6">
-                      <div className="container-canvas">
-                        <Stage width={500} height={500} ref={stageRef}>
-                          <Layer>
-                            <BackImage />
-                            <Rect
-                              x={formik.values.x_position_back}
-                              y={formik.values.y_position_back}
-                              width={formik.values.frame_width_back}
-                              height={formik.values.frame_height_back}
-                              stroke="red"
-                              strokeWidth={1}
-                              dash={[0, 0]}
-                            />
-                          </Layer>
-                        </Stage>
-                      </div>
-                    </div>
-                  )}
-                  {formik.values.image_id_back && (
-                    <div className="col-lg-6">
-                      <div className="row positions-inputs">
-                        <div className="col-12">
-                          <InputComponent
-                            name="x_position_back"
-                            InnerPlaceholder={t("Enter X Position")}
-                            fullWidth
-                            label={t("X Position")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="y_position_back"
-                            InnerPlaceholder={t("Enter Y Position")}
-                            fullWidth
-                            label={t("Y Position")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="frame_width_back"
-                            InnerPlaceholder={t("Enter Frame Width")}
-                            fullWidth
-                            label={t("Frame Width")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                        <div className="col-12">
-                          <InputComponent
-                            name="frame_height_back"
-                            InnerPlaceholder={t("Enter Frame Height")}
-                            fullWidth
-                            label={t("Frame Height")}
-                            formik={formik}
-                            disabled={loading}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  <div className="col-12">
-                    <h4 className="">{t("Product Variant")}</h4>
-                    <hr />
-                    <FieldArray
-                      name="product_variants"
-                      render={({ remove, push }) => (
-                        <>
-                          <div className="d-flex justify-content-end">
-                            <ButtonComponent
-                              variant="contained"
-                              startIcon={<AddIcon />}
-                              text={t("Add Variant")}
-                              onClick={() => push(productVariantsInitialData)}
-                            />
-                          </div>
-                          <div className="product-variant-box pt-3">
-                            <div className="row g-3">
-                              {size(formik.values.product_variants) > 0 &&
-                                map(
-                                  formik.values.product_variants,
-                                  (item, variantIndex) => {
-                                    return (
-                                      <>
-                                        <div className="col-lg-4">
-                                          <div>
-                                            <ImageUploadBox
-                                              name={`product_variants.${variantIndex}.image_id`}
-                                              id={item.image_id}
-                                              formik={formik}
-                                              disabled={
-                                                size(
-                                                  formik.values.product_variants
-                                                ) < 2
-                                              }
-                                            />
-                                          </div>
-                                          <div className="my-3">
-                                            <SelectComponent
-                                              label={t("Select Color")}
-                                              fullWidth
-                                              size="small"
-                                              name={`product_variants.${variantIndex}.color_id`}
-                                              value={
-                                                formik.values.product_variants[
-                                                  variantIndex
-                                                ].color_id
-                                              }
-                                              isShowValue
-                                              optionList={colorList}
-                                              formik={formik}
-                                            />
-                                          </div>
-                                          <div className="my-3">
-                                            <SelectComponent
-                                              label={t("Status")}
-                                              fullWidth
-                                              size="small"
-                                              name={`product_variants.${variantIndex}.variant_status`}
-                                              value={
-                                                formik.values.product_variants[
-                                                  variantIndex
-                                                ].variant_status
-                                              }
-                                              isShowValue
-                                              optionList={statusList}
-                                              formik={formik}
-                                            />
-                                          </div>
-                                          <div>
-                                            <ButtonComponent
-                                              width="100%"
-                                              variant="outlined"
-                                              text={t("Remove")}
-                                              disabled={
-                                                size(
-                                                  formik.values.product_variants
-                                                ) < 2
-                                              }
-                                              onClick={
-                                                size(
-                                                  formik.values.product_variants
-                                                ) < 2
-                                                  ? () => {}
-                                                  : () => {
-                                                      remove(variantIndex);
-                                                    }
-                                              }
-                                            />
-                                          </div>
-                                        </div>
-                                      </>
-                                    );
+                  <p className="section-hint">
+                    {t("The print area is the same for every color.")}
+                  </p>
+                  <hr />
+                  {FRAME_SIDES.map((side) => {
+                    const imageId = get(variants, `0.${side.imageField}`);
+
+                    return (
+                      <div className="frame-side" key={side.key}>
+                        <div className="frame-side-title">{t(side.title)}</div>
+                        {imageId ? (
+                          <div className="row g-4">
+                            <div className="col-lg-7">
+                              <div className="container-canvas">
+                                <FramePreview
+                                  imageId={imageId}
+                                  x={formik.values[`x_position${side.suffix}`]}
+                                  y={formik.values[`y_position${side.suffix}`]}
+                                  width={
+                                    formik.values[`frame_width${side.suffix}`]
                                   }
-                                )}
+                                  height={
+                                    formik.values[`frame_height${side.suffix}`]
+                                  }
+                                />
+                              </div>
+                            </div>
+                            <div className="col-lg-5">
+                              <div className="row positions-inputs">
+                                {FRAME_FIELDS.map((field) => (
+                                  <div className="col-12" key={field.name}>
+                                    <InputComponent
+                                      name={`${field.name}${side.suffix}`}
+                                      InnerPlaceholder={t(field.placeholder)}
+                                      fullWidth
+                                      label={t(field.label)}
+                                      formik={formik}
+                                      disabled={loading}
+                                    />
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           </div>
-                        </>
-                      )}
-                    />
-                  </div>
-                  <div className="col-12">
-                    <FlexBox justifyContent="end" className="mt-3">
-                      <GobackButton />
-                      <ButtonComponent
-                        variant="contained"
-                        text={t("Save")}
-                        type="submit"
-                      />
-                    </FlexBox>
-                  </div>
-                </div>
+                        ) : (
+                          <div className="empty-frame">{t(side.emptyText)}</div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </section>
+
+                <FlexBox justifyContent="end" className="mt-3">
+                  <GobackButton />
+                  <ButtonComponent
+                    variant="contained"
+                    text={t("Save")}
+                    type="submit"
+                    loading={loading}
+                  />
+                </FlexBox>
               </div>
             </form>
           </FormikProvider>

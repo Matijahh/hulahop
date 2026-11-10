@@ -40,6 +40,9 @@ export class ProductVariants {
   @Column('varchar', { name: 'image_id', nullable: true })
   image_id: string | null;
 
+  @Column('varchar', { name: 'image_id_back', nullable: true, length: 36 })
+  image_id_back: string | null;
+
   @Column('bigint', { name: 'created_at', nullable: true })
   created_at: number | null;
 

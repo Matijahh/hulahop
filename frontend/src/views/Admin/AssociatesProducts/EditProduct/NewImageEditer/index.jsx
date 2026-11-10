@@ -123,6 +123,7 @@ const NewImageEditor = ({
   setShowFrame,
   setBackIndicator,
   setSelectedImage,
+  hasBack,
 }) => {
   const [images, setImages] = useState([]);
   const [imagesBack, setImagesBack] = useState([]);
@@ -133,16 +134,8 @@ const NewImageEditor = ({
 
   const MainImage = useMemo(() => {
     return () => {
-      const [mainProductImage, status] = useImage(
-        back
-          ? `${REST_URL_SERVER}/images/compressed/${get(
-              productData,
-              "image_id_back"
-            )}`
-          : imgURL,
-        "anonymous",
-        "origin"
-      );
+      // The parent passes the selected color's front or back photo.
+      const [mainProductImage] = useImage(imgURL, "anonymous", "origin");
 
       return (
         <Image
@@ -153,7 +146,7 @@ const NewImageEditor = ({
         />
       );
     };
-  }, [productData, back, imgURL]);
+  }, [imgURL]);
 
   useEffect(() => {
     const savedState = back
@@ -334,7 +327,7 @@ const NewImageEditor = ({
             <ControlCameraIcon />
           </div>
         </div>
-        {get(productData, "image_id_back") && (
+        {(hasBack ?? get(productData, "image_id_back")) && (
           <div className="button-list">
             <div
               className="list-item"
