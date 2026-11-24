@@ -3,7 +3,7 @@
 HulaHop is a print-on-demand marketplace. Admins set up base garments, associates put their own designs on those garments and sell them through their own branded store, and customers browse, customize and buy. The interface is in Serbian by default, with English also available.
 
 <p>
-  <img src="screenshots/home.png" width="32%" />
+  <img src="screenshots/home.png" width="100%" />
 </p>
 
 ## How it works
