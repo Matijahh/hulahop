@@ -456,11 +456,7 @@ CREATE TABLE IF NOT EXISTS about_product_bottom_bar_image(
 
 -- **********************************************************************************************************************
 
+-- Seed admin account. Replace <BCRYPT_HASH> with a bcrypt hash of your own password before running, e.g.:
+--   node -e "console.log(require('bcrypt').hashSync('your-password', 10))"   (run inside backend/)
 INSERT INTO users (id, first_name, last_name, image_id, email, mobile, password, type, status, created_at, updated_at)
-VALUES ('1', 'super', 'admin', NULL, 'admin@gmail.com', '1234567890', '$2b$10$PhgcUe2vjrhw8nJ1mQJV8uyxdkga5JuS5MXtoaWyMzWgEHrNI2Egm', 'ADMIN', '1', NULL, NULL);
-
-INSERT INTO users (first_name, last_name, image_id, email, mobile, password, type, status, created_at, updated_at)
-VALUES ('super', 'admin', NULL, 'info@hulahop.shop', NULL, '$2b$10$iST7Qp16Kki1edFSjtB0Nu8lkUqGeUu9A3pwmOMyu5uRXCy.RNzeu', 'ADMIN', '1', NULL, NULL);
-
-INSERT INTO users (first_name, last_name, image_id, email, mobile, password, type, status, created_at, updated_at)
-VALUES ('popcorn', NULL, NULL, ' kokice@hulahop.shop', NULL, '$2b$10$e6NcxRPDZ1iQL2H1llKttewqqCXXVN/r32I3UY.if4utAEsZ4PXzi', 'ASSOCIATE', '1', NULL, NULL);
+VALUES ('1', 'super', 'admin', NULL, 'admin@example.com', NULL, '<BCRYPT_HASH>', 'ADMIN', '1', NULL, NULL);
